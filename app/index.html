@@ -1,0 +1,148 @@
+<!doctype html>
+<html xmlns:emp="http://everempire.com" xmlns:ng="http://angularjs.org">
+	<head>
+		<title>Royal</title>
+		
+		<!-- Styles -->
+		<link rel="StyleSheet" type="text/css" href="styles/hime.css">
+		
+		<!-- Scripts -->
+		<script type="text/javascript" src="scripts/angular-1.0.8.js"></script>
+		<script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
+		<script type="text/javascript" src="scripts/underscore-1.5.2.js"></script>
+		
+		<script type="text/javascript" src="scripts/royal/namespace.js"></script>
+		<script type="text/javascript" src="scripts/royal/math.js"></script>
+		<script type="text/javascript" src="scripts/royal/type.js"></script>
+		<script type="text/javascript" src="scripts/royal/time.js"></script>
+		<script type="text/javascript" src="scripts/royal/utils.js"></script>
+		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
+		<script type="text/javascript" src="scripts/royal/parent.js"></script>
+		 
+		<!-- Angular Modules -->
+		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/actor-module.js"></script>
+		
+		<script type="text/javascript" src="scripts/hime/hime.js"></script>
+		<script type="text/javascript" src="scripts/hime/area.js"></script>
+		<script type="text/javascript" src="scripts/hime/actor.js"></script>
+		<script type="text/javascript" src="scripts/hime/activity.js"></script>
+		
+		<script type="text/javascript" src="scripts/main.js"></script>
+		 
+		<!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
+		
+	</head>
+	<body>
+		
+		<div ng:controller="Clock" path="com.everempire.hime.$game.clock" name="gameClock"></div>
+		
+		<div ng:controller="ClockControl" clock="gameClock">
+			<div>
+				<div>
+					<b>Time:</b>
+					<button ng:click="gameClock.StopClock.stop()" ng:show="gameClock.StopClock.isRunning()">Pause</button>
+					<button ng:click="gameClock.StopClock.start()" ng:hide="gameClock.StopClock.isRunning()">Resume</button>
+				</div>
+				<div class="time-meter" style="width: {{ time / ( 1000 * 60 ) }}px;"></div>
+				<div>{{ time | time }}</div>
+			</div>
+			<div>
+				<button ng:click="stopFrames()">Stop Frames</button><button ng:click="startFrames()">Start Frames</button>
+			</div>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div ng:controller="ActorControl">
+			{{ selectedActor.name }} - {{ selectedActor.energy }} % <br/>
+			<select ng:model="selectedActor" ng:options="actor.name for (actorKey, actor) in actors">
+			</select>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div ng:controller="AreaControl" data-area-map="/data/areas.json">
+			
+			<div emp:effect name="cubicMotion" type="easeInCubic" duration="1000"></div>  
+			
+			<div><b>Energy</b></div>
+			<div class="energy-meter" style="width: {{ ( energy | numericMotion:cubicMotion ) * 10 }}px;"></div>
+			<div>{{ energy | numericMotion:cubicMotion | number:1 }} %</div>
+			
+			<div>
+				<input type="checkbox" ng:model="running"/> Running
+			</div>
+			
+			<div>
+				<input type="checkbox" ng:model="throttle"> Throttle
+			</div>
+			
+			<div>
+				<h3>Currently in: {{ currentArea.name }}</h3>
+				
+				<div ng:show="activityId == null">
+					<h3>Exits:</h3>
+					<ul class="paths">
+						<li ng:repeat="(areaName, path) in currentArea.paths">
+							<a ng:click="move()" ng:mouseover="setAreaName( areaName )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
+						</li>
+					</ul>
+					
+					<input type="text" ng:model="areaName" placeholder="Where do you want to go?" />
+					<input type="button" ng:click="move()" value="Move" />
+				</div>
+				
+				
+				<div ng:show="activityId != null">
+					<h3>Currently moving ...</h3>
+					<div>Progress: {{ getActivityProgress() * 100 | number:0 }}</div>
+					<div class="progress-meter">
+						<div class="bar" style="width: {{ getActivityProgress() * 100 }}%">&nbsp;</div>
+					</div>
+					<button ng:click="boost()">Boost</button>
+				</div>
+			</div>
+		</div>
+		
+		<div ng:controller="AreaEditControl" data-area-map="/data/areas.json">
+		
+			<h2>Areas:</h2>
+			<ul>
+				<li ng:repeat="(areaCode, area) in areas">
+					<a href="" ng:click="selectArea( areaCode )">{{ areaCode }}</a> <input type="text" ng:model="area.name"/> [ <a href="" ng:click="removeArea( areaCode )" >Remove</a> ]
+					<ul>
+						<li ng:repeat="path in area.paths">
+							{{ path.area.name }} : {{ path.distance }}m [ <a href="" ng:click="removePath( areaCode, $index )">X</a> ]
+						</li>
+					</ul>
+				</li>
+			</ul>
+			
+			<div>
+				<input type="text" ng:model="areaCode" placeholder="Area Code" />
+				<input type="text" ng:model="areaName" placeholder="Area Name" />
+				<input type="button" ng:click="createArea()" value="Create Area" />
+			</div>
+			
+			<div>
+				<input type="text" ng:model="areaCodeA" placeholder="Area Code A" />
+				<input type="text" ng:model="areaCodeB" placeholder="Area Code B" />
+				<input type="number" ng:model="pathDistance" placeholder="Distance" />m
+				<input type="button" ng:click="createPath()" value="Create Path" />
+			</div>
+			
+			<div>
+				<input type="button" ng:click="generateJson()" value="Generate JSON" />
+			</div>
+			
+			<textarea class="generatedJson" ng:model="generatedJson" ng:show="generatedJson">
+				
+			</textarea>
+			
+		</div>
+		
+	</body>
+</html>

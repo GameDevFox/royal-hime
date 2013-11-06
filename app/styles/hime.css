@@ -1,0 +1,31 @@
+.time-meter
+{
+	background-color: red;
+	border: 1px solid black;
+	height: 20px;
+}
+
+.energy-meter
+{
+	background-color: blue;
+	border: 1px solid black;
+	height: 20px;
+}
+
+.progress-meter
+{
+	width: 500px;
+	border: solid 1px black;
+	padding: 2px;
+}
+
+.progress-meter .bar
+{
+	background-color: red;
+}
+
+textarea.generatedJson
+{
+	width: 600px;
+	height: 200px;
+}
