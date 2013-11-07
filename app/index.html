@@ -5,34 +5,8 @@
 		
 		<!-- Styles -->
 		<link rel="StyleSheet" type="text/css" href="styles/hime.css">
-		
-		<!-- Scripts -->
-		<script type="text/javascript" src="scripts/angular-1.0.8.js"></script>
-		<script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
-		<script type="text/javascript" src="scripts/underscore-1.5.2.js"></script>
-		
-		<script type="text/javascript" src="scripts/royal/namespace.js"></script>
-		<script type="text/javascript" src="scripts/royal/math.js"></script>
-		<script type="text/javascript" src="scripts/royal/type.js"></script>
-		<script type="text/javascript" src="scripts/royal/time.js"></script>
-		<script type="text/javascript" src="scripts/royal/utils.js"></script>
-		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
-		<script type="text/javascript" src="scripts/royal/parent.js"></script>
 		 
-		<!-- Angular Modules -->
-		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/actor-module.js"></script>
-		
-		<script type="text/javascript" src="scripts/hime/hime.js"></script>
-		<script type="text/javascript" src="scripts/hime/area.js"></script>
-		<script type="text/javascript" src="scripts/hime/actor.js"></script>
-		<script type="text/javascript" src="scripts/hime/activity.js"></script>
-		
-		<script type="text/javascript" src="scripts/main.js"></script>
-		 
-		<!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
+		<script data-main="scripts/main" src="scripts/require-2.1.9.js"></script>
 		
 	</head>
 	<body>
@@ -97,7 +71,6 @@
 				
 				
 				<div ng:show="activityId != null">
-					<h3>Currently moving ...</h3>
 					<div>Progress: {{ getActivityProgress() * 100 | number:0 }}</div>
 					<div class="progress-meter">
 						<div class="bar" style="width: {{ getActivityProgress() * 100 }}%">&nbsp;</div>

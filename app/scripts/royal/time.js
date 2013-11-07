@@ -1,7 +1,5 @@
-namespace( "com.everempire.royal.time", function() 
+define( [ "royal/math" ], function( math ) 
 {
-	var math = getPath( "com.everempire.royal.math" );
-	
 	// CLOCKS: 
 	// Clocks should be built in the following order in order for all their features to work
 	// properly.
@@ -20,13 +18,15 @@ namespace( "com.everempire.royal.time", function()
 	// [ TIME REPORTING ]
 	// DeltaClock
 	
-	var time = this;
+	var time = {
+			
+	};
 	
     // Constructor
-    this.SystemClock = function() {};
+	time.SystemClock = function() {};
     
     // Definition
-    this.SystemClock.prototype = 
+	time.SystemClock.prototype = 
     {
     	getTime: function() 
     	{
@@ -35,13 +35,13 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.ManualClock = function()
+	time.ManualClock = function()
     {
     	this.time = 0;
     };
     
     // Definition
-    this.ManualClock.prototype = 
+    time.ManualClock.prototype = 
     {
     	getTime: function() 
     	{
@@ -55,7 +55,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.PlusClock = function( parentClock )
+    time.PlusClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -63,7 +63,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Definition
-    this.PlusClock.prototype = {
+    time.PlusClock.prototype = {
     	
     	setPlusTime: function( plusTime )
     	{
@@ -83,7 +83,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.StopClock = function( parentClock )
+    time.StopClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -93,7 +93,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Definition
-    this.StopClock.prototype = {
+    time.StopClock.prototype = {
     	
     	start: function() 
     	{
@@ -168,7 +168,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.ResetClock = function( parentClock ) 
+    time.ResetClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -176,7 +176,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Definition
-    this.ResetClock.prototype = 
+    time.ResetClock.prototype = 
     {
     	reset: function()
     	{
@@ -194,7 +194,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.DeltaClock = function( parentClock ) 
+    time.DeltaClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -203,7 +203,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Definition
-    this.DeltaClock.prototype = 
+    time.DeltaClock.prototype = 
     {
     	lap: function()
     	{
@@ -235,7 +235,7 @@ namespace( "com.everempire.royal.time", function()
     
     
     // Constructor
-    this.SpeedClock = function( parentClock ) 
+    time.SpeedClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -245,7 +245,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Definition
-    this.SpeedClock.prototype = 
+    time.SpeedClock.prototype = 
     {
     	getSpeed: function()
     	{
@@ -269,7 +269,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Constructor
-    this.MotionClock = function( parentClock )
+    time.MotionClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -282,7 +282,7 @@ namespace( "com.everempire.royal.time", function()
     	this.filter = math.filters.linear;
     };
     
-    this.MotionClock.prototype = 
+    time.MotionClock.prototype = 
     {
     	setFilter: function( filter )
     	{
@@ -347,7 +347,7 @@ namespace( "com.everempire.royal.time", function()
     /////////////////////////////////////////////////
     
     // Build a clock with all features
-    this.buildFullClock = function()
+    time.buildFullClock = function()
     {
     	var clock = this.buildClock( 
     		"SystemClock", 
@@ -367,7 +367,7 @@ namespace( "com.everempire.royal.time", function()
     };
     
     // Pass in clock types in order you want them built
-    this.buildClock = function() 
+    time.buildClock = function() 
     {	
     	var clocks = [];
     	
@@ -408,4 +408,6 @@ namespace( "com.everempire.royal.time", function()
     	
     	return finalClock;
     };
+    
+    return time;
 });

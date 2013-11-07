@@ -1,20 +1,26 @@
-namespace( "com.everempire.royal.math", function() 
-{
-	this.filters = {};
+define( function() {
 	
-	this.filters.linear = function( theta )
+	var math = 
 	{
-		return theta;
+		filters: 
+		{
+		
+			linear: function( theta )
+			{
+				return theta;
+			},
+			
+			easeInCubic: function( theta )
+			{
+				return Math.pow( theta - 1, 3 ) + 1;
+			},
+			
+			easeOutCubic: function( theta )
+			{
+				return Math.pow( theta , 3 );
+			}
+		}
 	};
 	
-	this.filters.easeInCubic = function( theta )
-	{
-		return Math.pow( theta - 1, 3 ) + 1;
-	};
-	
-	this.filters.easeOutCubic = function( theta )
-	{
-		return Math.pow( theta , 3 );
-	};
-});
-
+	return math;
+} );
