@@ -1,5 +1,5 @@
-namespace( "com.everempire.hime.area", function() {
-	
+define( function() 
+{
 	var area = this;
 	
 	area.buildArea = function( name ) {
@@ -62,4 +62,6 @@ namespace( "com.everempire.hime.area", function() {
 		
 		return areas;
 	};
+	
+	return area;
 });

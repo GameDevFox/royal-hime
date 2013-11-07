@@ -1,17 +1,21 @@
-namespace( "com.everempire.hime.actor", function() {
+define( function() 
+{
+	var actor = {};
 	
-	this.Actor = function( name ) 
+	actor.Actor = function( name ) 
 	{
 		this.name = name;
 		this.energy = 100;
 		this.activity = null;
 	};
 	
-	this.Actor.prototype =
+	actor.Actor.prototype =
 	{
 		isActive: function()
 		{
 			return this.activity != null;
 		}
 	};
+	
+	return actor;
 });

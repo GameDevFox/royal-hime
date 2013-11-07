@@ -10,7 +10,10 @@ requirejs.config({
 	}
 });
 
-requirejs([ "angular", "jquery", "royal/namespace", "royal/math", "royal/time", "hime/activity" ], function( angular, $, namespace, math, time, activity ) 
+requirejs([ "angular", "jquery", "royal/namespace", "royal/math", "royal/time", "hime/activity",
+            "hime/module/hime-module", "hime/module/time-module", "hime/module/area-module", "hime/module/actor-module" ], 
+		function( angular, $, namespace, math, time, activity,
+				himeModule, timeModule, areaModule, actorModule ) 
 {		
 	//window.hime = getPath("com.everempire.hime");
 	//window.area = getPath("com.everempire.hime.area");
@@ -31,14 +34,14 @@ requirejs([ "angular", "jquery", "royal/namespace", "royal/math", "royal/time", 
 	
 	window.gameClock = gameClock;
 	
-	//Bootstrap angular js
-	$(document).ready( function() { 
-		angular.bootstrap( $("body"), ["Hime", "Time", "Area", "Actor"] );
-		window.bodyScope = getScope( "body" );
-	});
-	
 	window.getScope = function( selector )
 	{
 		return angular.element($( selector )).scope();
 	};
+	
+	//Bootstrap angular js
+	$(document).ready( function() { 
+		angular.bootstrap( $("body"), [ himeModule, timeModule, areaModule, actorModule] );
+		window.bodyScope = window.getScope( "body" );
+	});
 });
