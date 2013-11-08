@@ -4,10 +4,7 @@ define( ["hime/actor"], function( actor )
 	{	
 		$controllerProvider.register( "ActorControl", function( $scope )
 		{
-			$scope.actors = {
-				"james": new actor.Actor( "James" ),
-				"hime": new actor.Actor( "Hime" )
-			};
+			
 		});
 	};
 	
