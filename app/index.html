@@ -51,6 +51,10 @@
 						<div class="energy-meter" style="width: {{ ( selectedActor.energy / selectedActor.maxEnergy ) * 100 }}%;"></div>
 					</div>
 					
+					<div>
+						Location: {{ areas[selectedActor.parentAreaId].name }}
+					</div>
+					
 				</fieldset>
 				
 				<fieldset  style="width: 45%; position: absolute; right: 0px; top: 0px;">
@@ -95,8 +99,6 @@
 					</div>
 					
 					<div>
-						<h3>Currently in: {{ areas[selectedActor.parentAreaId].name }}</h3>
-						
 						<div ng:show="selectedActor.activityId == null">
 							<h3>Exits:</h3>
 							<ul class="paths">
