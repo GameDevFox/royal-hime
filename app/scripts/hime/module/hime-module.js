@@ -1,10 +1,10 @@
 ( function() 
 {
-	define( [ "hime/actor"], function( actor )
+	define( [ "hime/actor", "hime/area" ], function( actor, area )
 	{
 		var HimeModule = function( $controllerProvider, $filterProvider ) 
 		{	
-			$controllerProvider.register( "HimeControl", function( $scope )
+			$controllerProvider.register( "HimeControl", function( $scope, $http, $attrs )
 			{
 				var james = new actor.Actor( "James", 120 );
 				var hime = new actor.Actor( "Hime", 80 );
@@ -31,6 +31,20 @@
 					var activityFrame = window.activityService.getNextCompletedActivity();
 					$scope.gameClock.MotionClock.move( activityFrame.endTime - window.activityService.time, 1500 );
 				};
+				
+				// Load Data
+				$scope.areas = null;
+				$scope.currentArea = null;
+				$http.get( $attrs.areaMap ).success( function( data ) 
+				{
+					$scope.areas = area.loadAreas( data );
+					
+					for( var i in $scope.actors )
+					{
+						var actor = $scope.actors[i];
+						actor.parentAreaId = "mainHall";
+					}
+				});
 			});
 			
 			$filterProvider.register( "capitalize", function() 

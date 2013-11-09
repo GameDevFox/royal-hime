@@ -1,22 +1,12 @@
-define( [ "hime/area", "royal/math" ], function( area, math )
+define( [ "hime/area", "royal/math", "royal/utils" ], function( area, math, utils )
 {
 	var AreaModule = function( $controllerProvider ) 
-	{	
-		$controllerProvider.register( "AreaControl", function( $scope, $http, $attrs )
+	{
+		$controllerProvider.register( "AreaControl", function( $scope )
 		{
 			$scope.throttle = true;
 			
-			// Load Data
-			$http.get( $attrs.areaMap ).success( function( data ) {
-				$scope.areas = area.loadAreas( data );
-				$scope.currentArea = $scope.areas["mainHall"];
-			});
-			
 			window.game = $scope;
-			
-			$scope.areas = null;
-			$scope.currentArea = null;
-			$scope.currentTime = 0; // Seconds
 			
 			$scope.speed = 1.2; // Meters per second
 			$scope.energyRate = 1.0; // Energy depletion rate
@@ -42,8 +32,10 @@ define( [ "hime/area", "royal/math" ], function( area, math )
 			
 			$scope.move = function()
 			{
+				var selectedActor = $scope.selectedActor;
+				
 				// Get and Validate chosen path
-				var path = $scope.currentArea.paths[$scope.areaName];
+				var path = $scope.areas[selectedActor.parentAreaId].paths[$scope.areaName];
 				if( path == null )
 				{
 					console.log( "There is no path for area code: " + $scope.areaName );
@@ -53,7 +45,6 @@ define( [ "hime/area", "royal/math" ], function( area, math )
 				
 				// Calculate required time to move
 				var timeElapsed = path.distance / $scope.speed;
-				$scope.currentTime += timeElapsed;
 				
 				if( $scope.throttle )
 				{
@@ -68,7 +59,9 @@ define( [ "hime/area", "royal/math" ], function( area, math )
 				// Add Move Activity
 				selectedActor.activityId = window.activityService.addActivity( function()
 				{
-					$scope.currentArea = path.area;
+					var areaId = utils.firstIndexOf( $scope.areas, path.area )
+					selectedActor.parentAreaId = areaId;
+					
 					selectedActor.activityId = null;
 				}, timeElapsed * 1000 );
 				

@@ -11,27 +11,7 @@
 	</head>
 	<body>
 		
-		<div ng:controller="HimeControl">
-		
-			<fieldset>
-				<legend>Actor</legend>
-				
-				<div>
-					Name:
-					<select ng:model="selectedActor" ng:options="actor.name for (actorKey, actor) in actors">
-					</select>
-				</div>
-				
-				<div>
-					Energy: {{ selectedActor.energy | number:1 }} / {{ selectedActor.maxEnergy }}
-					<div class="energy-meter" style="width: {{ ( selectedActor.energy / selectedActor.maxEnergy ) * 100 }}%;"></div>
-				</div>
-				
-			</fieldset>
-			
-			
-			
-			<div>&nbsp;</div>
+		<div ng:controller="HimeControl" data-area-map="/data/areas.json">
 			
 			<fieldset>
 				<legend>Time</legend>
@@ -40,53 +20,71 @@
 			
 				<div ng:controller="ClockControl" clock="gameClock">
 					<div>
-						<div class="time-meter" style="width: {{ time / ( 1000 * 60 ) }}px;"></div>
-						<div>{{ time | time }}</div>
-					</div>
-					<div>
 						<button ng:click="gameClock.StopClock.stop()" ng:show="gameClock.StopClock.isRunning()">Pause</button>
 						<button ng:click="gameClock.StopClock.start()" ng:hide="gameClock.StopClock.isRunning()">Resume</button>
 						
 						<button ng:click="stopFrames()">Stop Frames</button>
 						<button ng:click="startFrames()">Start Frames</button>
 					</div>
+					<div>
+						<div class="time-meter" style="width: {{ time / ( 1000 * 60 ) }}px;"></div>
+						<div>{{ time | time }}</div>
+					</div>
 				</div>
 			</fieldset>
 			
 			<div>&nbsp;</div>
 			
-			<fieldset>
-				<legend>Activity</legend>
-				
-				Activity Id: {{ selectedActor.activityId }}
-				
-				<div>
-					Current Activity: 
-					<span ng:show="selectedActor.activity">
-						{{ selectedActor.activity }} 
-					</span>
-					<span ng:hide="selectedActor.activity">
-						None 
-					</span>
-				</div>
-				
-				<div>
-					<div>Progress: {{ getActivityProgress() * 100 | number:0 }}</div>
-					<div class="progress-meter">
-						<div class="bar" style="width: {{ getActivityProgress() * 100 }}%">&nbsp;</div>
+			<div style="position: relative; height: 120px;">
+			
+				<fieldset style="width: 45%; position: absolute; top: 0px;">
+					<legend>Actor</legend>
+					
+					<div>
+						Name:
+						<select ng:model="selectedActor" ng:options="actor.name for (actorKey, actor) in actors">
+						</select>
 					</div>
-					<div class="boost-button-wrapper">
-						<button class="boost-button" ng:click="boost()">Boost</button>
+					
+					<div>
+						Energy: {{ selectedActor.energy | number:1 }} / {{ selectedActor.maxEnergy }}
+						<div class="energy-meter" style="width: {{ ( selectedActor.energy / selectedActor.maxEnergy ) * 100 }}%;"></div>
 					</div>
-				</div>
-			</fieldset>
+					
+				</fieldset>
+				
+				<fieldset  style="width: 45%; position: absolute; right: 0px; top: 0px;">
+					<legend>Activity</legend>
+					
+					<div>
+						Current Activity: 
+						<span ng:show="selectedActor.activity">
+							{{ selectedActor.activity }} 
+						</span>
+						<span ng:hide="selectedActor.activity">
+							None 
+						</span>
+					</div>
+					
+					<div>
+						<div>Progress: {{ getActivityProgress() * 100 | number:0 }}</div>
+						<div class="progress-meter">
+							<div class="bar" style="width: {{ getActivityProgress() * 100 }}%">&nbsp;</div>
+						</div>
+						<div class="boost-button-wrapper">
+							<button class="boost-button" ng:click="boost()">Boost</button>
+						</div>
+					</div>
+				</fieldset>
+			
+			</div>
 			
 			<div>&nbsp;</div>
 			
 			<fieldset>
 				<legend>Navigation</legend>
 				
-				<div ng:controller="AreaControl" data-area-map="/data/areas.json">
+				<div ng:controller="AreaControl">
 					
 					<div>
 						<input type="checkbox" ng:model="running"/> Running
@@ -97,12 +95,12 @@
 					</div>
 					
 					<div>
-						<h3>Currently in: {{ currentArea.name }}</h3>
+						<h3>Currently in: {{ areas[selectedActor.parentAreaId].name }}</h3>
 						
-						<div ng:show="activityId == null">
+						<div ng:show="selectedActor.activityId == null">
 							<h3>Exits:</h3>
 							<ul class="paths">
-								<li ng:repeat="(areaName, path) in currentArea.paths">
+								<li ng:repeat="(areaName, path) in areas[selectedActor.parentAreaId].paths">
 									<a ng:click="move()" ng:mouseover="setAreaName( areaName )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
 								</li>
 							</ul>

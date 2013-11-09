@@ -1,39 +1,47 @@
-function object( obj ) 
+define( function() 
 {
-	function F() {};
-	F.prototype = obj;
-	return new F();
-}
-
-function assert( condition, message )
-{
-	if( !condition )
-	{
-		throw message || "Assertion failed";
-	}
-}
-
-function firstIndexOf( parent, child )
-{
-	for( i in parent )
-	{
-		if( child === parent[i] )
-		{
-			return i;
-		}
-	}
+	var utils = {};
 	
-	return null;
-}
-
-function logFunc( msg )
-{
-	return function() 
+	utils.object = function( obj ) 
 	{
-		console.log( msg );
+		function F() {};
+		F.prototype = obj;
+		return new F();
 	};
-}
 
+	utils.assert = function( condition, message )
+	{
+		if( !condition )
+		{
+			throw message || "Assertion failed";
+		}
+	};
+
+	utils.firstIndexOf = function( parent, child )
+	{
+		for( i in parent )
+		{
+			if( child === parent[i] )
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	};
+
+	utils.logFunc = function( msg )
+	{
+		return function() 
+		{
+			console.log( msg );
+		};
+	};
+	
+	return utils;
+});
+
+// TODO: [prince] Move this
 window.requestAnimFrame = (function(callback) 
 {
 	var frameFunction = 
