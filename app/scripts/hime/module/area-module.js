@@ -17,7 +17,6 @@ define( [ "hime/area", "royal/math" ], function( area, math )
 			$scope.areas = null;
 			$scope.currentArea = null;
 			$scope.currentTime = 0; // Seconds
-			$scope.energy = 100;
 			
 			$scope.speed = 1.2; // Meters per second
 			$scope.energyRate = 1.0; // Energy depletion rate
@@ -61,33 +60,20 @@ define( [ "hime/area", "royal/math" ], function( area, math )
 					$scope.gameClock.MotionClock.move( timeElapsed * 1000, 1500 );
 				}
 				
+				var selectedActor = $scope.selectedActor;
+				
 				// Deplete energy
-				$scope.energy -= $scope.energyRate * timeElapsed / 100;
+				selectedActor.energy -= $scope.energyRate * timeElapsed / 100;
 				
 				// Add Move Activity
-				$scope.activityId = window.activityService.addActivity( function()
+				selectedActor.activityId = window.activityService.addActivity( function()
 				{
 					$scope.currentArea = path.area;
-					$scope.activityId = null;
+					selectedActor.activityId = null;
 				}, timeElapsed * 1000 );
 				
 				// Clear pathNumber
 				$scope.pathNumber = null;
-			};
-			
-			$scope.getActivityProgress = function()
-			{
-				if( $scope.activityId == null )
-				{
-					return null;
-				}
-				
-				return window.activityService.getActivityProgress( $scope.activityId );
-			};
-			$scope.boost = function()
-			{
-				var activityFrame = window.activityService.getNextCompletedActivity();
-				$scope.gameClock.MotionClock.move( activityFrame.endTime - window.activityService.time, 1500 );
 			};
 		});
 		

@@ -6,15 +6,31 @@
 		{	
 			$controllerProvider.register( "HimeControl", function( $scope )
 			{
-				$scope.actors = {
-					"james": new actor.Actor( "James" ),
-					"hime": new actor.Actor( "Hime" )
+				var james = new actor.Actor( "James", 120 );
+				var hime = new actor.Actor( "Hime", 80 );
+				
+				$scope.actors = [
+					james,
+					hime
+				];
+				
+				$scope.selectedActor = james;
+				
+				$scope.getActivityProgress = function()
+				{
+					if( $scope.selectedActor.activityId == null )
+					{
+						return null;
+					}
+					
+					return window.activityService.getActivityProgress( $scope.selectedActor.activityId );
 				};
 				
-				$scope.actors.james.energy = 120;
-				$scope.actors.hime.energy = 80;
-				
-				$scope.selectedActor = $scope.actors.james;
+				$scope.boost = function()
+				{
+					var activityFrame = window.activityService.getNextCompletedActivity();
+					$scope.gameClock.MotionClock.move( activityFrame.endTime - window.activityService.time, 1500 );
+				};
 			});
 			
 			$filterProvider.register( "capitalize", function() 

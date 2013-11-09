@@ -24,8 +24,13 @@
 	background-color: red;
 }
 
-textarea.generatedJson
+textarea.generated-json
 {
 	width: 600px;
 	height: 200px;
+}
+
+.boost-button-wrapper
+{
+	/* TODO: [prince] float to left of progress meter */
 }

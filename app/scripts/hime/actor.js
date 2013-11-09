@@ -2,10 +2,17 @@ define( function()
 {
 	var actor = {};
 	
-	actor.Actor = function( name ) 
+	actor.Actor = function( name, maxEnergy ) 
 	{
 		this.name = name;
-		this.energy = 100;
+		
+		if( maxEnergy == null )
+		{
+			maxEnergy = 100;
+		}
+		this.maxEnergy = maxEnergy;
+		this.energy = maxEnergy;
+		
 		this.activity = null;
 	};
 	
