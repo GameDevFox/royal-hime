@@ -1,39 +1,31 @@
-define( function() 
+namespace = function( namespacePathStr, func )
 {
-	var namespace = {};
+	var namespacePath = getPath( namespacePathStr );
+	func.call( namespacePath );
+};
 	
-	// Namespace Functions
-	namespace.namespace = function( namespacePathStr, func )
-	{
-		var namespacePath = getPath( namespacePathStr );
-		func.call( namespacePath );
-	};
+getPath = function( pathStr ) 
+{
+	var path = window;
 	
-	namespace.getPath = function( pathStr ) 
+	var pathParts = pathStr.split(".");
+	
+	for(var index in pathParts)
 	{
-		var path = window;
+		var part = pathParts[index];
 		
-		var pathParts = pathStr.split(".");
-		
-		for(var index in pathParts)
+		if(path[part] == undefined) 
 		{
-			var part = pathParts[index];
-			
-			if(path[part] == undefined) 
-			{
-				path[part] = {};
-			}
-			
-			path = path[part];
+			path[part] = {};
 		}
 		
-		if( path == window ) 
-		{
-			path = undefined;
-		}
-		
-		return path;
-	};
+		path = path[part];
+	}
 	
-	return namespace;
-});
+	if( path == window ) 
+	{
+		path = undefined;
+	}
+	
+	return path;
+};

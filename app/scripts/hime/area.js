@@ -1,8 +1,6 @@
-define( function() 
+namespace( "com.everempire.hime.area", function() 
 {
-	var area = this;
-	
-	area.buildArea = function( name ) {
+	this.buildArea = function( name ) {
 		
 		var area = {
 			name: name,
@@ -12,7 +10,7 @@ define( function()
 		return area;
 	};
 	
-	area.buildPath = function( area, distance )
+	this.buildPath = function( area, distance )
 	{
 		var path = {
 			area: area,
@@ -22,7 +20,7 @@ define( function()
 		return path;
 	};
 	
-	area.loadAreas = function( areaDefObj )
+	this.loadAreas = function( areaDefObj )
 	{
 		var areas = {};
 		
@@ -62,6 +60,4 @@ define( function()
 		
 		return areas;
 	};
-	
-	return area;
 });

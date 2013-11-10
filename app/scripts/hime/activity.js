@@ -1,8 +1,6 @@
-define( function() {
+namespace( "com.everempire.hime.activity", function() {
 	
-	var activity = {};
-	
-	activity.buildActivityService = function()
+	this.buildActivityService = function()
 	{
 		var activityService = 
 		{
@@ -158,6 +156,4 @@ define( function() {
 		
 		return activityService;
 	};
-	
-	return activity;
 });

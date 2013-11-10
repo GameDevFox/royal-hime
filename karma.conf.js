@@ -9,14 +9,16 @@ module.exports = function(config) {
 
 
     // frameworks to use
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine' ],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'app/scripts/main.js',
-      {pattern: 'app/scripts/**/*.js', included: false},
-      {pattern: 'test/**/*Test.js', included: false}
+//      'app/scripts/main.js',
+//      {pattern: 'app/scripts/**/*.js', included: false},
+//      {pattern: 'test/**/*Test.js', included: false}
+		{pattern: 'app/scripts/hime/area.js', included: false},
+		'test/**/*Test.js',
     ],
 
 

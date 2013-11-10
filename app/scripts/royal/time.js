@@ -1,5 +1,7 @@
-define( [ "royal/math" ], function( math ) 
+namespace( "com.everempire.royal.time", function() 
 {
+	var math = getPath( "com.everempire.royal.math" );
+	
 	// CLOCKS: 
 	// Clocks should be built in the following order in order for all their features to work
 	// properly.
@@ -18,15 +20,11 @@ define( [ "royal/math" ], function( math )
 	// [ TIME REPORTING ]
 	// DeltaClock
 	
-	var time = {
-			
-	};
-	
     // Constructor
-	time.SystemClock = function() {};
+	this.SystemClock = function() {};
     
     // Definition
-	time.SystemClock.prototype = 
+	this.SystemClock.prototype = 
     {
     	getTime: function() 
     	{
@@ -35,13 +33,13 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-	time.ManualClock = function()
+	this.ManualClock = function()
     {
     	this.time = 0;
     };
     
     // Definition
-    time.ManualClock.prototype = 
+    this.ManualClock.prototype = 
     {
     	getTime: function() 
     	{
@@ -55,7 +53,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-    time.PlusClock = function( parentClock )
+    this.PlusClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -63,7 +61,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Definition
-    time.PlusClock.prototype = {
+    this.PlusClock.prototype = {
     	
     	setPlusTime: function( plusTime )
     	{
@@ -83,7 +81,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-    time.StopClock = function( parentClock )
+    this.StopClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -93,7 +91,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Definition
-    time.StopClock.prototype = {
+    this.StopClock.prototype = {
     	
     	start: function() 
     	{
@@ -168,7 +166,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-    time.ResetClock = function( parentClock ) 
+    this.ResetClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -176,7 +174,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Definition
-    time.ResetClock.prototype = 
+    this.ResetClock.prototype = 
     {
     	reset: function()
     	{
@@ -194,7 +192,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-    time.DeltaClock = function( parentClock ) 
+    this.DeltaClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -203,7 +201,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Definition
-    time.DeltaClock.prototype = 
+    this.DeltaClock.prototype = 
     {
     	lap: function()
     	{
@@ -235,7 +233,7 @@ define( [ "royal/math" ], function( math )
     
     
     // Constructor
-    time.SpeedClock = function( parentClock ) 
+    this.SpeedClock = function( parentClock ) 
     {
     	this.parentClock = parentClock;
     	
@@ -245,7 +243,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Definition
-    time.SpeedClock.prototype = 
+    this.SpeedClock.prototype = 
     {
     	getSpeed: function()
     	{
@@ -269,7 +267,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Constructor
-    time.MotionClock = function( parentClock )
+    this.MotionClock = function( parentClock )
     {
     	this.parentClock = parentClock;
     	
@@ -282,7 +280,7 @@ define( [ "royal/math" ], function( math )
     	this.filter = math.filters.linear;
     };
     
-    time.MotionClock.prototype = 
+    this.MotionClock.prototype = 
     {
     	setFilter: function( filter )
     	{
@@ -347,7 +345,7 @@ define( [ "royal/math" ], function( math )
     /////////////////////////////////////////////////
     
     // Build a clock with all features
-    time.buildFullClock = function()
+    this.buildFullClock = function()
     {
     	var clock = this.buildClock( 
     		"SystemClock", 
@@ -367,7 +365,7 @@ define( [ "royal/math" ], function( math )
     };
     
     // Pass in clock types in order you want them built
-    time.buildClock = function() 
+    this.buildClock = function() 
     {	
     	var clocks = [];
     	
@@ -408,6 +406,4 @@ define( [ "royal/math" ], function( math )
     	
     	return finalClock;
     };
-    
-    return time;
 });

@@ -1,8 +1,6 @@
-define( function() 
+namespace( "com.everempire.hime.actor", function() 
 {
-	var actor = {};
-	
-	actor.Actor = function( name, maxEnergy ) 
+	this.Actor = function( name, maxEnergy ) 
 	{
 		this.name = name;
 		
@@ -16,13 +14,11 @@ define( function()
 		this.activity = null;
 	};
 	
-	actor.Actor.prototype =
+	this.Actor.prototype =
 	{
 		isActive: function()
 		{
 			return this.activity != null;
 		}
 	};
-	
-	return actor;
 });

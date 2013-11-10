@@ -1,12 +1,9 @@
-define( ["hime/actor"], function( actor )
+var actor = getPath( "com.everempire.hime.actor" );
+
+angular.module( "Actor", [], function( $controllerProvider ) 
 {
-	var ActorModule = function( $controllerProvider ) 
-	{	
-		$controllerProvider.register( "ActorControl", function( $scope )
-		{
-			
-		});
-	};
-	
-	return ActorModule;
+	$controllerProvider.register( "ActorControl", function( $scope )
+	{
+		
+	});
 });
