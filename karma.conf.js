@@ -18,7 +18,7 @@ module.exports = function(config) {
       'app/scripts/royal/namespace.js',
       'app/scripts/royal/*.js',
       'app/scripts/hime/**/*.js',
-      'test/**/*Test.js',
+      'test/**/*Spec.js',
     ],
 
 
