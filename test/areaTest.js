@@ -1,11 +1,10 @@
-requirejs( ["base/app/scripts/hime/area"], function( area ) 
+describe( "A room", function() 
 {
-	describe( "A room", function() 
+	var area = getPath( "com.everempire.hime.area" );
+	
+	it( "can be built", function() 
 	{
-		it( "can be built", function() 
-		{
-			var area = area.buildArea( "My Room" );
-			
-		});
+		var myRoom = area.buildArea( "My Room" );
+		expect( myRoom.name ).toBe( "My Room" );
 	});
 });

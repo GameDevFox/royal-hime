@@ -59,7 +59,7 @@ angular.module( "Area", [], function( $controllerProvider )
 			// Add Move Activity
 			selectedActor.activityId = window.activityService.addActivity( function()
 			{
-				var areaId = utils.firstIndexOf( $scope.areas, path.area )
+				var areaId = firstIndexOf( $scope.areas, path.area )
 				selectedActor.parentAreaId = areaId;
 				
 				selectedActor.activityId = null;

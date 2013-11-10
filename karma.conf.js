@@ -14,17 +14,17 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-//      'app/scripts/main.js',
-//      {pattern: 'app/scripts/**/*.js', included: false},
-//      {pattern: 'test/**/*Test.js', included: false}
-		{pattern: 'app/scripts/hime/area.js', included: false},
-		'test/**/*Test.js',
+      'app/scripts/*.js',
+      'app/scripts/royal/namespace.js',
+      'app/scripts/royal/*.js',
+      'app/scripts/hime/**/*.js',
+      'test/**/*Test.js',
     ],
 
 
     // list of files to exclude
     exclude: [
-      
+      'app/scripts/main.js'
     ],
 
 
