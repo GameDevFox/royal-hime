@@ -1,4 +1,4 @@
-namespace( "com.everempire.hime.activity", function() {
+namespace.namespace( "com.everempire.hime.activity", function() {
 	
 	this.buildActivityService = function()
 	{

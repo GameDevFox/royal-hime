@@ -1,4 +1,4 @@
-namespace( "com.everempire.hime.area", function() 
+namespace.namespace( "com.everempire.hime.area", function() 
 {
 	this.buildArea = function( name ) {
 		
