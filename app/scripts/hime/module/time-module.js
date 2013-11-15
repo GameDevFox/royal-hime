@@ -1,5 +1,5 @@
-var time = getPath("com.everempire.time");
-var area = getPath("com.everempire.hime.area");
+var time = namespace.getPath("com.everempire.time");
+var area = namespace.getPath("com.everempire.hime.area");
 
 angular.module( "Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider )
 {

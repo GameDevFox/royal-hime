@@ -1,4 +1,4 @@
-var math = getPath("com.everempire.math");
+var math = namespace.getPath("com.everempire.math");
 
 angular.module( "Area", [], function( $controllerProvider ) 
 {
