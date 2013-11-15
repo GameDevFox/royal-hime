@@ -1,6 +1,6 @@
 var activity = namespace.getPath( "com.everempire.hime.activity" );
 
-describe( "Activity Service", function() 
+describe( "activityService", function() 
 {
 	var activityService;
 	
@@ -10,7 +10,7 @@ describe( "Activity Service", function()
 		activityService.updateTime( 1000 );
 	});
 	
-	describe( "- addActivity()", function() 
+	describe( "addActivity()", function() 
 	{
 		it( "throws an exception with 1 argument", function()
 		{

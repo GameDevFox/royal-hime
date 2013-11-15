@@ -1,4 +1,4 @@
-describe( "A room", function() 
+describe( "area", function() 
 {
 	var area = namespace.getPath( "com.everempire.hime.area" );
 	

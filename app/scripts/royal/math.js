@@ -1,4 +1,4 @@
-namespace( "com.everempire.royal.math", function() 
+namespace.namespace( "com.everempire.royal.math", function() 
 {
 	this.filters = {
 		

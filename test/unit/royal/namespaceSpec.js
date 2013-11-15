@@ -1,6 +1,6 @@
 describe( "namespace", function() 
 {
-	describe( "requirePath() method", function()
+	describe( "requirePath()", function()
 	{
 		afterEach( function() 
 		{
@@ -27,7 +27,7 @@ describe( "namespace", function()
 		});
 	});
 	
-	describe( "getPath() method", function()
+	describe( "getPath()", function()
 	{
 		afterEach( function() 
 		{
@@ -53,7 +53,7 @@ describe( "namespace", function()
 		});
 	});
 	
-	describe( "namespace() method", function()
+	describe( "namespace()", function()
 	{
 		afterEach( function() 
 		{
