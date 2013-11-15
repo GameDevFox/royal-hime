@@ -11,9 +11,9 @@
 //* removeParent()
 	// Calls removeChild( this ) on parent object
 
-namespace( "com.everempire.royal.parent", function() 
+namespace.namespace( "com.everempire.royal.parent", function() 
 {
-	var advanced = getPath( "com.everempire.royal.advanced" );
+	var advanced = namespace.getPath( "com.everempire.royal.advanced" );
 	
 	var childIdCounter = 0;
 	

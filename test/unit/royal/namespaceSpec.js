@@ -2,13 +2,27 @@ describe( "namespace", function()
 {
 	describe( "requirePath()", function()
 	{
+		beforeEach( function() 
+		{
+			// Build test path
+			window["this"] = {};
+			window["this"]["path"] = {};
+			window["this"]["path"]["exists"] = {};
+		});
+		
 		afterEach( function() 
 		{
 			// Clean up created paths
 			delete window["this"];
 		});
 		
-		it( "gets or creates a path based upon a namespace string", 
+		it( "gets a path based upon a namespace string", function() 
+		{
+			var path = namespace.requirePath( "this.path.doesnt.exist.yet.but.it.will" )
+			expect( path ).toEqual( {} );
+		});
+		
+		it( "creates a path if it doesn't exist", 
 		function() 
 		{
 			var node = namespace.requirePath( "this.path.doesnt.exist.yet.but.it.will" );

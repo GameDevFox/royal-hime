@@ -2,9 +2,24 @@ describe( "area", function()
 {
 	var area = namespace.getPath( "com.everempire.hime.area" );
 	
-	it( "can be built", function() 
+	describe( "buildArea()", function() 
 	{
-		var myRoom = area.buildArea( "My Room" );
-		expect( myRoom.name ).toBe( "My Room" );
+		var roomName = "My Room";
+		var myRoom;
+		
+		beforeEach( function() 
+		{
+			myRoom = area.buildArea( "My Room" );
+		});
+		
+		it( "builds an area", function() 
+		{
+			expect( myRoom ).not.toEqual( undefined );
+		});
+		
+		it( "assigns it the given name", function() 
+		{
+			expect( myRoom.name ).toEqual( roomName );
+		});
 	});
 });

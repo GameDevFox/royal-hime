@@ -11,8 +11,10 @@
 		this.enhance = function( object )
 		{
 			// Assumption: `object` is a simple object
-			// TODO: [prince] Restore this assert, or replace with actual exception
-			// assert( type.isObject( object ) && this.isSimple( object ), "'object' must be a simple object" );
+			if( !type.isObject( object ) || !this.isSimple( object ) )
+			{
+				throw "\"object\" must be a simple object"
+			}
 			
 			// `value` cannot be undefined since the object wadvancedTokenanced()` condition
 			if( type.isUndefined( object ) )
@@ -21,6 +23,8 @@
 			}
 			
 			object[ advancedToken ] = {};
+			
+			return object;
 		};
 		
 		this.getToken = function()
@@ -41,7 +45,7 @@
 		
 		this.getNode = function( object, nodeName )
 		{
-			if( this.isSimple() )
+			if( this.isSimple( object ) )
 			{
 				return null;
 			}
@@ -49,11 +53,11 @@
 			return object[advancedToken][nodeName];
 		};
 		
-		this.requireNode = function( object, nodeName, newNode )
+		this.requireNode = function( object, nodeName, defaultNode )
 		{
-			if( this.isSimple() )
+			if( this.isSimple( object ) )
 			{
-				return null;
+				this.enhance( object );
 			}
 			
 			var node = this.getNode( object, nodeName );
