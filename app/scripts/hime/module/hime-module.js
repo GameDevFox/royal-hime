@@ -1,11 +1,12 @@
-var actor = namespace.getPath( "com.everempire.hime.actor" );
-
 angular.module( "Hime", [], function( $controllerProvider, $filterProvider ) 
 {
+	var actor = namespace.getPath( "com.everempire.hime.actor" );
+	var area = namespace.getPath( "com.everempire.hime.area" );
+	
 	$controllerProvider.register( "HimeControl", function( $scope, $http, $attrs )
 	{
-		var james = new actor.Actor( "James", 120 );
-		var hime = new actor.Actor( "Hime", 80 );
+		var james = actor.buildActor( "James", 120 );
+		var hime = actor.buildActor( "Hime", 80 );
 		
 		$scope.actors = [
 			james,

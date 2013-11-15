@@ -1,24 +1,25 @@
-namespace( "com.everempire.hime.actor", function() 
+namespace.namespace( "com.everempire.hime.actor", function() 
 {
-	this.Actor = function( name, maxEnergy ) 
+	this.buildActor = function( name, maxEnergy )
 	{
-		this.name = name;
+		var actor = {};
+		
+		actor.name = name;
 		
 		if( maxEnergy == null )
 		{
 			maxEnergy = 100;
 		}
-		this.maxEnergy = maxEnergy;
-		this.energy = maxEnergy;
+		actor.maxEnergy = maxEnergy;
+		actor.energy = maxEnergy;
 		
-		this.activity = null;
+		actor.activity = null;
+		
+		return actor;
 	};
 	
-	this.Actor.prototype =
+	this.isActive = function( actor )
 	{
-		isActive: function()
-		{
-			return this.activity != null;
-		}
+		return actor.activity != null;
 	};
 });

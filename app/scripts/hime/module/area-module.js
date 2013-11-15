@@ -1,7 +1,9 @@
-var math = namespace.getPath("com.everempire.math");
-
 angular.module( "Area", [], function( $controllerProvider ) 
 {
+	var math = namespace.getPath("com.everempire.royal.math");
+
+	var area = namespace.getPath("com.everempire.hime.area");
+	
 	$controllerProvider.register( "AreaControl", function( $scope )
 	{
 		$scope.throttle = true;

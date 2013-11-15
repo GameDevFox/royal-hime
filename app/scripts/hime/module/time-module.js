@@ -6,7 +6,7 @@ angular.module( "Time", [], function( $provide, $controllerProvider, $compilePro
 	$controllerProvider.register( "Clock", function( $scope, $attrs )
 	{
 		// NEED MORE VALIDATION HERE
-		$scope.$parent[$attrs.name] = getPath( $attrs.path );
+		$scope.$parent[$attrs.name] = namespace.getPath( $attrs.path );
 	});
 	
 	$controllerProvider.register( "ClockControl", function( $scope, $attrs, $frameProvider )

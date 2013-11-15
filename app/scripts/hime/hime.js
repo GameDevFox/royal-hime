@@ -1,4 +1,4 @@
-namespace( "com.everempire.hime", function() {
+namespace.namespace( "com.everempire.hime", function() {
 	
 	var hime = this;
 	
