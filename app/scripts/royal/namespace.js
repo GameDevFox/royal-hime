@@ -1,32 +1,61 @@
 (function() 
 {
+	var nodeToken = "$node";
+	var nodeFuncToken = "$nodeFunc";
+	
+	var nodeTree = {};
+	
 	var namespace = {};
 	
 	// Executes function on given path
-	namespace.namespace = function( namespacePathStr, func )
+	namespace.namespace = function( namespacePath, func )
 	{
-		var namespacePath = this.requireNode( namespacePathStr );
-		func.call( namespacePath );
+		var namespaceNode = this.requireNode( namespacePath, nodeTree );
+		namespaceNode[nodeFuncToken] = func;
 	};
 	
 	// Returns the object at the end of the path. Returns "undefined" if
 	// the path doesn't exist
-	namespace.getNode = function( path )
+	namespace.getNode = function( path, rootNode )
 	{		
-		var path = this.parsePath( path );
+		path = this.parsePath( path );
+		rootNode = this.selectRootNode( rootNode );
 		
 		// Travel the path, returning undefined if a node doens't exist
-		var node = this.travelPath( window, path, false );
+		var pathNode = this.travelPath( rootNode, path, false );
+		
+		if( pathNode == undefined )
+		{
+			return undefined
+		}
+		
+		// Check for node
+		var node = pathNode[nodeToken];
+
+		// If there is no node, but there is a nodeFunction, execute it to populate node
+		if( node == undefined )
+		{
+			var nodeFunc = pathNode[nodeFuncToken];
+			if( nodeFunc != undefined )
+			{
+				pathNode[nodeToken] = {};
+				
+				var node = pathNode[nodeToken];
+				nodeFunc.call( node );
+			}
+		}
+		
 		return node;
 	};
 	
 	// Same as "getPath()" but creates nodes that don't exist
-	namespace.requireNode = function( path ) 
+	namespace.requireNode = function( path, rootNode ) 
 	{
-		var path = this.parsePath( path );
+		path = this.parsePath( path );
+		rootNode = this.selectRootNode( rootNode );
 		
 		// Travel the path, creating nodes that don't exist
-		var node = this.travelPath( window, path, true );
+		var node = this.travelPath( rootNode, path, true );
 		return node;
 	};
 	
@@ -38,6 +67,16 @@
 		}
 		
 		return path;
+	};
+	
+	namespace.selectRootNode = function( rootNode )
+	{
+		if( rootNode == null )
+		{
+			rootNode = nodeTree;
+		}
+		
+		return rootNode;
 	};
 	
 	namespace.travelPath = function( root, path, force )

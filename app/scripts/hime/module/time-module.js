@@ -3,10 +3,19 @@ var area = namespace.getNode("com.everempire.hime.area");
 
 angular.module( "Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider )
 {
+	// TODO: Remove this
 	$controllerProvider.register( "Clock", function( $scope, $attrs )
 	{
+		// Build clock
+		var clock = time.buildFullClock();
+		//clock.SpeedClock.setSpeed( 1 );
+		//clock.PlusClock.setPlusTime( 1000000 );
+		//clock.DeltaClock.clear();
+		clock.MotionClock.setFilter( math.filters.easeInCubic );
+		
 		// NEED MORE VALIDATION HERE
-		$scope.$parent[$attrs.name] = namespace.getNode( $attrs.path );
+		$scope.$parent[$attrs.name] = clock;
+		//window.gameClock = gameClock;
 	});
 	
 	$controllerProvider.register( "ClockControl", function( $scope, $attrs, $frameProvider )
