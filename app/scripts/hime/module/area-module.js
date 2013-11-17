@@ -1,8 +1,8 @@
 angular.module( "Area", [], function( $controllerProvider ) 
 {
-	var math = namespace.getPath("com.everempire.royal.math");
+	var math = namespace.getNode("com.everempire.royal.math");
 
-	var area = namespace.getPath("com.everempire.hime.area");
+	var area = namespace.getNode("com.everempire.hime.area");
 	
 	$controllerProvider.register( "AreaControl", function( $scope )
 	{

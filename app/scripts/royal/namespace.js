@@ -5,13 +5,13 @@
 	// Executes function on given path
 	namespace.namespace = function( namespacePathStr, func )
 	{
-		var namespacePath = this.requirePath( namespacePathStr );
+		var namespacePath = this.requireNode( namespacePathStr );
 		func.call( namespacePath );
 	};
 	
 	// Returns the object at the end of the path. Returns "undefined" if
 	// the path doesn't exist
-	namespace.getPath = function( path )
+	namespace.getNode = function( path )
 	{		
 		var path = this.parsePath( path );
 		
@@ -21,7 +21,7 @@
 	};
 	
 	// Same as "getPath()" but creates nodes that don't exist
-	namespace.requirePath = function( path ) 
+	namespace.requireNode = function( path ) 
 	{
 		var path = this.parsePath( path );
 		

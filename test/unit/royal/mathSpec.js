@@ -1,6 +1,6 @@
 describe( "math", function() 
 {
-	var math = namespace.getPath( "com.everempire.royal.math" );
+	var math = namespace.getNode( "com.everempire.royal.math" );
 	
 	describe( "filters", function() 
 	{

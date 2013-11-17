@@ -13,7 +13,7 @@
 
 namespace.namespace( "com.everempire.royal.parent", function() 
 {
-	var advanced = namespace.getPath( "com.everempire.royal.advanced" );
+	var advanced = namespace.getNode( "com.everempire.royal.advanced" );
 	
 	var childIdCounter = 0;
 	

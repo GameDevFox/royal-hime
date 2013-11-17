@@ -1,6 +1,6 @@
 describe( "time", function()
 {
-	var time = namespace.getPath( "com.everempire.royal.time" );
+	var time = namespace.getNode( "com.everempire.royal.time" );
 	
 	describe( "ManualClock", function() 
 	{

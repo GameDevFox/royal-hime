@@ -1,6 +1,6 @@
 describe( "parent", function() 
 {
-	var parent = namespace.getPath( "com.everempire.royal.parent" );
+	var parent = namespace.getNode( "com.everempire.royal.parent" );
 	
 	describe( "addChild()", function() 
 	{

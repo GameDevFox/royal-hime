@@ -1,6 +1,6 @@
 describe( "type", function() 
 {
-	var type = namespace.getPath( "com.everempire.royal.type" );
+	var type = namespace.getNode( "com.everempire.royal.type" );
 	
 	describe( "isArray()", function() 
 	{

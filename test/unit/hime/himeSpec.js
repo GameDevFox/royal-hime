@@ -1,6 +1,6 @@
 describe( "hime", function() 
 {
-	var hime = namespace.getPath( "com.everempire.hime" );
+	var hime = namespace.getNode( "com.everempire.hime" );
 	
 	describe( "buildArm()", function() 
 	{

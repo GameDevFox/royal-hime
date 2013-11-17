@@ -1,6 +1,6 @@
 namespace.namespace( "com.everempire.royal.time", function() 
 {
-	var math = namespace.getPath( "com.everempire.royal.math" );
+	var math = namespace.getNode( "com.everempire.royal.math" );
 	
 	// CLOCKS: 
 	// Clocks should be built in the following order in order for all their features to work

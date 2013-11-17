@@ -1,4 +1,4 @@
-var activity = namespace.getPath( "com.everempire.hime.activity" );
+var activity = namespace.getNode( "com.everempire.hime.activity" );
 
 describe( "activityService", function() 
 {

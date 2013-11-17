@@ -1,12 +1,12 @@
-var time = namespace.getPath("com.everempire.time");
-var area = namespace.getPath("com.everempire.hime.area");
+var time = namespace.getNode("com.everempire.time");
+var area = namespace.getNode("com.everempire.hime.area");
 
 angular.module( "Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider )
 {
 	$controllerProvider.register( "Clock", function( $scope, $attrs )
 	{
 		// NEED MORE VALIDATION HERE
-		$scope.$parent[$attrs.name] = namespace.getPath( $attrs.path );
+		$scope.$parent[$attrs.name] = namespace.getNode( $attrs.path );
 	});
 	
 	$controllerProvider.register( "ClockControl", function( $scope, $attrs, $frameProvider )

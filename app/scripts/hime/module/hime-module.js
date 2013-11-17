@@ -1,7 +1,7 @@
 angular.module( "Hime", [], function( $controllerProvider, $filterProvider ) 
 {
-	var actor = namespace.getPath( "com.everempire.hime.actor" );
-	var area = namespace.getPath( "com.everempire.hime.area" );
+	var actor = namespace.getNode( "com.everempire.hime.actor" );
+	var area = namespace.getNode( "com.everempire.hime.area" );
 	
 	$controllerProvider.register( "HimeControl", function( $scope, $http, $attrs )
 	{

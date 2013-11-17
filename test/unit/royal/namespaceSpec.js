@@ -22,18 +22,18 @@ describe( "namespace", function()
 		delete window["a"];
 	});
 	
-	describe( "requirePath()", function()
+	describe( "requireNode()", function()
 	{
 		it( "gets a path based upon a namespace string", function() 
 		{
-			var path = namespace.requirePath( "a.path.that.doesnt.exist.yet.but.it.will" )
+			var path = namespace.requireNode( "a.path.that.doesnt.exist.yet.but.it.will" )
 			expect( path ).toEqual( {} );
 		});
 		
 		it( "creates a path if it doesn't exist", 
 		function() 
 		{
-			var node = namespace.requirePath( "a.path.that.doesnt.exist.yet.but.it.will" );
+			var node = namespace.requireNode( "a.path.that.doesnt.exist.yet.but.it.will" );
 			expect( node ).toEqual( {} );
 		});
 		
@@ -41,31 +41,31 @@ describe( "namespace", function()
 		function() 
 		{
 			var callRequirePath = function() { 
-				namespace.requirePath( "a.path.that.ends.with.a.string.i.think" ) 
+				namespace.requireNode( "a.path.that.ends.with.a.string.i.think" ) 
 			}
 			
 			expect( callRequirePath ).toThrow( { name: "PathCollision" } );
 		});
 	});
 	
-	describe( "getPath()", function()
+	describe( "getNode()", function()
 	{
 		it( "gets a path based upon a namespace string", function() 
 		{
-			var node = namespace.getPath( "a.path.that.exists" );
+			var node = namespace.getNode( "a.path.that.exists" );
 			expect( node ).toEqual( {} );
 		});
 		
 		it( "returns \"undefined\" if the path doesn't exist", function() 
 		{
-			var node = namespace.getPath( "a.path.that.doesnt.exist" );
+			var node = namespace.getNode( "a.path.that.doesnt.exist" );
 			expect( node ).toBe( undefined );
 		});
 		
 		it( "returns \"undefined\" when a non-object is already on the path", 
 		function() 
 		{
-			var node = namespace.getPath( "a.path.that.ends.with.a.string.i.think" ) 
+			var node = namespace.getNode( "a.path.that.ends.with.a.string.i.think" ) 
 			expect( node ).toBe( undefined );
 		});
 	});
@@ -80,7 +80,7 @@ describe( "namespace", function()
 				this.name = myName;
 			});
 			
-			var node = namespace.getPath( "a.test.path" );
+			var node = namespace.getNode( "a.test.path" );
 			expect( node.name ).toBe( myName );
 		});
 	});

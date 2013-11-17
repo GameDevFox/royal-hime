@@ -1,6 +1,6 @@
 describe( "area", function() 
 {
-	var area = namespace.getPath( "com.everempire.hime.area" );
+	var area = namespace.getNode( "com.everempire.hime.area" );
 	
 	describe( "buildArea()", function() 
 	{

@@ -5,7 +5,7 @@
 	namespace.namespace( "com.everempire.royal.advanced", function() 
 	{
 		// Type functions
-		var type = namespace.getPath( "com.everempire.royal.type" );
+		var type = namespace.getNode( "com.everempire.royal.type" );
 		
 		// Prototype, `object` MUST be an object
 		this.enhance = function( object )
