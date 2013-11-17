@@ -16,11 +16,7 @@ module.exports = function(config) {
     files: [
       'app/scripts/*.js',
       'app/scripts/royal/namespace.js',
-      'app/scripts/royal/type.js',
-      'app/scripts/royal/advanced.js',
-      'app/scripts/royal/math.js',
-      'app/scripts/royal/time.js',
-      'app/scripts/royal/parent.js',
+      'app/scripts/royal/*.js',
       'app/scripts/hime/**/*.js',
       'test/**/*Spec.js',
     ],

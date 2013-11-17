@@ -21,7 +21,7 @@ describe( "namespace", function()
 	
 	describe( "namespace()", function()
 	{
-		it( "calls a function within the scope of the given path", function() 
+		it( "registers a function with a given path", function() 
 		{
 			var myName = "Edward";
 			namespace.namespace( "a.test.path", function() 
@@ -31,22 +31,6 @@ describe( "namespace", function()
 			
 			var node = namespace.getNode( "a.test.path" );
 			expect( node.name ).toBe( myName );
-		});
-	});
-	
-	describe( "requireNode()", function()
-	{
-		it( "gets a path based upon a namespace string", function() 
-		{
-			var path = namespace.requireNode( "a.path.that.doesnt.exist.yet.but.it.will" )
-			expect( path ).toEqual( {} );
-		});
-		
-		it( "creates a path if it doesn't exist", 
-		function() 
-		{
-			var node = namespace.requireNode( "a.path.that.doesnt.exist.yet.but.it.will" );
-			expect( node ).toEqual( {} );
 		});
 	});
 	
