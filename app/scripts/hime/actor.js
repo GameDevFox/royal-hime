@@ -17,10 +17,4 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		
 		return actor;
 	};
-	
-	// TODO: Move this to "activity.js" or something like that
-	this.isActive = function( actor )
-	{
-		return actor.activity != null;
-	};
 });

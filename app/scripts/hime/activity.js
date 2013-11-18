@@ -156,4 +156,9 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 		
 		return activityService;
 	};
+	
+	this.isActive = function( actor )
+	{
+		return actor.activity != null;
+	};
 });
