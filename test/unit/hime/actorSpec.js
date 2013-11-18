@@ -2,13 +2,31 @@ describe( "actor", function()
 {
 	var actor = namespace.getNode( "com.everempire.hime.actor" );
 	
+	var myActor;
+	
+	beforeEach( function() 
+	{
+		myActor = actor.buildActor( "Prince" );
+	});
+	
 	describe( "buildActor()", function() 
 	{
-		it( "builds an actor", function() 
+		it( "builds an actor with default maxEnergy of 100", function() 
+		{			
+			expect( myActor.maxEnergy ).toEqual( 100 );
+		});
+		
+		it( "builds an actor with energy equals to maxEnergy", function() 
 		{
-			var myActor = actor.buildActor( "Prince", 120 );
+			expect( myActor.energy ).toEqual( myActor.maxEnergy );
+		});
+		
+		it( "builds an actor with a specified amount of maxEnergy", function() 
+		{
+			var maxEnergy = 123;
+			myActor = actor.buildActor( "Prince", maxEnergy );
 			
-			expect( myActor ).not.toEqual( undefined );
+			expect( myActor.maxEnergy ).toEqual( maxEnergy );
 		});
 	});
 });
