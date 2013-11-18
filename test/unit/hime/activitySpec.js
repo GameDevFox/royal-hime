@@ -16,7 +16,7 @@ describe( "activityService", function()
 		{
 			var addActivityWithOneArgument = function()
 			{
-				activityService.addActivity( function() { console.log( "My Activity" ); } );
+				activityService.addActivity( Object.prototype.toString );
 			};
 			
 			expect( addActivityWithOneArgument ).toThrow();
@@ -26,7 +26,7 @@ describe( "activityService", function()
 		{
 			var addActivityWithMoreThanThreeArguments = function()
 			{
-				activityService.addActivity( function() { console.log( "My Activity" ); }, 2, 3, 4 );
+				activityService.addActivity( Object.prototype.toString, 2, 3, 4 );
 			};
 			
 			expect( addActivityWithMoreThanThreeArguments ).toThrow();

@@ -6,11 +6,6 @@ describe( "namespace", function()
 		{
 			// Empty
 		});
-		
-		namespace.namespace( "a.path.that.ends.with.a", function() 
-		{
-			this.string = "The end of the path";
-		});
 	});
 	
 	afterEach( function() 
