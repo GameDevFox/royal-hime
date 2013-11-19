@@ -93,9 +93,9 @@
 					</div>
 					
 					<div>
-						<div>Progress: {{ hime.getActivityProgress() * 100 | number:0 }}</div>
+						<div>Progress: {{ hime.getProgress() * 100 | number:0 }}</div>
 						<div class="progress-meter">
-							<div class="bar" style="width: {{ hime.getActivityProgress() * 100 }}%">&nbsp;</div>
+							<div class="bar" style="width: {{ hime.getProgress() * 100 }}%">&nbsp;</div>
 						</div>
 						<div class="boost-button-wrapper">
 							<button class="boost-button" ng:click="hime.boost()">Boost</button>

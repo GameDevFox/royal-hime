@@ -15,6 +15,8 @@ namespace.namespace( "com.everempire.royal.parent", function()
 {
 	var advanced = namespace.getNode( "com.everempire.royal.advanced" );
 	
+	// TODO: [prince] This is essentialy a static variable
+	// Make this namespace a service
 	var childIdCounter = 0;
 	
 	// Init Funcitons
@@ -73,7 +75,7 @@ namespace.namespace( "com.everempire.royal.parent", function()
 		}
 		
 		// Remove Child from Parent
-		delete parentParentNode[childId];
+		delete parentParentNode.children[childId];
 		// Remove Parent from Child
 		childParentNode.parent = null;
 	};

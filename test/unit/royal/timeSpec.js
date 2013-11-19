@@ -11,5 +11,15 @@ describe( "time", function()
 			manualClock.setTime( 1234 );
 			expect( manualClock.getTime() ).toEqual( 1234 );
 		});
-	})
+	});
+	
+	describe( "buildFullClock()", function() 
+	{
+		it( "builds a full clock", function()
+		{
+			var clock = time.buildFullClock();
+			
+			expect( clock ).not.toEqual( undefined );
+		});
+	});
 });

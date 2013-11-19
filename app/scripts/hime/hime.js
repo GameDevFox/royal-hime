@@ -17,7 +17,7 @@ namespace.namespace( "com.everempire.hime", function() {
 		this.currentArea = null;
 	};
 	
-	this.Hime.prototype.getActivityProgress = function()
+	this.Hime.prototype.getProgress = function()
 	{
 		if( this.selectedActor.activityId == null )
 		{
@@ -25,7 +25,7 @@ namespace.namespace( "com.everempire.hime", function() {
 		}
 
 		// TODO: [prince] Should not have any reference to "window"
-		return window.activityService.getActivityProgress( this.selectedActor.activityId );
+		return window.activityService.getProgress( this.selectedActor.activityId );
 	};
 	
 	this.Hime.prototype.boost = function()

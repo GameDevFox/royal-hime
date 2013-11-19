@@ -72,7 +72,7 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 				return activityId;
 			},
 			
-			getActivityProgress: function( activityId )
+			getProgress: function( activityId )
 			{
 				var activityFrame = this.activityFrames[activityId];
 				
@@ -93,9 +93,10 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 				return progress;
 			},
 			
-			getNextCompletedActivity: function() 
+			getNextCompletedActivityId: function() 
 			{
 				var nextFrame = null;
+				var nextActivityId = null;
 				
 				for( var activityId in this.activityFrames )
 				{
@@ -104,16 +105,28 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 					if( nextFrame == null )
 					{
 						nextFrame = activityFrame;
+						nextActivityId = activityId;
 						continue;
 					}
 					
-					if( activityFrame.endTime > nextFrame.endTime )
+					if( activityFrame.endTime < nextFrame.endTime )
 					{
 						nextFrame = activityFrame;
+						nextActivityId = activityId;
 					}
 				}
 				
-				return nextFrame;
+				var nextActivityId = parseInt( nextActivityId );
+				
+				return nextActivityId;
+			},
+			
+			getNextCompletedActivity: function() 
+			{
+				var nextActivityId = this.getNextCompletedActivityId();
+				var nextActivity = this.activityFrames[nextActivityId];
+				
+				return nextActivity;
 			},
 			
 			updateTime: function( time )
@@ -141,7 +154,7 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 					
 					if( activityFrame.activity.progress != null )
 					{
-						var progress = this.getActivityProgress( activityId );
+						var progress = this.getProgress( activityId );
 						if( progress >= 0 )
 						{
 							activityFrame.activity.progress( progress );

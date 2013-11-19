@@ -49,7 +49,7 @@ namespace.namespace( "com.everempire.hime.area", function()
 				
 				if( area == null )
 				{
-					throw "Error when creating path for area '" + areaVarName + "': Could not find area '" + areaName + "'";
+					throw "Error when creating path for area '" + areaVarName + "': Could not find area '" + areaCode + "'";
 				}
 				
 				var path = this.buildPath( area, distance );
