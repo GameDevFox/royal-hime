@@ -10,7 +10,7 @@
 		$controllerProvider.register( "ClockControl", function( $scope, $attrs, $frameProvider )
 		{
 			// NEED MORE VALIDATION HERE
-			var	clock = $scope[$attrs.clock];
+			var	clock = $scope.hime.gameClock;
 			
 			$scope.fp = $frameProvider;
 			
@@ -18,7 +18,7 @@
 			$frameProvider.frame( function( start, end )
 			{
 				$scope.time = clock.getTime();
-				window.activityService.updateTime( $scope.time );
+				window.activityService.setTime( $scope.time );
 				$scope.$apply();
 			});
 			

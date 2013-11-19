@@ -116,7 +116,12 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 				return nextFrame;
 			},
 			
-			updateTime: function( time ) 
+			updateTime: function( time )
+			{
+				this.setTime( this.time + time );
+			},
+			
+			setTime: function( time ) 
 			{
 				if( this.time > time )
 				{

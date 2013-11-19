@@ -1,14 +1,14 @@
 describe( "hime", function() 
 {
-	var hime = namespace.getNode( "com.everempire.hime" );
+	var $hime = namespace.getNode( "com.everempire.hime" );
 	
-	describe( "buildArm()", function() 
+	describe( "Hime", function() 
 	{
-		it( "builds an arm with a hand", function() 
+		it( "Create an instance of the game", function() 
 		{
-			var arm = hime.buildArm();
+			var hime = new $hime.Hime();
 			
-			expect( arm.hand ).not.toEqual( undefined );
+			expect( hime ).not.toEqual( undefined );
 		});
 	});
 });

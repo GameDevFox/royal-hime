@@ -34,10 +34,10 @@ angular.module( "Area", [], function( $controllerProvider )
 		
 		$scope.move = function()
 		{
-			var selectedActor = $scope.selectedActor;
+			var selectedActor = $scope.hime.selectedActor;
 			
 			// Get and Validate chosen path
-			var path = $scope.areas[selectedActor.parentAreaId].paths[$scope.areaName];
+			var path = $scope.hime.areas[selectedActor.parentAreaId].paths[$scope.areaName];
 			if( path == null )
 			{
 				console.log( "There is no path for area code: " + $scope.areaName );
@@ -50,10 +50,10 @@ angular.module( "Area", [], function( $controllerProvider )
 			
 			if( $scope.throttle )
 			{
-				$scope.gameClock.MotionClock.move( timeElapsed * 1000, 1500 );
+				$scope.hime.gameClock.MotionClock.move( timeElapsed * 1000, 1500 );
 			}
 			
-			var selectedActor = $scope.selectedActor;
+			//var selectedActor = $scope.selectedActor;
 			
 			// Deplete energy
 			selectedActor.energy -= $scope.energyRate * timeElapsed / 100;
@@ -61,7 +61,7 @@ angular.module( "Area", [], function( $controllerProvider )
 			// Add Move Activity
 			selectedActor.activityId = window.activityService.addActivity( function()
 			{
-				var areaId = firstIndexOf( $scope.areas, path.area )
+				var areaId = firstIndexOf( $scope.hime.areas, path.area )
 				selectedActor.parentAreaId = areaId;
 				
 				selectedActor.activityId = null;

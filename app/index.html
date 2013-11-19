@@ -35,7 +35,7 @@
 	</head>
 	<body>
 		
-		<div ng:controller="HimeControl" data-area-map="/data/areas.json">
+		<div class="himeControl" ng:controller="HimeControl" data-area-map="/data/areas.json">
 			
 			<fieldset>
 				<legend>Time</legend>
@@ -64,17 +64,17 @@
 					
 					<div>
 						Name:
-						<select ng:model="selectedActor" ng:options="actor.name for (actorKey, actor) in actors">
+						<select ng:model="hime.selectedActor" ng:options="actor.name for (actorKey, actor) in hime.actors">
 						</select>
 					</div>
 					
 					<div>
-						Energy: {{ selectedActor.energy | number:1 }} / {{ selectedActor.maxEnergy }}
-						<div class="energy-meter" style="width: {{ ( selectedActor.energy / selectedActor.maxEnergy ) * 100 }}%;"></div>
+						Energy: {{ hime.selectedActor.energy | number:1 }} / {{ hime.selectedActor.maxEnergy }}
+						<div class="energy-meter" style="width: {{ ( hime.selectedActor.energy / hime.selectedActor.maxEnergy ) * 100 }}%;"></div>
 					</div>
 					
 					<div>
-						Location: {{ areas[selectedActor.parentAreaId].name }}
+						Location: {{ hime.areas[hime.selectedActor.parentAreaId].name }}
 					</div>
 					
 				</fieldset>
@@ -84,21 +84,21 @@
 					
 					<div>
 						Current Activity: 
-						<span ng:show="selectedActor.activity">
-							{{ selectedActor.activity }} 
+						<span ng:show="hime.selectedActor.activity">
+							{{ hime.selectedActor.activity }} 
 						</span>
-						<span ng:hide="selectedActor.activity">
+						<span ng:hide="hime.selectedActor.activity">
 							None 
 						</span>
 					</div>
 					
 					<div>
-						<div>Progress: {{ getActivityProgress() * 100 | number:0 }}</div>
+						<div>Progress: {{ hime.getActivityProgress() * 100 | number:0 }}</div>
 						<div class="progress-meter">
-							<div class="bar" style="width: {{ getActivityProgress() * 100 }}%">&nbsp;</div>
+							<div class="bar" style="width: {{ hime.getActivityProgress() * 100 }}%">&nbsp;</div>
 						</div>
 						<div class="boost-button-wrapper">
-							<button class="boost-button" ng:click="boost()">Boost</button>
+							<button class="boost-button" ng:click="hime.boost()">Boost</button>
 						</div>
 					</div>
 				</fieldset>
@@ -121,10 +121,10 @@
 					</div>
 					
 					<div>
-						<div ng:show="selectedActor.activityId == null">
+						<div ng:show="hime.selectedActor.activityId == null">
 							<h3>Exits:</h3>
 							<ul class="paths">
-								<li ng:repeat="(areaName, path) in areas[selectedActor.parentAreaId].paths">
+								<li ng:repeat="(areaName, path) in hime.areas[hime.selectedActor.parentAreaId].paths">
 									<a ng:click="move()" ng:mouseover="setAreaName( areaName )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
 								</li>
 							</ul>

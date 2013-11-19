@@ -1,87 +1,75 @@
 namespace.namespace( "com.everempire.hime", function() {
 	
+	var math = namespace.getNode( "com.everempire.royal.math" );
+	var time = namespace.getNode( "com.everempire.royal.time" );
+
+	var actor = namespace.getNode( "com.everempire.hime.actor" );
+	var area = namespace.getNode( "com.everempire.hime.area" );
+	
 	var hime = this;
 	
-	hime.buildArm = function()
+	this.Hime = function( areaData )
 	{
-		var arm = {
-			hand: {}
-		};
+		initGameClock( this );
+		initActors( this );
 		
-		return arm;
+		this.areas = {};
+		this.currentArea = null;
 	};
 	
-	hime.buildLeg = function()
+	this.Hime.prototype.getActivityProgress = function()
 	{
-		var leg = {
-			foot: {}
-		};
-		
-		return leg;
+		if( this.selectedActor.activityId == null )
+		{
+			return null;
+		}
+
+		// TODO: [prince] Should not have any reference to "window"
+		return window.activityService.getActivityProgress( this.selectedActor.activityId );
 	};
 	
-	hime.buildBody = function()
+	this.Hime.prototype.boost = function()
 	{
-		var leftArm = this.buildArm();
-		var rightArm = this.buildArm();
-		
-		var leftLeg = this.buildLeg();
-		var rightLeg = this.buildLeg();
-		
-		var body = { 
-			head: {  
-				hair: {},
-				eyes: {
-					left: {},
-					right: {}
-				},
-				ears: {
-					left: {},
-					right: {}
-				},  
-				nose: {},
-				mouth: {
-					tongue: {}
-				}, 
-				neck: {}
-			}, 
-			arms: {
-				left: leftArm,
-				right: rightArm,
-			},
-			torso: {  
-				sholders: {
-					left: {},
-					right: {}
-				},
-				chest: {},
-				waist: {},
-				belly: {},
-				back: {
-					upper: {},
-					lower: {}
-				},
-				crotch: {},
-				bottom: {},
-			},
-			legs: {
-				left: leftLeg,
-				right: rightLeg,
-			}
-		};
-		
-		return body;
+		// TODO: [prince] Should not have any reference to "window"
+		var activityFrame = window.activityService.getNextCompletedActivity();
+		this.gameClock.MotionClock.move( activityFrame.endTime - window.activityService.time, 1500 );
 	};
 	
-	hime.buildHime = function( name )
+	this.Hime.prototype.loadAreaData = function( areaData )
 	{
-		var body = this.buildBody();
+		// Load Area Data
+		this.areas = area.loadAreas( areaData );
 		
-		var hime = {
-			name: name,
-			body: body,
-		};
+		for( var i in this.actors )
+		{
+			var actor = this.actors[i];
+			actor.parentAreaId = "mainHall";
+		}
+	};
+	
+	var initGameClock = function( hime )
+	{
+		// Build game clock
+		var gameClock = time.buildFullClock();
+		//gameClock.SpeedClock.setSpeed( 1 );
+		//gameClock.PlusClock.setPlusTime( 1000000 );
+		//gameClock.DeltaClock.clear();
+		gameClock.MotionClock.setFilter( math.filters.easeInCubic );
 		
-		return hime;
+		hime.gameClock = gameClock;
+	};
+	
+	var initActors = function( himeGame )
+	{
+		// Init Actors
+		var james = actor.buildActor( "James", 120 );
+		var hime = actor.buildActor( "Hime", 80 );
+		
+		himeGame.actors = [
+			james,
+			hime
+		];
+		
+		himeGame.selectedActor = james;
 	};
 });
