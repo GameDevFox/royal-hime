@@ -10,8 +10,6 @@
 	// Executes function on given path
 	namespace.namespace = function( path, func )
 	{
-		path = this.parsePath( path );
-		
 		var namespaceNode = this.travelPath( nodeTree, path, true );
 		namespaceNode[nodeFuncToken] = func;
 	};
@@ -20,7 +18,6 @@
 	// the path doesn't exist
 	namespace.getNode = function( path, rootNode )
 	{		
-		path = this.parsePath( path );
 		rootNode = this.evaluteRootNode( rootNode );
 		
 		// Travel the path, returning undefined if a node doesn't exist
@@ -29,16 +26,6 @@
 		var node = this.evaluatePathNode( pathNode );
 		
 		return node;
-	};
-	
-	namespace.parsePath = function( path )
-	{
-		if( typeof path == "string" )
-		{
-			path = path.split( "." );
-		}
-		
-		return path;
 	};
 	
 	namespace.evaluteRootNode = function( rootNode )
@@ -79,6 +66,8 @@
 	
 	namespace.travelPath = function( root, path, force )
 	{
+		path = this.parsePath( path );
+		
 		var node = root;
 		if( node == undefined )
 		{
@@ -111,6 +100,16 @@
 		}
 		
 		return node;
+	};
+	
+	namespace.parsePath = function( path )
+	{
+		if( typeof path == "string" )
+		{
+			path = path.split( "." );
+		}
+		
+		return path;
 	};
 	
 	// Export to global scope

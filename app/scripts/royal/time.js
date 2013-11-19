@@ -373,7 +373,7 @@ namespace.namespace( "com.everempire.royal.time", function()
     	for( var i = 0; i < arguments.length; i++ ) 
     	{
     		var className = arguments[i];
-    		var constructor = time[className];
+    		var constructor = this[className];
     		
     		if( constructor == null )
     		{

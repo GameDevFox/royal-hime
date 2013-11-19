@@ -4,14 +4,25 @@ describe( "parent", function()
 	
 	describe( "addChild()", function() 
 	{
-		it( "sets the parent as the child's parent", function()
+		var mother;
+		var child;
+		
+		beforeEach( function() 
 		{
-			var mother = { name: "Kelsey" };
-			var child = { name: "Henry" };
+			mother = { name: "Kelsey" };
+			child = { name: "Henry" };
 			
 			parent.addChild( mother, child );
-			
+		});
+		
+		it( "sets the parent as the child's parent", function()
+		{
 			expect( parent.getParent( child ) ).toBe( mother );
+		});
+		
+		it( "adds the child as one of the parent's children", function()
+		{
+			expect( parent.getChildren( mother ) ).toContain( child );
 		});
 	});
 });

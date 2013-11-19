@@ -52,5 +52,13 @@ describe( "namespace", function()
 			
 			expect( path ).toEqual( [ "a", "test", "path" ] );
 		});
+		
+		it( "returns a path array as is", function() 
+		{
+			var path = ["another", "path", "to", "test"];
+			var parsedPath = namespace.parsePath( path );
+			
+			expect( parsedPath ).toBe( path );
+		});
 	});
 });

@@ -40,8 +40,6 @@
 			<fieldset>
 				<legend>Time</legend>
 				
-				<div ng:controller="Clock" path="com.everempire.hime.$game" name="gameClock"></div>
-			
 				<div ng:controller="ClockControl" clock="gameClock">
 					<div>
 						<button ng:click="gameClock.StopClock.stop()" ng:show="gameClock.StopClock.isRunning()">Pause</button>
