@@ -48,11 +48,6 @@ angular.module( "Area", [], function( $controllerProvider )
 			// Calculate required time to move
 			var timeElapsed = path.distance / $scope.speed;
 			
-			if( $scope.throttle )
-			{
-				$scope.hime.gameClock.MotionClock.move( timeElapsed * 1000, 1500 );
-			}
-			
 			//var selectedActor = $scope.selectedActor;
 			
 			// Deplete energy
@@ -69,6 +64,11 @@ angular.module( "Area", [], function( $controllerProvider )
 			
 			// Clear pathNumber
 			$scope.pathNumber = null;
+			
+			if( $scope.throttle )
+			{
+				$scope.hime.boost();
+			}
 		};
 	});
 	
