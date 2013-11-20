@@ -2,7 +2,8 @@ namespace.namespace( "com.everempire.hime", function() {
 	
 	var math = namespace.getNode( "com.everempire.royal.math" );
 	var time = namespace.getNode( "com.everempire.royal.time" );
-
+	
+	var activity = namespace.getNode("com.everempire.hime.activity");
 	var actor = namespace.getNode( "com.everempire.hime.actor" );
 	var area = namespace.getNode( "com.everempire.hime.area" );
 	
@@ -15,6 +16,8 @@ namespace.namespace( "com.everempire.hime", function() {
 		
 		this.areas = {};
 		this.currentArea = null;
+		
+		this.activityService = activity.buildActivityService();
 	};
 	
 	this.Hime.prototype.getProgress = function()
@@ -24,15 +27,26 @@ namespace.namespace( "com.everempire.hime", function() {
 			return null;
 		}
 
-		// TODO: [prince] Should not have any reference to "window"
-		return window.activityService.getProgress( this.selectedActor.activityId );
+		// TODO: [prince] Use dependancy injection
+		return this.activityService.getProgress( this.selectedActor.activityId );
+	};
+	
+	this.Hime.prototype.getRemainingTime = function()
+	{
+		if( this.selectedActor.activityId == null )
+		{
+			return null;
+		}
+
+		// TODO: [prince] Use dependancy injection
+		return this.activityService.getRemainingTime( this.selectedActor.activityId );
 	};
 	
 	this.Hime.prototype.boost = function()
 	{
-		// TODO: [prince] Should not have any reference to "window"
-		var activityFrame = window.activityService.getNextCompletedActivity();
-		this.gameClock.MotionClock.move( activityFrame.endTime - window.activityService.time, 1500 );
+		// TODO: [prince] Refactor
+		var activityFrame = this.activityService.getNextCompletedActivity();
+		this.gameClock.MotionClock.move( activityFrame.endTime - this.activityService.time, 1500 );
 	};
 	
 	this.Hime.prototype.loadAreaData = function( areaData )

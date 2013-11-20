@@ -93,6 +93,27 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 				return progress;
 			},
 			
+			getRemainingTime: function( activityId )
+			{
+				var activityFrame = this.activityFrames[activityId];
+				
+				if( activityFrame == undefined )
+				{
+					if( activityId < this.activityFrames.length )
+					{
+						return -1;
+					}
+					throw "No Activity found for Activity Id: " + activityId;
+				}
+				
+				var duration = activityFrame.endTime - activityFrame.startTime;
+				var elapsed = this.time - activityFrame.startTime;
+				
+				var progress = duration - elapsed;
+				
+				return progress;
+			},
+			
 			getNextCompletedActivityId: function() 
 			{
 				var nextFrame = null;

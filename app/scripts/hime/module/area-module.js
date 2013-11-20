@@ -59,7 +59,7 @@ angular.module( "Area", [], function( $controllerProvider )
 			selectedActor.energy -= $scope.energyRate * timeElapsed / 100;
 			
 			// Add Move Activity
-			selectedActor.activityId = window.activityService.addActivity( function()
+			selectedActor.activityId = $scope.hime.activityService.addActivity( function()
 			{
 				var areaId = firstIndexOf( $scope.hime.areas, path.area )
 				selectedActor.parentAreaId = areaId;

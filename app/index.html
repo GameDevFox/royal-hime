@@ -57,9 +57,9 @@
 			
 			<div>&nbsp;</div>
 			
-			<div style="position: relative; height: 120px;">
+			<div class="mid-container">
 			
-				<fieldset style="width: 45%; position: absolute; top: 0px;">
+				<fieldset class="actor-controller">
 					<legend>Actor</legend>
 					
 					<div>
@@ -79,21 +79,26 @@
 					
 				</fieldset>
 				
-				<fieldset  style="width: 45%; position: absolute; right: 0px; top: 0px;">
+				<fieldset class="activity-controller">
 					<legend>Activity</legend>
 					
 					<div>
-						Current Activity: 
-						<span ng:show="hime.selectedActor.activity">
-							{{ hime.selectedActor.activity }} 
+						Current Activity:
+						<span ng:show="hime.selectedActor.activityId != null">
+							#{{ hime.selectedActor.activityId }}
 						</span>
-						<span ng:hide="hime.selectedActor.activity">
+						<span ng:hide="hime.selectedActor.activityId != null">
 							None 
 						</span>
 					</div>
 					
 					<div>
-						<div>Progress: {{ hime.getProgress() * 100 | number:0 }}</div>
+						<div>
+							Progress: {{ hime.getProgress() * 100 | number:0 }}%
+							<span ng:show="hime.getRemainingTime()">
+								( {{ hime.getRemainingTime() | time }} )
+							</span>
+						</div>
 						<div class="progress-meter">
 							<div class="bar" style="width: {{ hime.getProgress() * 100 }}%">&nbsp;</div>
 						</div>

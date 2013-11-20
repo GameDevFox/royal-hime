@@ -18,7 +18,7 @@
 			$frameProvider.frame( function( start, end )
 			{
 				$scope.time = clock.getTime();
-				window.activityService.setTime( $scope.time );
+				$scope.hime.activityService.setTime( $scope.time );
 				$scope.$apply();
 			});
 			
@@ -127,7 +127,7 @@
 		{
 			return function( text )
 			{			
-				var seconds = Math.floor( text / 1000 );
+				var seconds = Math.round( text / 1000 );
 				var minutes = null;
 				var hours = null;
 				var days = null;

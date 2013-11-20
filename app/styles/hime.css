@@ -30,7 +30,23 @@ textarea.generated-json
 	height: 200px;
 }
 
-.boost-button-wrapper
+.mid-container 
 {
-	/* TODO: [prince] float to left of progress meter */
+	position: relative; 
+	height: 120px;
+}
+
+.actor-controller
+{
+	width: 45%; 
+	position: absolute; 
+	top: 0px;
+}
+
+.activity-controller
+{
+	width: 45%; 
+	position: absolute; 
+	right: 0px; 
+	top: 0px;
 }
