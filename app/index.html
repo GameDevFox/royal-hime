@@ -113,18 +113,8 @@
 							<legend>Activity</legend>
 							
 							<div>
-								Current Activity:
-								<span ng:show="hime.selectedActor.activityId != null">
-									#{{ hime.selectedActor.activityId }}
-								</span>
-								<span ng:hide="hime.selectedActor.activityId != null">
-									None 
-								</span>
-							</div>
-							
-							<div>
 								<div class="boost-button-wrapper">
-									<button class="boost-button" ng:click="hime.boost()">Boost</button>
+									<button class="boost-button" ng:click="hime.boost()" ng:disabled="hime.activityService.getNextCompletedActivity() == null">Complete Next Activity</button>
 								</div>
 							</div>
 						</fieldset>
