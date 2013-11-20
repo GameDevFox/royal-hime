@@ -1,20 +1,28 @@
 .time-meter
 {
-	background-color: red;
 	border: 1px solid black;
-	height: 20px;
+	padding: 2px;
+}
+
+.time-meter .bar
+{
+	background-color: red;
 }
 
 .energy-meter
 {
-	background-color: blue;
 	border: 1px solid black;
-	height: 20px;
+	padding: 2px;
+	margin-bottom: 2px;
+}
+
+.energy-meter .bar
+{
+	background-color: blue;
 }
 
 .progress-meter
 {
-	width: 500px;
 	border: solid 1px black;
 	padding: 2px;
 }
@@ -30,23 +38,15 @@ textarea.generated-json
 	height: 200px;
 }
 
-.mid-container 
+.actor
 {
-	position: relative; 
-	height: 120px;
+	position: relative;
+	border: 1px solid black; 
+	margin-bottom: 8px; 
+	padding: 4px;
 }
 
-.actor-controller
+.actor.selected
 {
-	width: 45%; 
-	position: absolute; 
-	top: 0px;
-}
-
-.activity-controller
-{
-	width: 45%; 
-	position: absolute; 
-	right: 0px; 
-	top: 0px;
+	background-color: lightgreen;
 }

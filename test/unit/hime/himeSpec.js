@@ -16,9 +16,9 @@ describe( "hime", function()
 			expect( hime ).not.toEqual( undefined );
 		});
 		
-		describe( "getProgress()", function()
+		describe( "getProgress( actor )", function()
 		{
-			it( "returns \"null\" if there is no selected actor", function()
+			it( "returns \"null\" if the specified actor is null", function()
 			{
 				expect( hime.getProgress() ).toEqual( null );
 			});
