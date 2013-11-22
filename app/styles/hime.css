@@ -1,37 +1,89 @@
-.time-meter
+/* Meter styles */
+.emp-meter
 {
 	border: 1px solid black;
-	padding: 2px;
+	margin-bottom: 2px;
 }
 
+.emp-meter .meter-container
+{
+	position: relative;
+	margin: 2px;
+}
+
+.emp-meter .bar
+{
+	background-color: yellow;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	height: 100%;
+	white-space: nowrap;
+}
+
+.emp-meter .message
+{
+	position: relative;
+	/*z-index: 1;*/
+}
+
+/* Meter customizations */
 .time-meter .bar
 {
 	background-color: red;
 }
 
-.energy-meter
+.energy-meter .bar
 {
-	border: 1px solid black;
-	padding: 2px;
-	margin-bottom: 2px;
+	color: white;
+	background-color: green;
 }
 
-.energy-meter .bar
+.energy-meter.full .bar
 {
 	background-color: blue;
 }
 
-.progress-meter
+.energy-meter.half .bar
 {
-	border: solid 1px black;
-	padding: 2px;
+	color: black;
+	background-color: yellow;
 }
 
-.progress-meter .bar
+.energy-meter.quarter .bar
 {
 	background-color: red;
 }
 
+.energy-meter.empty .message
+{
+	color: red;
+}
+
+.energy-meter .message
+{
+	color: black;
+}
+
+.progress-meter .bar
+{
+	color: white;
+	background-color: red;
+}
+
+.progress-meter.complete .bar
+{
+	background-color: green;
+}
+
+.progress-meter .ready-message
+{
+	text-align: center;
+	color: white;
+	background-color: blue;
+}
+
+/* Other styles */
 textarea.generated-json
 {
 	width: 600px;

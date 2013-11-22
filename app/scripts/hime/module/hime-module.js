@@ -1,4 +1,4 @@
-angular.module( "Hime", [], function( $controllerProvider, $filterProvider ) 
+angular.module( "Hime", [], function( $controllerProvider, $compileProvider ) 
 {
 	$controllerProvider.register( "HimeControl", function( $scope, $http, $attrs )
 	{	
@@ -11,6 +11,19 @@ angular.module( "Hime", [], function( $controllerProvider, $filterProvider )
 		{
 			hime.loadAreaData( areaData );
 		});
+	});
+	
+	$compileProvider.directive( "empMeter", function()
+	{
+		return {
+			restrict: "E",
+			scope: {
+				value: "=",
+				maxValue: "="
+			},
+			transclude: true,
+			templateUrl: "templates/meter.html"
+		};
 	});
 });
 

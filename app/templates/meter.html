@@ -1,0 +1,11 @@
+<html xmlns:ng="http://angularjs.org">
+	<div class="emp-meter">
+		<div class="meter-container">
+		    <div class="message" ng:transclude>
+			</div>
+			<div class="bar" ng:transclude style="width: {{ ( value / maxValue ) * 100 }}%;">
+				&nbsp;
+			</div>
+		</div>
+	</div>
+</html>

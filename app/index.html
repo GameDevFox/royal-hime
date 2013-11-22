@@ -7,7 +7,7 @@
 		<link rel="StyleSheet" type="text/css" href="styles/hime.css">
 		 
 		<!-- Scripts -->
-		<script type="text/javascript" src="scripts/angular-1.0.8.js"></script>
+		<script type="text/javascript" src="scripts/angular-1.2.1.js"></script>
 		<script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
 		<script type="text/javascript" src="scripts/underscore-1.5.2.js"></script>
 		
@@ -45,16 +45,10 @@
 							<legend>Time</legend>
 							
 							<div ng:controller="ClockControl" clock="gameClock">
-								<div>
-									<div class="time-meter"  style="position: relative;">
-										<div class="bar" style="width: {{ time / ( 1000 * 60 ) }}px;">
-											<div style="position: absolute;">
-												{{ time | time }}
-											</div>
-											&nbsp;
-										</div>
-									</div>
-								</div>
+								<emp:Meter class="time-meter" value="time" max-value="1000 * 60 * 60 * 24">
+									{{ time | time }}
+								</emp:Meter>
+								
 								<div>
 									<button ng:click="hime.gameClock.StopClock.stop()" ng:show="hime.gameClock.StopClock.isRunning()">Pause</button>
 									<button ng:click="hime.gameClock.StopClock.start()" ng:hide="hime.gameClock.StopClock.isRunning()">Resume</button>
@@ -72,33 +66,26 @@
 							<legend>Actors</legend>
 							<div class="actor" ng:class="{selected: hime.selectedActor ==  actor}" ng:repeat="actor in hime.actors" ng:click="hime.selectActor( actor )">
 								{{ actor.name }}
-								<div class="energy-meter" style="position: relative;">
-									<div class="bar" style="color: darkgrey; width: {{ ( actor.energy / actor.maxEnergy ) * 100 }}%;">						
-										<div style="position: absolute;">
-											En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}	
-										</div>
-										&nbsp;
-									</div>
-								</div>
 								
-								<div class="progress-meter" style="position: relative;">
+								<emp:Meter 
+									class="energy-meter" 
+									ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }" 
+									value="actor.energy" 
+									max-value="actor.maxEnergy">
+										En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}
+								</emp:Meter>
 								
-									<div class="bar" ng:show="hime.getProgress( actor )" style="width: {{ hime.getProgress( actor ) * 100 }}%">
-										<div style="position: absolute;">
-											Progress: {{ hime.getProgress( actor ) * 100 | number:0 }}%
-											<span ng:show="hime.getRemainingTime( actor )">
-												( {{ hime.getRemainingTime( actor ) | time }} )
-											</span>
-										</div>
-										&nbsp;
-									</div>
-									<div class="bar" ng:hide="hime.getProgress( actor )" style="width: 100%; background-color: green; text-align: center;'">
-										Ready
+								<emp:Meter class="progress-meter" value="hime.getProgress( actor ) * 100" max-value="100">
+									<div ng:show="hime.getProgress( actor )">
+										Progress: {{ hime.getProgress( actor ) * 100 | number:0 }}%
 										<span ng:show="hime.getRemainingTime( actor )">
 											( {{ hime.getRemainingTime( actor ) | time }} )
 										</span>
 									</div>
-								</div>
+									<div class="ready-message" ng:hide="hime.getProgress( actor )">
+										Ready
+									</div>
+								</emp:Meter>
 								
 								<div>
 									Location: {{ hime.areas[actor.parentAreaId].name }}
