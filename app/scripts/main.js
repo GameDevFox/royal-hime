@@ -1,8 +1,9 @@
 (function()
 {
-	//Bootstrap angular js
-	$(document).ready( function() { 
-		angular.bootstrap( $("body"), [ "Hime", "Time", "Area", "Actor" ] );
+	//Bootstrap angularjs
+	$(document).ready( function() 
+	{
+		var injector = angular.bootstrap( $("body"), [ "Hime", "Time", "Area"] );
 	
 		window.hime = getScope(".hime-control").hime;
 	});
