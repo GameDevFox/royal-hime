@@ -406,4 +406,63 @@ namespace.namespace( "com.everempire.royal.time", function()
     	
     	return finalClock;
     };
+    
+    this.formatTime = function( text )
+	{			
+		var seconds = Math.round( text / 1000 );
+		var minutes = null;
+		var hours = null;
+		var days = null;
+		
+		if( seconds >= 60 )
+		{
+			minutes = Math.floor( seconds / 60 );
+			seconds = seconds % 60;
+		}
+		
+		if( minutes >= 60 )
+		{
+			hours = Math.floor( minutes / 60 );
+			minutes = minutes % 60;
+		}
+		
+		if( hours >= 24 )
+		{
+			days = Math.floor( hours / 24 );
+			hours = hours % 24;
+		}
+		
+		var msg = "";
+		if( days != null )
+		{
+			msg += " " + days + "d";
+		}
+		if( hours != null )
+		{
+			msg += " " + formatDigits( hours, days ) + "h";
+		}
+		if( minutes != null )
+		{
+			msg += " " + formatDigits( minutes, hours ) + "m";
+		}
+		msg += " " + formatDigits( seconds, minutes ) + "s";
+	
+		return msg;
+	};
+	
+	function formatDigits( unit, dependancy ) {
+		
+		var digits;
+		
+		if( unit < 10 && dependancy != null )
+		{
+			digits = "0"+unit;
+		}
+		else
+		{
+			digits = unit;
+		}
+		
+		return digits;
+	}
 });

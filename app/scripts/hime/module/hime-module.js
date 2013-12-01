@@ -1,30 +1,31 @@
-angular.module( "Hime", [], function( $controllerProvider, $compileProvider ) 
+var hime = angular.module( "Hime", [] );
+
+hime.directive( "eeMeter", function()
 {
-	$controllerProvider.register( "HimeControl", function( $scope, $http, $attrs )
-	{	
-		// TODO: [prince] Should not be a controller, this should be in a service
-		var $hime = namespace.getNode( "com.everempire.hime" );
-		
-		var hime = new $hime.Hime();
-		$scope.hime = hime;
-		
-		$http.get( $attrs.areaMap ).success( function( areaData ) 
+	return {
+		restrict: "E",
+		scope: 
 		{
-			hime.loadAreaData( areaData );
-		});
-	});
-	
-	$compileProvider.directive( "empMeter", function()
-	{
-		return {
-			restrict: "E",
-			scope: {
-				value: "=",
-				maxValue: "="
-			},
-			transclude: true,
-			templateUrl: "templates/meter.html"
-		};
-	});
+			value: "=",
+			maxValue: "="
+		},
+		transclude: true,
+		templateUrl: "templates/meter.html"
+	};
 });
 
+hime.run( function( $rootScope, $http )
+{
+	// TODO: [prince] Should not be a controller, this should be in a service
+	var $hime = namespace.getNode( "com.everempire.hime" );
+	
+	var hime = new $hime.Hime();
+	
+	$rootScope.hime = hime;
+	
+	// TODO: [prince] DON'T HARD CODE THIS
+	$http.get( "/data/areas.json" ).success( function( areaData ) 
+	{
+		hime.loadAreaData( areaData );
+	});
+});

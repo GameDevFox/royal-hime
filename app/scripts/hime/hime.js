@@ -11,12 +11,17 @@ namespace.namespace( "com.everempire.hime", function() {
 	
 	this.Hime = function( areaData )
 	{
+		// DI Game Clock
 		initGameClock( this );
+		
+		// DI Actors
 		initActors( this );
 		
+		// DI Areas
 		this.areas = {};
 		this.currentArea = null;
 		
+		// DI Activity Service
 		this.activityService = activity.buildActivityService();
 	};
 	

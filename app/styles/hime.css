@@ -1,17 +1,17 @@
 /* Meter styles */
-.emp-meter
+.ee-meter
 {
 	border: 1px solid black;
 	margin-bottom: 2px;
 }
 
-.emp-meter .meter-container
+.ee-meter .meter-container
 {
 	position: relative;
 	margin: 2px;
 }
 
-.emp-meter .bar
+.ee-meter .bar
 {
 	background-color: yellow;
 	position: absolute;
@@ -21,7 +21,7 @@
 	white-space: nowrap;
 }
 
-.emp-meter .message
+.ee-meter .message
 {
 	position: relative;
 	/*z-index: 1;*/

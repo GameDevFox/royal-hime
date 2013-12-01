@@ -5,7 +5,7 @@
 	{
 		var injector = angular.bootstrap( $("body"), [ "Hime", "Time", "Area"] );
 	
-		window.hime = getScope(".hime-control").hime;
+		window.hime = getScope("body").hime;
 	});
 }());
 
