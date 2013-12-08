@@ -1,18 +1,14 @@
 namespace.namespace( "com.everempire.hime", function() {
 	
-	var math = namespace.getNode( "com.everempire.royal.math" );
-	var time = namespace.getNode( "com.everempire.royal.time" );
-	
 	var activity = namespace.getNode("com.everempire.hime.activity");
 	var actor = namespace.getNode( "com.everempire.hime.actor" );
 	var area = namespace.getNode( "com.everempire.hime.area" );
 	
 	var hime = this;
 	
-	this.Hime = function( areaData )
+	this.Hime = function( gameClock )
 	{
-		// DI Game Clock
-		initGameClock( this );
+		this.gameClock = gameClock;
 		
 		// DI Actors
 		initActors( this );
@@ -69,18 +65,6 @@ namespace.namespace( "com.everempire.hime", function() {
 			var actor = this.actors[i];
 			actor.parentAreaId = "mainHall";
 		}
-	};
-	
-	var initGameClock = function( hime )
-	{
-		// Build game clock
-		var gameClock = time.buildFullClock();
-		//gameClock.SpeedClock.setSpeed( 1 );
-		//gameClock.PlusClock.setPlusTime( 1000000 );
-		//gameClock.DeltaClock.clear();
-		gameClock.MotionClock.setFilter( math.filters.easeInCubic );
-		
-		hime.gameClock = gameClock;
 	};
 	
 	var initActors = function( himeGame )

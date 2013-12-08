@@ -7,7 +7,7 @@
 		
 		var area = namespace.getNode("com.everempire.hime.area");
 		
-		$compileProvider.directive( "eeRefresh", function( $frameProvider )
+		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime )
 		{
 			var directiveDefinition = 
 			{
@@ -19,9 +19,9 @@
 					
 					$frameProvider.frame( function( startTime, endTime )
 					{
-						// TODO: [prince] Need to fix this big time via DI
-						scope.time = scope.hime.gameClock.getTime();
-						scope.hime.activityService.setTime( scope.time );
+						// TODO: [prince] Still need to fix stuff here, not very neat
+						scope.time = gameClock.getTime();
+						hime.activityService.setTime( scope.time );
 						scope.$apply();
 					});
 				}
