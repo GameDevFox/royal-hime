@@ -1,24 +1,17 @@
 namespace.namespace( "com.everempire.hime", function() {
 	
-	var activity = namespace.getNode("com.everempire.hime.activity");
-	var actor = namespace.getNode( "com.everempire.hime.actor" );
 	var area = namespace.getNode( "com.everempire.hime.area" );
 	
 	var hime = this;
 	
-	this.Hime = function( gameClock )
+	this.Hime = function( gameClock, activityService )
 	{
 		this.gameClock = gameClock;
-		
-		// DI Actors
-		initActors( this );
+		this.activityService = activityService;
 		
 		// DI Areas
 		this.areas = {};
 		this.currentArea = null;
-		
-		// DI Activity Service
-		this.activityService = activity.buildActivityService();
 	};
 	
 	this.Hime.prototype.getProgress = function( actor )
@@ -65,19 +58,5 @@ namespace.namespace( "com.everempire.hime", function() {
 			var actor = this.actors[i];
 			actor.parentAreaId = "mainHall";
 		}
-	};
-	
-	var initActors = function( himeGame )
-	{
-		// Init Actors
-		var james = actor.buildActor( "James", 120 );
-		var hime = actor.buildActor( "Hime", 80 );
-		
-		himeGame.actors = [
-			james,
-			hime
-		];
-		
-		himeGame.selectedActor = james;
 	};
 });

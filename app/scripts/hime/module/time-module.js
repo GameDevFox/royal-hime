@@ -7,6 +7,26 @@
 		
 		var area = namespace.getNode("com.everempire.hime.area");
 		
+		$controllerProvider.register( "ClockController", function( $scope, gameClock ) 
+		{
+			$scope.clock = gameClock;
+			
+			$scope.start = function()
+			{
+				gameClock.StopClock.start();
+			}
+			
+			$scope.stop = function()
+			{
+				gameClock.StopClock.stop();
+			}
+			
+			$scope.isRunning = function()
+			{
+				return gameClock.StopClock.isRunning();
+			}
+		});
+		
 		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime )
 		{
 			var directiveDefinition = 
@@ -20,8 +40,9 @@
 					$frameProvider.frame( function( startTime, endTime )
 					{
 						// TODO: [prince] Still need to fix stuff here, not very neat
-						scope.time = gameClock.getTime();
-						hime.activityService.setTime( scope.time );
+						//scope.time = gameClock.getTime();
+						var time = gameClock.getTime();
+						hime.activityService.setTime( time );
 						scope.$apply();
 					});
 				}

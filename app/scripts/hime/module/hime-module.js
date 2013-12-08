@@ -1,9 +1,13 @@
 var $math = namespace.getNode( "com.everempire.royal.math" );
 var $time = namespace.getNode( "com.everempire.royal.time" );
 
-var hime = angular.module( "Hime", [] );
+var $activity = namespace.getNode("com.everempire.hime.activity");
+var $actor = namespace.getNode( "com.everempire.hime.actor" );
 
-hime.factory( "hime", function( gameClock ) 
+// Create Module
+var himeModule = angular.module( "Hime", [] );
+
+himeModule.factory( "hime", function( gameClock ) 
 {
 	var $hime = namespace.getNode( "com.everempire.hime" );
 	var hime = new $hime.Hime();
@@ -11,7 +15,7 @@ hime.factory( "hime", function( gameClock )
 	return hime;
 });
 
-hime.factory( "gameClock", function() 
+himeModule.factory( "gameClock", function() 
 {
 	var gameClock = $time.buildFullClock();
 	//gameClock.SpeedClock.setSpeed( 1 );
@@ -22,7 +26,43 @@ hime.factory( "gameClock", function()
 	return gameClock;
 });
 
-hime.directive( "eeMeter", function()
+himeModule.factory( "actorService", function() 
+{
+	// TODO: [EDWARD] Factor this out into a data file
+	var actorService = {};
+	
+	// TODO: Factor out "ActorService" to it's own script
+	// Init Actors
+	var james = $actor.buildActor( "James", 120 );
+	var hime = $actor.buildActor( "Hime", 80 );
+	
+	actorService.actors = [
+		james,
+		hime
+	];
+	
+	actorService.selectedActor = james;
+	
+	actorService.select = function( actor )
+	{
+		this.selectedActor = actor;
+	};
+	
+	return actorService;
+});
+
+himeModule.factory( "activityService", function() 
+{
+	return $activity.buildActivityService();
+});
+
+himeModule.controller( "ActorController", function( $scope, actorService ) 
+{
+	$scope.actors = actorService.actors;
+	$scope.selectedActor = actorService.selectedActor;
+});
+
+himeModule.directive( "eeMeter", function()
 {
 	var eeMeter =
 	{
@@ -39,10 +79,8 @@ hime.directive( "eeMeter", function()
 	return eeMeter;
 });
 
-hime.run( function( $rootScope, $http, hime )
+himeModule.run( function( $rootScope, $http, hime )
 {
-	//$rootScope.hime = $hime;
-	
 	// TODO: [prince] DON'T HARD CODE THIS
 	$http.get( "/data/areas.json" ).success( function( areaData ) 
 	{

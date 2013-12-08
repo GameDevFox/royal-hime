@@ -19,15 +19,15 @@
 		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
 		<script type="text/javascript" src="scripts/royal/parent.js"></script>
 		 
-		<!-- Angular Modules -->
-		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
-		
 		<script type="text/javascript" src="scripts/hime/hime.js"></script>
 		<script type="text/javascript" src="scripts/hime/area.js"></script>
 		<script type="text/javascript" src="scripts/hime/actor.js"></script>
 		<script type="text/javascript" src="scripts/hime/activity.js"></script>
+		
+		<!-- Angular Modules -->
+		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
 		
 		<script type="text/javascript" src="scripts/main.js"></script>
 		
@@ -37,57 +37,61 @@
 		<table style="width: 100%;">
 			<tr>
 				<td colspan="2">
-				
-					<fieldset>
-						<legend>Time</legend>
-						
-						<ee:Meter class="time-meter" value="time" max-value="1000 * 60 * 60 * 24">
-							{{ time | time }}
-						</ee:Meter>
-						
-						<div>
-							<button ng:click="hime.gameClock.StopClock.stop()" ng:show="hime.gameClock.StopClock.isRunning()">Pause</button>
-							<button ng:click="hime.gameClock.StopClock.start()" ng:hide="hime.gameClock.StopClock.isRunning()">Resume</button>
-						</div>
-					</fieldset>
-				
+					<div ng:controller="ClockController">
+						<fieldset>
+							<legend>Time</legend>
+							
+							<ee:Meter class="time-meter" value="clock.getTime()" max-value="1000 * 60 * 60 * 24"> <!-- 1 Day -->
+								{{ clock.getTime() | time }}
+							</ee:Meter>
+							
+							<div>
+								<button ng:click="stop()" ng:show="isRunning()">Pause</button>
+								<button ng:click="start()" ng:hide="isRunning()">Resume</button>
+							</div>
+						</fieldset>
+					</div>
 				</td>
 			<tr>
 			
 			<tr>
 				<td style="width: 250px; vertical-align: top;">
 					
-					<fieldset style="height: 100%;">
-						<legend>Actors</legend>
-						<div class="actor" ng:class="{selected: hime.selectedActor ==  actor}" ng:repeat="actor in hime.actors" ng:click="hime.selectActor( actor )">
-							{{ actor.name }}
-							
-							<ee:Meter 
-								class="energy-meter" 
-								ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }" 
-								value="actor.energy" 
-								max-value="actor.maxEnergy">
-									En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}
-							</ee:Meter>
-							
-							<ee:Meter class="progress-meter" value="hime.getProgress( actor ) * 100" max-value="100">
-								<div ng:show="hime.getProgress( actor )">
-									Progress: {{ hime.getProgress( actor ) * 100 | number:0 }}%
-									<span ng:show="hime.getRemainingTime( actor )">
-										( {{ hime.getRemainingTime( actor ) | time }} )
-									</span>
+					<div ng:controller="ActorController">
+					
+						<fieldset style="height: 100%;">
+							<legend>Actors</legend>
+							<div class="actor" ng:repeat="actor in actors" ng:class="{selected: selectedActor ==  actor}" ng:click="select( actor )">
+								{{ actor.name }}
+								
+								<ee:Meter 
+									class="energy-meter" 
+									ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }" 
+									value="actor.energy" 
+									max-value="actor.maxEnergy">
+										En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}
+								</ee:Meter>
+								
+								<ee:Meter class="progress-meter" value="hime.getProgress( actor ) * 100" max-value="100">
+									<div ng:show="hime.getProgress( actor )">
+										Progress: {{ hime.getProgress( actor ) * 100 | number:0 }}%
+										<span ng:show="hime.getRemainingTime( actor )">
+											( {{ hime.getRemainingTime( actor ) | time }} )
+										</span>
+									</div>
+									<div class="ready-message" ng:hide="hime.getProgress( actor )">
+										Ready
+									</div>
+								</ee:Meter>
+								
+								<div>
+									Location: {{ hime.areas[actor.parentAreaId].name }}
 								</div>
-								<div class="ready-message" ng:hide="hime.getProgress( actor )">
-									Ready
-								</div>
-							</ee:Meter>
-							
-							<div>
-								Location: {{ hime.areas[actor.parentAreaId].name }}
 							</div>
-						</div>
-					</fieldset>
-				
+						</fieldset>
+					
+					</div>
+					
 				</td>
 				<td style="vertical-align: top;">
 				
