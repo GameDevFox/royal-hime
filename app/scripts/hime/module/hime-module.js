@@ -26,6 +26,14 @@ himeModule.factory( "gameClock", function()
 	return gameClock;
 });
 
+himeModule.factory( "areaService", function()
+{
+	// TODO: [EDWARD] Factor this out into a data file
+	var areaService  = {};
+	
+	
+});
+
 himeModule.factory( "actorService", function() 
 {
 	// TODO: [EDWARD] Factor this out into a data file
@@ -56,10 +64,21 @@ himeModule.factory( "activityService", function()
 	return $activity.buildActivityService();
 });
 
-himeModule.controller( "ActorController", function( $scope, actorService ) 
+himeModule.controller( "ActorController", function( $scope, actorService, activityService ) 
 {
+	// Properties
 	$scope.actors = actorService.actors;
 	$scope.selectedActor = actorService.selectedActor;
+	
+	// Functions
+	$scope.select = actorService.select;
+	$scope.getProgress = activityService.getProgress;
+	$scope.getRemainingTime = activityService.getRemainingTime;
+	
+	$scope.getAreaName = function( actor )
+	{
+		hime.areas[actor.parentAreaId].name;
+	}
 });
 
 himeModule.directive( "eeMeter", function()

@@ -42,7 +42,8 @@
 						// TODO: [prince] Still need to fix stuff here, not very neat
 						//scope.time = gameClock.getTime();
 						var time = gameClock.getTime();
-						hime.activityService.setTime( time );
+						// TODO: [prince] restore activity service, have some way to register with clock?
+						//hime.activityService.setTime( time );
 						scope.$apply();
 					});
 				}

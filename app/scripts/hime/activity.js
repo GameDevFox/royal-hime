@@ -74,6 +74,17 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 			
 			getProgress: function( activityId )
 			{
+				if( typeof activityId == "object" )
+				{
+					// Assume "activityId" is actually an object with an id
+					activityId = activityId.activityId;
+				}
+				
+				if( activityId == null )
+				{
+					return null;
+				}
+				
 				var activityFrame = this.activityFrames[activityId];
 				
 				if( activityFrame == undefined )
@@ -95,6 +106,17 @@ namespace.namespace( "com.everempire.hime.activity", function() {
 			
 			getRemainingTime: function( activityId )
 			{
+				if( typeof activityId == "object" )
+				{
+					// Assume "activityId" is actually an object with an id
+					activityId = activityId.activityId;
+				}
+				
+				if( activityId == null )
+				{
+					return null;
+				}
+				
 				var activityFrame = this.activityFrames[activityId];
 				
 				if( activityFrame == undefined )

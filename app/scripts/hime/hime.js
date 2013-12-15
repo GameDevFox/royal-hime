@@ -14,28 +14,6 @@ namespace.namespace( "com.everempire.hime", function() {
 		this.currentArea = null;
 	};
 	
-	this.Hime.prototype.getProgress = function( actor )
-	{
-		if( actor == null || actor.activityId == null )
-		{
-			return null;
-		}
-
-		// TODO: [prince] Use dependancy injection
-		return this.activityService.getProgress( actor.activityId );
-	};
-	
-	this.Hime.prototype.getRemainingTime = function( actor )
-	{
-		if( actor.activityId == null )
-		{
-			return null;
-		}
-
-		// TODO: [prince] Use dependancy injection
-		return this.activityService.getRemainingTime( actor.activityId );
-	};
-	
 	this.Hime.prototype.boost = function()
 	{
 		// TODO: [prince] Refactor
