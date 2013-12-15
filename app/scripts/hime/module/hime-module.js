@@ -3,6 +3,7 @@ var $time = namespace.getNode( "com.everempire.royal.time" );
 
 var $activity = namespace.getNode("com.everempire.hime.activity");
 var $actor = namespace.getNode( "com.everempire.hime.actor" );
+var $area = namespace.getNode( "com.everempire.hime.area" );
 
 // Create Module
 var himeModule = angular.module( "Hime", [] );
@@ -26,14 +27,6 @@ himeModule.factory( "gameClock", function()
 	return gameClock;
 });
 
-himeModule.factory( "areaService", function()
-{
-	// TODO: [EDWARD] Factor this out into a data file
-	var areaService  = {};
-	
-	
-});
-
 himeModule.factory( "actorService", function() 
 {
 	// TODO: [EDWARD] Factor this out into a data file
@@ -49,8 +42,6 @@ himeModule.factory( "actorService", function()
 		hime
 	];
 	
-	actorService.selectedActor = james;
-	
 	actorService.select = function( actor )
 	{
 		this.selectedActor = actor;
@@ -64,7 +55,12 @@ himeModule.factory( "activityService", function()
 	return $activity.buildActivityService();
 });
 
-himeModule.controller( "ActorController", function( $scope, actorService, activityService ) 
+himeModule.factory( "areaService", function( areaDefObject )
+{
+	return $area.buildAreaService( areaDefObject );
+});
+
+himeModule.controller( "ActorController", function( $scope, actorService, activityService, areaService ) 
 {
 	// Properties
 	$scope.actors = actorService.actors;
@@ -75,10 +71,22 @@ himeModule.controller( "ActorController", function( $scope, actorService, activi
 	$scope.getProgress = activityService.getProgress;
 	$scope.getRemainingTime = activityService.getRemainingTime;
 	
-	$scope.getAreaName = function( actor )
+	$scope.getLocationName = function( actor )
 	{
-		hime.areas[actor.parentAreaId].name;
-	}
+		var areaId = actor.parentAreaId;
+		
+		if( areaId == null )
+		{
+			return "None";
+		} 
+		else
+		{
+			var area = areaService.getArea( areaId );
+			return area.name;
+		}
+		
+		return areaId;
+	};
 });
 
 himeModule.directive( "eeMeter", function()
@@ -98,11 +106,13 @@ himeModule.directive( "eeMeter", function()
 	return eeMeter;
 });
 
-himeModule.run( function( $rootScope, $http, hime )
+himeModule.run( function( actorService, areaService )
 {
-	// TODO: [prince] DON'T HARD CODE THIS
-	$http.get( "/data/areas.json" ).success( function( areaData ) 
+	var defaultAreaId = "mainHall";
+	
+	for( i in actorService.actors )
 	{
-		hime.loadAreaData( areaData );
-	});
+		var actor = actorService.actors[i];
+		actor.parentAreaId = defaultAreaId;
+	}
 });
