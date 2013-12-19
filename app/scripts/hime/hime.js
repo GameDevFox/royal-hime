@@ -4,26 +4,13 @@ namespace.namespace( "com.everempire.hime", function() {
 	
 	var hime = this;
 	
-	this.Hime = function( gameClock, activityService )
+	this.Hime = function( gameClock )
 	{
 		this.gameClock = gameClock;
-		this.activityService = activityService;
 		
 		// DI Areas
 		this.areas = {};
 		this.currentArea = null;
-	};
-	
-	this.Hime.prototype.boost = function()
-	{
-		// TODO: [prince] Refactor
-		var activityFrame = this.activityService.getNextCompletedActivity();
-		this.gameClock.MotionClock.move( activityFrame.endTime - this.activityService.time, 1500 );
-	};
-	
-	this.Hime.prototype.selectActor = function( actor )
-	{
-		this.selectedActor = actor;
 	};
 	
 	this.Hime.prototype.loadAreaData = function( areaData )
