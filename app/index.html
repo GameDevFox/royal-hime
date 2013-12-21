@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:emp="http://everempire.com" xmlns:ng="http://angularjs.org">
+<html xmlns:ee="http://everempire.com" xmlns:ng="http://angularjs.org">
 	<head>
 		<title>Royal</title>
 		
@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="scripts/angular-1.2.1.js"></script>
 		<script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
 		<script type="text/javascript" src="scripts/underscore-1.5.2.js"></script>
+		<script type="text/javascript" src="scripts/utils.js"></script>
 		
 		<script type="text/javascript" src="scripts/royal/namespace.js"></script>
 		<script type="text/javascript" src="scripts/royal/math.js"></script>
@@ -19,170 +20,173 @@
 		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
 		<script type="text/javascript" src="scripts/royal/parent.js"></script>
 		 
-		<!-- Angular Modules -->
-		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
-		
 		<script type="text/javascript" src="scripts/hime/hime.js"></script>
 		<script type="text/javascript" src="scripts/hime/area.js"></script>
 		<script type="text/javascript" src="scripts/hime/actor.js"></script>
 		<script type="text/javascript" src="scripts/hime/activity.js"></script>
 		
+		<!-- Angular Modules -->
+		<script type="text/javascript" src="scripts/hime/module/hime-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/area-module.js"></script>
+		
 		<script type="text/javascript" src="scripts/main.js"></script>
 		
 	</head>
-	<body>
-		
-		<div class="hime-control" ng:controller="HimeControl" data-area-map="/data/areas.json">
-			
-			<table style="width: 100%;">
-				<tr>
-					<td colspan="2">
-					
+	<body ee:refresh="60fps">
+	
+		<table style="width: 100%;">
+			<tr>
+				<td colspan="2">
+					<div ng:controller="ClockController">
 						<fieldset>
 							<legend>Time</legend>
 							
-							<div ng:controller="ClockControl" clock="gameClock">
-								<emp:Meter class="time-meter" value="time" max-value="1000 * 60 * 60 * 24">
-									{{ time | time }}
-								</emp:Meter>
-								
-								<div>
-									<button ng:click="hime.gameClock.StopClock.stop()" ng:show="hime.gameClock.StopClock.isRunning()">Pause</button>
-									<button ng:click="hime.gameClock.StopClock.start()" ng:hide="hime.gameClock.StopClock.isRunning()">Resume</button>
-								</div>
+							<ee:Meter class="time-meter" value="getTime()" max-value="1000 * 60 * 60 * 24"> <!-- 1 Day -->
+								{{ getTime() | time }}
+							</ee:Meter>
+							
+							<div>
+								<button ng:click="stop()" ng:show="isRunning()">Pause</button>
+								<button ng:click="start()" ng:hide="isRunning()">Resume</button>
 							</div>
 						</fieldset>
+					</div>
+				</td>
+			<tr>
+			
+			<tr>
+				<td style="width: 250px; vertical-align: top;">
 					
-					</td>
-				<tr>
-				
-				<tr>
-					<td style="width: 250px; vertical-align: top;">
-						
+					<div ng:controller="ActorController">
+					
 						<fieldset style="height: 100%;">
 							<legend>Actors</legend>
-							<div class="actor" ng:class="{selected: hime.selectedActor ==  actor}" ng:repeat="actor in hime.actors" ng:click="hime.selectActor( actor )">
+							
+							<div class="actor" ng:repeat="actor in actors" ng:class="{selected: getSelectedActor() ==  actor}" ng:click="$parent.select( actor )">
 								{{ actor.name }}
 								
-								<emp:Meter 
+								<ee:Meter 
 									class="energy-meter" 
 									ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }" 
 									value="actor.energy" 
 									max-value="actor.maxEnergy">
 										En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}
-								</emp:Meter>
+								</ee:Meter>
 								
-								<emp:Meter class="progress-meter" value="hime.getProgress( actor ) * 100" max-value="100">
-									<div ng:show="hime.getProgress( actor )">
-										Progress: {{ hime.getProgress( actor ) * 100 | number:0 }}%
-										<span ng:show="hime.getRemainingTime( actor )">
-											( {{ hime.getRemainingTime( actor ) | time }} )
+								<ee:Meter class="progress-meter" value="getProgress( actor ) * 100" max-value="100">
+									<div ng:show="getProgress( actor )">
+										Progress: {{ getProgress( actor ) * 100 | number:0 }}%
+										<span ng:show="getRemainingTime( actor )">
+											( {{ getRemainingTime( actor ) | time }} )
 										</span>
 									</div>
-									<div class="ready-message" ng:hide="hime.getProgress( actor )">
+									<div class="ready-message" ng:hide="getProgress( actor )">
 										Ready
 									</div>
-								</emp:Meter>
+								</ee:Meter>
 								
 								<div>
-									Location: {{ hime.areas[actor.parentAreaId].name }}
+									Location: {{ getLocationName( actor ) }}
 								</div>
 							</div>
 						</fieldset>
 					
-					</td>
-					<td style="vertical-align: top;">
+					</div>
 					
-						<fieldset class="activity-controller">
-							<legend>Activity</legend>
+				</td>
+				<td style="vertical-align: top;">
+				
+					<fieldset class="activity-controller">
+						<legend>Activity</legend>
+						<div ng:controller="ActivityController">
+						
+							<div class="boost-button-wrapper">
+								<button class="boost-button" ng:click="boost()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
+							</div>
+							
+						</div>
+					</fieldset>
+					
+					<fieldset>
+						<legend>Navigation</legend>
+						
+						<div ng:controller="AreaControl">
 							
 							<div>
-								<div class="boost-button-wrapper">
-									<button class="boost-button" ng:click="hime.boost()" ng:disabled="hime.activityService.getNextCompletedActivity() == null">Complete Next Activity</button>
-								</div>
+								<input type="checkbox" ng:model="running"/>
+								Running
 							</div>
-						</fieldset>
-						
-						<fieldset>
-							<legend>Navigation</legend>
 							
-							<div ng:controller="AreaControl">
-								
-								<div>
-									<input type="checkbox" ng:model="running"/> Running
-								</div>
-								
-								<div>
-									<input type="checkbox" ng:model="throttle"> Throttle
-								</div>
-								
-								<div>
-									<div ng:show="hime.selectedActor.activityId == null">
-										<h3>Exits:</h3>
-										<ul class="paths">
-											<li ng:repeat="(areaName, path) in hime.areas[hime.selectedActor.parentAreaId].paths">
-												<a ng:click="move()" ng:mouseover="setAreaName( areaName )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
-											</li>
-										</ul>
-										
-										<input type="text" ng:model="areaName" placeholder="Where do you want to go?" />
-										<input type="button" ng:click="move()" value="Move" />
-									</div>
-								</div>
+							<div>
+								<input type="checkbox" ng:model="throttle">
+								Throttle
 							</div>
-						</fieldset>
-					
-					</td>
-				</tr>
-				
-				<tr>
-					<td colspan="2">
-						<fieldset>
-							<legend>Edit Areas</legend>
-							<div ng:controller="AreaEditControl" data-area-map="/data/areas.json">
 							
-								<h2>Areas:</h2>
-								<ul>
-									<li ng:repeat="(areaCode, area) in areas">
-										<a href="" ng:click="selectArea( areaCode )">{{ areaCode }}</a> <input type="text" ng:model="area.name"/> [ <a href="" ng:click="removeArea( areaCode )" >Remove</a> ]
-										<ul>
-											<li ng:repeat="path in area.paths">
-												{{ path.area.name }} : {{ path.distance }}m [ <a href="" ng:click="removePath( areaCode, $index )">X</a> ]
-											</li>
-										</ul>
-									</li>
-								</ul>
-								
-								<div>
-									<input type="text" ng:model="areaCode" placeholder="Area Code" />
-									<input type="text" ng:model="areaName" placeholder="Area Name" />
-									<input type="button" ng:click="createArea()" value="Create Area" />
-								</div>
-								
-								<div>
-									<input type="text" ng:model="areaCodeA" placeholder="Area Code A" />
-									<input type="text" ng:model="areaCodeB" placeholder="Area Code B" />
-									<input type="number" ng:model="pathDistance" placeholder="Distance" />m
-									<input type="button" ng:click="createPath()" value="Create Path" />
-								</div>
-								
-								<div>
-									<input type="button" ng:click="generateJson()" value="Generate JSON" />
-								</div>
-								
-								<textarea class="generated-json" ng:model="generatedJson" ng:show="generatedJson">
+							<div>
+								<div ng:show="hasActivity()">
+									<h3>Exits:</h3>
+									<ul class="paths">
+										<li ng:repeat="(areaName, path) in getPaths()">
+											<a ng:click="move()" ng:mouseover="setAreaName( areaName )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
+										</li>
+									</ul>
 									
-								</textarea>
-								
+									<input type="text" ng:model="areaName" placeholder="Where do you want to go?" />
+									<input type="button" ng:click="move()" value="Move" />
+								</div>
 							</div>
-						</fieldset>
-					</td>
-				</tr>
+						</div>
+					</fieldset>
 				
-			</table>
+				</td>
+			</tr>
 			
-		</div>
+			<tr>
+				<td colspan="2">
+					<fieldset>
+						<legend>Edit Areas</legend>
+						<div ng:controller="AreaEditControl" data-area-map="/data/areas.json">
+						
+							<h2>Areas:</h2>
+							<ul>
+								<li ng:repeat="(areaCode, area) in areas">
+									<a href="" ng:click="selectArea( areaCode )">{{ areaCode }}</a> <input type="text" ng:model="area.name"/> [ <a href="" ng:click="removeArea( areaCode )" >Remove</a> ]
+									<ul>
+										<li ng:repeat="path in area.paths">
+											{{ path.area.name }} : {{ path.distance }}m [ <a href="" ng:click="removePath( areaCode, $index )">X</a> ]
+										</li>
+									</ul>
+								</li>
+							</ul>
+							
+							<div>
+								<input type="text" ng:model="areaCode" placeholder="Area Code" />
+								<input type="text" ng:model="areaName" placeholder="Area Name" />
+								<input type="button" ng:click="createArea()" value="Create Area" />
+							</div>
+							
+							<div>
+								<input type="text" ng:model="areaCodeA" placeholder="Area Code A" />
+								<input type="text" ng:model="areaCodeB" placeholder="Area Code B" />
+								<input type="number" ng:model="pathDistance" placeholder="Distance" />m
+								<input type="button" ng:click="createPath()" value="Create Path" />
+							</div>
+							
+							<div>
+								<input type="button" ng:click="generateJson()" value="Generate JSON" />
+							</div>
+							
+							<textarea class="generated-json" ng:model="generatedJson" ng:show="generatedJson">
+								
+							</textarea>
+							
+						</div>
+					</fieldset>
+				</td>
+			</tr>
+			
+		</table>
+		
 	</body>
 </html>

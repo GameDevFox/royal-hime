@@ -7,76 +7,61 @@
 		
 		var area = namespace.getNode("com.everempire.hime.area");
 		
-		$controllerProvider.register( "ClockControl", function( $scope, $attrs, $frameProvider )
+		$controllerProvider.register( "ClockController", function( $scope, gameClock ) 
 		{
-			// NEED MORE VALIDATION HERE
-			var	clock = $scope.hime.gameClock;
-			
-			$scope.fp = $frameProvider;
-			
-			// Refresh Time
-			$frameProvider.frame( function( start, end )
+			$scope.getTime = function()
 			{
-				$scope.time = clock.getTime();
-				$scope.hime.activityService.setTime( $scope.time );
-				$scope.$apply();
-			});
+				return gameClock.getTime();
+			}
 			
-			$scope.stopFrames = function()
+			$scope.start = function()
 			{
-				this.fp.stop();
+				gameClock.StopClock.start();
+			}
+			
+			$scope.stop = function()
+			{
+				gameClock.StopClock.stop();
+			}
+			
+			$scope.isRunning = function()
+			{
+				return gameClock.StopClock.isRunning();
+			}
+		});
+		
+		// TODO: [prince] This is a hack way to update activity service
+		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime, activityService )
+		{
+			var directiveDefinition = 
+			{
+				link: function( scope, element, attrs )
+				{
+					// TODO: [prince] Implements config
+					var framesPerSecond =  attrs["eeRefresh"];
+					var millisPerFrame = 1000 / framesPerSecond;
+					
+					// TODO: [prince] Don't DI frameProvidor, just build a new one
+					$frameProvider.frame( function( startTime, endTime )
+					{
+						// TODO: [prince] Still need to fix stuff here, not very neat
+						//scope.time = gameClock.getTime();
+						gameClock.DeltaClock.lap();
+						var time = gameClock.getTime();
+						
+						// TODO: [prince] restore activity service, have some way to register with clock?
+						activityService.setTime( time );
+						scope.$apply();
+					});
+				}
 			};
 			
-			$scope.startFrames = function()
-			{
-				this.fp.start();
-			};
+			return directiveDefinition;
 		});
 		
 		$filterProvider.register( "time", function()
 		{
-			return function( text )
-			{			
-				var seconds = Math.round( text / 1000 );
-				var minutes = null;
-				var hours = null;
-				var days = null;
-				
-				if( seconds >= 60 )
-				{
-					minutes = Math.floor( seconds / 60 );
-					seconds = seconds % 60;
-				}
-				
-				if( minutes >= 60 )
-				{
-					hours = Math.floor( minutes / 60 );
-					minutes = minutes % 60;
-				}
-				
-				if( hours >= 24 )
-				{
-					days = Math.floor( hours / 24 );
-					hours = hours % 24;
-				}
-				
-				var msg = "";
-				if( days != null )
-				{
-					msg += " " + days + "d";
-				}
-				if( hours != null )
-				{
-					msg += " " + formatDigits( hours, days ) + "h";
-				}
-				if( minutes != null )
-				{
-					msg += " " + formatDigits( minutes, hours ) + "m";
-				}
-				msg += " " + formatDigits( seconds, minutes ) + "s";
-			
-				return msg;
-			};
+			return time.formatTime;
 		});
 		
 		$provide.factory( "$frameProvider" , function() 
@@ -123,12 +108,12 @@
 					}
 				},
 				
-				dispatchFrame: function( start, end ) 
+				dispatchFrame: function( startTime, endTime ) 
 				{
 					for( var i in this.frameHandlers )
 					{
 						var frameHandler = this.frameHandlers[i];
-						frameHandler.call( this, start, end ); 
+						frameHandler.call( this, startTime, endTime ); 
 					}
 				},
 			};
@@ -137,21 +122,5 @@
 			
 			return frameProvider;
 		});
-		
-		function formatDigits( unit, dependancy ) {
-			
-			var digits;
-			
-			if( unit < 10 && dependancy != null )
-			{
-				digits = "0"+unit;
-			}
-			else
-			{
-				digits = unit;
-			}
-			
-			return digits;
-		}
 	});
 }());
