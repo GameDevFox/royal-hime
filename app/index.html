@@ -42,8 +42,8 @@
 						<fieldset>
 							<legend>Time</legend>
 							
-							<ee:Meter class="time-meter" value="clock.getTime()" max-value="1000 * 60 * 60 * 24"> <!-- 1 Day -->
-								{{ clock.getTime() | time }}
+							<ee:Meter class="time-meter" value="getTime()" max-value="1000 * 60 * 60 * 24"> <!-- 1 Day -->
+								{{ getTime() | time }}
 							</ee:Meter>
 							
 							<div>

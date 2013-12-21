@@ -1,13 +1,21 @@
-namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
-	
-	this.buildActivityService = function()
+namespace.namespace( "com.everempire.hime.activity", function() 
+{
+	this.buildActivityService = function( gameClock )
 	{
 		var activityService = {};
 		
-		activityService.time = 0;
-		activityService.activityFrames = [];	
+		this.buildActivityServiceFunc.call( activityService, gameClock );
+		
+		return activityService;
+	};
+	
+	this.buildActivityServiceFunc = function( gameClock )
+	{
+		this.time = 0;
+		this.activityFrames = [];
+		this.gameClock = gameClock;
 			
-		activityService.addActivity = function()
+		this.addActivity = function()
 		{
 			switch( arguments.length )
 			{
@@ -23,7 +31,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			}
 		};
 			
-		activityService.addActivityNow = function( activity, duration ) 
+		this.addActivityNow = function( activity, duration ) 
 		{	
 			if( duration == undefined )
 			{
@@ -36,7 +44,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return this.commitActivity( activity, startTime, endTime );
 		};
 			
-		activityService.addActivityLater = function( activity, offset, duration )
+		this.addActivityLater = function( activity, offset, duration )
 		{
 			var startTime = this.time + offset;
 			var endTime = startTime + duration;
@@ -44,7 +52,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return this.commitActivity( activity, startTime, endTime );
 		};
 			
-		activityService.commitActivity = function( activity, startTime, endTime )
+		this.commitActivity = function( activity, startTime, endTime )
 		{
 			var commitActivity;
 			
@@ -72,7 +80,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return activityId;
 		};
 			
-		activityService.getProgress = function( activityId )
+		this.getProgress = function( activityId )
 		{
 			if( typeof activityId == "object" )
 			{
@@ -104,7 +112,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return progress;
 		};
 			
-		activityService.getRemainingTime = function( activityId )
+		this.getRemainingTime = function( activityId )
 		{
 			if( typeof activityId == "object" )
 			{
@@ -136,7 +144,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return progress;
 		};
 		
-		activityService.getNextCompletedActivityId = function() 
+		this.getNextCompletedActivityId = function() 
 		{
 			var nextFrame = null;
 			var nextActivityId = null;
@@ -164,7 +172,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return nextActivityId;
 		};
 			
-		activityService.getNextCompletedActivity = function() 
+		this.getNextCompletedActivity = function() 
 		{
 			var nextActivityId = this.getNextCompletedActivityId();
 			var nextActivity = this.activityFrames[nextActivityId];
@@ -172,18 +180,18 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 			return nextActivity;
 		};
 			
-		activityService.boost = function()
+		this.boost = function()
 		{
 			var activityFrame = this.getNextCompletedActivity();
-			gameClock.MotionClock.move( this.endTime - this.time, 1500 );
+			this.gameClock.MotionClock.move( activityFrame.endTime - this.time, 1500 );
 		};
 			
-		activityService.updateTime = function( time )
+		this.updateTime = function( time )
 		{
 			this.setTime( this.time + time );
 		};
 			
-		activityService.setTime = function( time ) 
+		this.setTime = function( time ) 
 		{
 			if( this.time > time )
 			{
@@ -219,9 +227,7 @@ namespace.namespace( "com.everempire.hime.activity", function( gameClock ) {
 				}
 			}
 		}
-		
-		return activityService;
-	};
+	}
 	
 	this.isActive = function( actor )
 	{

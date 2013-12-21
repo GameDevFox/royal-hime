@@ -24,6 +24,8 @@ himeModule.factory( "gameClock", function()
 	//gameClock.DeltaClock.clear();
 	gameClock.MotionClock.setFilter( $math.filters.easeInCubic );
 	
+	window.gameClock = gameClock;
+	
 	return gameClock;
 });
 
@@ -32,9 +34,9 @@ himeModule.factory( "actorService", function()
 	return $actor.buildActorService();
 });
 
-himeModule.factory( "activityService", function() 
+himeModule.factory( "activityService", function( gameClock ) 
 {
-	return $activity.buildActivityService();
+	return $activity.buildActivityService( gameClock );
 });
 
 himeModule.factory( "areaService", function( areaDefObject )
@@ -49,8 +51,16 @@ himeModule.controller( "ActorController", function( $scope, actorService, activi
 	
 	// Functions
 	$scope.select = actorService.select;
-	$scope.getProgress = activityService.getProgress;
-	$scope.getRemainingTime = activityService.getRemainingTime;
+	
+	$scope.getProgress = function( activityId )
+	{
+		return activityService.getProgress( activityId );
+	};
+	
+	$scope.getRemainingTime = function( activityId )
+	{
+		return activityService.getRemainingTime( activityId );
+	};
 	
 	$scope.getSelectedActor = function()
 	{
@@ -190,7 +200,7 @@ himeModule.controller( "AreaControl", function( $scope, actorService, areaServic
 		
 		if( $scope.throttle )
 		{
-			$scope.hime.boost();
+			activityService.boost();
 		}
 	};
 });

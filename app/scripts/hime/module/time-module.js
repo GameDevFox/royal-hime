@@ -9,7 +9,10 @@
 		
 		$controllerProvider.register( "ClockController", function( $scope, gameClock ) 
 		{
-			$scope.clock = gameClock;
+			$scope.getTime = function()
+			{
+				return gameClock.getTime();
+			}
 			
 			$scope.start = function()
 			{
@@ -27,7 +30,8 @@
 			}
 		});
 		
-		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime )
+		// TODO: [prince] This is a hack way to update activity service
+		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime, activityService )
 		{
 			var directiveDefinition = 
 			{
@@ -37,13 +41,16 @@
 					var framesPerSecond =  attrs["eeRefresh"];
 					var millisPerFrame = 1000 / framesPerSecond;
 					
+					// TODO: [prince] Don't DI frameProvidor, just build a new one
 					$frameProvider.frame( function( startTime, endTime )
 					{
 						// TODO: [prince] Still need to fix stuff here, not very neat
 						//scope.time = gameClock.getTime();
+						gameClock.DeltaClock.lap();
 						var time = gameClock.getTime();
+						
 						// TODO: [prince] restore activity service, have some way to register with clock?
-						//hime.activityService.setTime( time );
+						activityService.setTime( time );
 						scope.$apply();
 					});
 				}

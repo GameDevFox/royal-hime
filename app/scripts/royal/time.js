@@ -196,7 +196,7 @@ namespace.namespace( "com.everempire.royal.time", function()
     {
     	this.parentClock = parentClock;
     	
-    	this.lastTime = 0;
+    	this.lastTime = parentClock.getTime();
     	this.deltaTime = 0;
     };
     
@@ -226,8 +226,11 @@ namespace.namespace( "com.everempire.royal.time", function()
     		
     	getTime: function() 
     	{
-    		var time = this.parentClock.getTime();
-    		return time;
+    		// TODO: [prince] Reconsider Delta Clock
+    		// Make seperate clock to cache time per frame?
+    		
+    		//var time = this.parentClock.getTime();
+    		return this.lastTime;
     	}
     };
     
