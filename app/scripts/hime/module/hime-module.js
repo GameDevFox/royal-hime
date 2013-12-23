@@ -8,14 +8,6 @@ var $area = namespace.getNode( "com.everempire.hime.area" );
 // Create Module
 var himeModule = angular.module( "Hime", [] );
 
-himeModule.factory( "hime", function( gameClock ) 
-{
-	var $hime = namespace.getNode( "com.everempire.hime" );
-	var hime = new $hime.Hime();
-	
-	return hime;
-});
-
 himeModule.factory( "gameClock", function() 
 {
 	var gameClock = $time.buildFullClock();

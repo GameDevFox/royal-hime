@@ -31,7 +31,7 @@
 		});
 		
 		// TODO: [prince] This is a hack way to update activity service
-		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, hime, activityService )
+		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, activityService )
 		{
 			var directiveDefinition = 
 			{
