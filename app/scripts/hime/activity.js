@@ -226,8 +226,8 @@ namespace.namespace( "com.everempire.hime.activity", function()
 					delete this.activityFrames[activityId];
 				}
 			}
-		}
-	}
+		};
+	};
 	
 	this.isActive = function( actor )
 	{

@@ -10,7 +10,7 @@ namespace.namespace( "com.everempire.hime.area", function()
 		{
 			var area = this.areas[areaId];
 			return area;
-		}
+		};
 		
 		return areaService;
 	};

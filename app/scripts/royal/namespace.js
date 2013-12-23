@@ -42,7 +42,7 @@
 	{
 		if( pathNode == undefined )
 		{
-			return undefined
+			return undefined;
 		}
 		
 		// Check for node

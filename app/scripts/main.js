@@ -4,7 +4,7 @@
 	
 	var onReady = function()
 	{
-		var areaDataPath = "/data/areas.json";
+		//var areaDataPath = "/data/areas.json";
 		$.get( "/data/areas.json", function( data )
 		{
 			areaDefObject = data;
@@ -19,10 +19,10 @@
 		himeModule.constant( "areaDefObject", areaDefObject );
 		
 		//Bootstrap angularjs
-		var injector = angular.bootstrap( $("body"), [ "Hime", "Time", "Area"] );
-	
+		angular.bootstrap( $("body"), [ "Hime", "Time" ] );
+		
 		window.rootScope = getScope( "body" );
-	}
+	};
 	
 	$(document).ready( onReady );
 }());

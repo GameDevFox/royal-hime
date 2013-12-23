@@ -1,7 +1,5 @@
 (function() 
 {
-	var systemToken = "system";
-
 	namespace.namespace( "com.everempire.royal.type", function() 
 	{
 		// Native types
@@ -54,6 +52,9 @@
 			);
 		};
 		
+		// TODO: [prince] These aren't needed right now and have no tests
+		// Uncomment later
+		/*
 		this.isNumeric = function( value )
 		{
 			return (
@@ -78,6 +79,7 @@
 				|| this.isObject( value )
 			);
 		};
+		*/
 		
 		this.getType = function( value )
 		{

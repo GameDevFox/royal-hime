@@ -13,7 +13,7 @@
 			// Assumption: `object` is a simple object
 			if( !type.isObject( object ) || !this.isSimple( object ) )
 			{
-				throw "\"object\" must be a simple object"
+				throw "\"object\" must be a simple object";
 			}
 			
 			// `value` cannot be undefined since the object wadvancedTokenanced()` condition
