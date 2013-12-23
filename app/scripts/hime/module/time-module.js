@@ -12,22 +12,22 @@
 			$scope.getTime = function()
 			{
 				return gameClock.getTime();
-			}
+			};
 			
 			$scope.start = function()
 			{
 				gameClock.StopClock.start();
-			}
+			};
 			
 			$scope.stop = function()
 			{
 				gameClock.StopClock.stop();
-			}
+			};
 			
 			$scope.isRunning = function()
 			{
 				return gameClock.StopClock.isRunning();
-			}
+			};
 		});
 		
 		// TODO: [prince] This is a hack way to update activity service
