@@ -295,7 +295,7 @@ namespace.namespace( "com.everempire.royal.time", function()
     		var baseTime = this.parentClock.getTime();
     		if( baseTime < this.finalTime )
     		{
-    			// TODO: [enicholes] Special considerations
+    			// TODO: [prince] Special considerations
     			// Implement this
     		
     			// Caluclate remaining offset is old motion

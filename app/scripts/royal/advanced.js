@@ -85,7 +85,7 @@
 			);
 		};
 
-		// TODO: [enicholes] Move this to System
+		// TODO: [prince] Move this to System
 		this.isSystem = function( value )
 		{
 			return (

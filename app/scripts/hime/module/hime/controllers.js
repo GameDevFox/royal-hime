@@ -118,7 +118,7 @@ var buildControllers = function( himeModule )
 		
 		$scope.move = function()
 		{
-			// TODO: [prince] VLD
+			// TODO: [prince] Clean this up
 			var selectedActor = actorService.selectedActor;
 			var parentAreaId = selectedActor.parentAreaId;
 			var area = areaService.areas[parentAreaId];

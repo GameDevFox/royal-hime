@@ -20,7 +20,6 @@ namespace.namespace( "com.everempire.hime.actor", function()
 	
 	this.buildActorService = function( actorDefObject )
 	{
-		// TODO: [EDWARD] Factor this out into a data file
 		var actorService = {};
 		actorService.actors = [];
 		actorService.selectedActor = null;

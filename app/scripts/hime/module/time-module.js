@@ -66,14 +66,13 @@
 		
 		$provide.factory( "$frameProvider" , function() 
 		{
+			// TODO: [prince] Factor out this clock
 			var clock = new time.SystemClock();
 			
 			var frameProvider = 
 			{	
 				intervalHandle: null,
 				frameHandlers: [],	
-				
-				// TODO: [enicholes] Factor out this clock
 				
 				lastTime: 0,
 				thisTime: 0,
@@ -87,7 +86,7 @@
 				{
 					var frameProvider = this;
 					
-					// TODO: [enicholes] Wait for $interval to be supported in stable version
+					// TODO: [prince] Wait for $interval to be supported in stable version
 					this.intervalHandle = setInterval( function() 
 					{
 						frameProvider.lastTime = frameProvider.thisTime;
@@ -97,7 +96,7 @@
 						
 					}, 16); // Increment triggers 60 times per second ( 1000 / 16ms )
 					
-					// TODO: [enicholes] Make "framesPerSecond" configurable 
+					// TODO: [prince] Make "framesPerSecond" configurable 
 				},
 				
 				stop: function()
