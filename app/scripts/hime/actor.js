@@ -18,26 +18,28 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		return actor;
 	};
 	
-	this.buildActorService = function()
+	this.buildActorService = function( actorDefObject )
 	{
 		// TODO: [EDWARD] Factor this out into a data file
 		var actorService = {};
-		
-		// TODO: Factor out "ActorService" to it's own script
-		// Init Actors
-		var james = $actor.buildActor( "James", 120 );
-		var hime = $actor.buildActor( "Hime", 80 );
-		
-		actorService.actors = [
-			james,
-			hime
-		];
+		actorService.actors = [];
 		actorService.selectedActor = null;
 		
 		actorService.select = function( actor )
 		{
 			actorService.selectedActor = actor;
 		};
+		
+		// TODO: [prince] Shouldn't have to do this
+		var buildActor = this.buildActor;
+
+		// Load Actors
+		var actorDefs = actorDefObject["actors"];
+		each( actorDefs, function( actorDef )
+		{
+			var actor = buildActor( actorDef.name, actorDef.energy );
+			actorService.actors.push( actor );
+		});
 		
 		return actorService;
 	};

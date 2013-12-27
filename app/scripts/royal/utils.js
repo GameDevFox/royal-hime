@@ -5,6 +5,20 @@ object = function( obj )
 	return new F();
 };
 
+each = function( iterable, func )
+{
+	var results = [];
+	
+	for( var i in iterable )
+	{
+		var object = iterable[i];
+		var result = func.call( this, object );
+		results[i] = result;
+	}
+	
+	return results;
+};
+
 assert = function( condition, message )
 {
 	if( !condition )

@@ -1,0 +1,12 @@
+{
+	"actors": [
+		{
+			"name": "James",
+			"energy": 120
+		},
+		{
+			"name": "Hime",
+			"energy": 80
+		}
+	]
+}
