@@ -7,29 +7,6 @@
 		
 		var area = namespace.getNode("com.everempire.hime.area");
 		
-		$controllerProvider.register( "ClockController", function( $scope, gameClock ) 
-		{
-			$scope.getTime = function()
-			{
-				return gameClock.getTime();
-			};
-			
-			$scope.start = function()
-			{
-				gameClock.StopClock.start();
-			};
-			
-			$scope.stop = function()
-			{
-				gameClock.StopClock.stop();
-			};
-			
-			$scope.isRunning = function()
-			{
-				return gameClock.StopClock.isRunning();
-			};
-		});
-		
 		// TODO: [prince] This is a hack way to update activity service
 		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, activityService )
 		{
