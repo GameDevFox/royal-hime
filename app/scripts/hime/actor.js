@@ -18,7 +18,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		return actor;
 	};
 	
-	this.buildActorService = function( actorDefObject )
+	this.buildActorService = function( actorData )
 	{
 		var actorService = {};
 		actorService.actors = [];
@@ -33,7 +33,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		var buildActor = this.buildActor;
 
 		// Load Actors
-		var actorDefs = actorDefObject["actors"];
+		var actorDefs = actorData["actors"];
 		each( actorDefs, function( actorDef )
 		{
 			var actor = buildActor( actorDef.name, actorDef.energy );

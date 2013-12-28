@@ -1,10 +1,10 @@
 namespace.namespace( "com.everempire.hime.area", function() 
 {
-	this.buildAreaService = function( areaDefObject )
+	this.buildAreaService = function( areaData )
 	{
 		var areaService = {};
 		
-		areaService.areas = this.loadAreas( areaDefObject );
+		areaService.areas = this.loadAreas( areaData );
 		
 		areaService.getArea = function( areaId )
 		{

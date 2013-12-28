@@ -3,44 +3,72 @@
 	var areaDefObject = null;
 	var actorDefObject = null;
 	
-	var onReady = function()
+	var resources = 
 	{
-		// TODO: [prince] Create download manager
-		var areaDataPath = "/data/areas.json";
-		$.get( areaDataPath, function( data )
-		{
-			areaDefObject = data;
-			checkLoaded();
-		});
-		
-		var actorDataPath = "/data/actors.json";
-		$.get( actorDataPath, function( data )
-		{
-			actorDefObject = data;
-			checkLoaded();
-		});
+		areaData: "/data/areas.json",
+		actorData: "/data/actors.json"
 	};
 	
-	var checkLoaded = function() 
+	var loadedResources = {};
+	
+	var onReady = function()
 	{
-		if( areaDefObject != null && actorDefObject != null )
+		each( resources, function( value, key )
 		{
-			onLoaded();
+			$.get( value, function( data )
+			{
+				loadedResources[key] = data;
+				checkLoaded( loadedResources );
+			});
+		});
+		
+		// TODO: [prince] Create download manager
+//		var areaDataPath = "/data/areas.json";
+//		$.get( areaDataPath, function( data )
+//		{
+//			areaDefObject = data;
+//			checkLoaded();
+//		});
+//		
+//		var actorDataPath = "/data/actors.json";
+//		$.get( actorDataPath, function( data )
+//		{
+//			actorDefObject = data;
+//			checkLoaded();
+//		});
+	};
+	
+	var checkLoaded = function( loadedResources ) 
+	{
+		var isKeyLoaded = function( value, key )
+		{
+			return key in loadedResources;
+		};
+		
+		if( validateEach( resources, isKeyLoaded ) )
+		{
+			onLoaded( loadedResources );
 		}
 	};
 	
-	var onLoaded = function()
+	var onLoaded = function( loadedResources )
 	{
 		// Load data into Hime module
 		var himeModule = angular.module( "Hime" );
-		himeModule.constant( "areaDefObject", areaDefObject );
-		himeModule.constant( "actorDefObject", actorDefObject );
+		
+		var injectModuleData = function( value, key )
+		{
+			himeModule.constant( key, value );
+		}
+		each( loadedResources, injectModuleData );
 		
 		//Bootstrap angularjs
 		angular.bootstrap( $("body"), [ "Hime", "Time" ] );
 		
 		window.rootScope = getScope( "body" );
 	};
+	
+	
 	
 	$(document).ready( onReady );
 }());
