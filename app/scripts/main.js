@@ -9,19 +9,19 @@
 	
 	var onReady = function()
 	{
-		each( resources, loadAndCheckResource );
+		each( resources, loadResource );
 	};
 	
-	var loadAndCheckResource = function( value, key )
+	var loadResource = function( value, key )
 	{
 		$.get( value, function( data )
 		{
 			loadedResources[key] = data;
-			checkLoaded( loadedResources );
+			checkResources( loadedResources );
 		});
 	};
 	
-	var checkLoaded = function( loadedResources ) 
+	var checkResources = function( loadedResources ) 
 	{
 		var isKeyLoaded = function( value, key )
 		{
@@ -30,11 +30,11 @@
 		
 		if( validateEach( resources, isKeyLoaded ) )
 		{
-			onLoaded( loadedResources );
+			configModule( loadedResources );
 		}
 	};
 	
-	var onLoaded = function( loadedResources )
+	var configModule = function( loadedResources )
 	{
 		// Load data into Hime module
 		var himeModule = angular.module( "Hime" );

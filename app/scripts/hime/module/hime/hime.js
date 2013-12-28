@@ -43,8 +43,8 @@ himeModule.directive( "eeMeter", function()
 
 himeModule.run( function( actorService, areaService )
 {
+	// Place all Actors in the "Main Hall" area
 	var defaultAreaId = "mainHall";
-	
 	for( i in actorService.actors )
 	{
 		var actor = actorService.actors[i];
