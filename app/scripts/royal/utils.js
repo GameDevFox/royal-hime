@@ -1,3 +1,4 @@
+
 var object = function( obj ) 
 {
 	function F() {};
@@ -5,6 +6,14 @@ var object = function( obj )
 	return new F();
 };
 
+// Function for of a set operation
+function set( parent, name, child )
+{
+	parent[name] = child;
+	return parent;
+}
+
+// Execute func for each object in iterale and store result in array to be returned
 var each = function( iterable, func )
 {
 	// TODO: [prince] This should be handled by a "Type" system
@@ -28,14 +37,15 @@ var applyMember = function( func, index, iterable )
 	return func.call( this, value, index );
 };
 
-var validateEach = function( iterable, validationFunction )
+// Returns true only if ALL objects return true when run through the "is" function
+var all = function( iterable, isFunction )
 {
 	var result = true;
 	
 	// TOOD: [prince] Optimize this to fail early
 	each( iterable, function()
 	{
-		if( validationFunction.apply( this, arguments ) == false )
+		if( isFunction.apply( this, arguments ) == false )
 		{
 			result = false;
 		}

@@ -66,6 +66,8 @@ var buildControllers = function( himeModule )
 
 	himeModule.controller( "ActivityController", function( $scope, activityService, gameClock ) 
 	{
+		$scope.autoBoost = true;
+		
 		$scope.boost = function()
 		{
 			activityService.boost();
@@ -79,8 +81,7 @@ var buildControllers = function( himeModule )
 	});
 
 	himeModule.controller( "AreaControl", function( $scope, actorService, areaService, activityService )
-	{
-		$scope.throttle = true;	
+	{	
 		$scope.speed = 1.2; // Meters per second
 		$scope.energyRate = 1.0; // Energy depletion rate
 		
@@ -139,7 +140,7 @@ var buildControllers = function( himeModule )
 			$scope.areaName = areaCode;
 		};
 		
-		$scope.move = function()
+		$scope.move = function( actor, destAreaPathName )
 		{
 			// TODO: [prince] Clean this up
 			var selectedActor = actorService.selectedActor;

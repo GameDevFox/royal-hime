@@ -21,17 +21,24 @@ namespace.namespace( "com.everempire.hime.actor", function()
 	this.buildActorService = function( actorData )
 	{
 		var actorService = {};
+		
+		// Members
 		actorService.actors = [];
 		actorService.selectedActor = null;
 		
+		// Functions
 		actorService.select = function( actor )
 		{
 			actorService.selectedActor = actor;
 		};
 		
-		// TODO: [prince] Shouldn't have to do this
+		actorService.getAll = function()
+		{
+			return actorService.actors;
+		};
+		
 		var buildActor = this.buildActor;
-
+		
 		// Load Actors
 		var actorDefs = actorData["actors"];
 		each( actorDefs, function( actorDef )

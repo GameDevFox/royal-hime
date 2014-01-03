@@ -7,9 +7,16 @@ namespace.namespace( "com.everempire.hime.actor.activity", function()
 	// * Complete
 	// * Cancel
 	
-	var move = 
+	var movementRate = 1.2; // meters per second
+	var energyDepletionRate = 1; // units per second
+	
+	var move = function()
 	{
-		movementRate: 1.2, // meters per second
-		energyDepletionRate: 1 // units per second
+		
+	};
+	
+	this.hasActivity = function( actor )
+	{
+		actor.activity;
 	};
 });

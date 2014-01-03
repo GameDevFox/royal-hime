@@ -28,7 +28,7 @@
 			return key in loadedResources;
 		};
 		
-		if( validateEach( resources, isKeyLoaded ) )
+		if( all( resources, isKeyLoaded ) )
 		{
 			configModule( loadedResources );
 		}

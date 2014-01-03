@@ -40,7 +40,7 @@
 		<table style="width: 100%;">
 			<tr>
 				<td colspan="2">
-					<div ng:controller="ClockController">
+					<div class="clockController" ng:controller="ClockController">
 						<fieldset>
 							<legend>Time</legend>
 							
@@ -102,11 +102,8 @@
 					<fieldset class="activity-controller">
 						<legend>Activity</legend>
 						<div ng:controller="ActivityController">
-						
-							<div class="boost-button-wrapper">
-								<button class="boost-button" ng:click="boost()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
-							</div>
-							
+							<button class="boost-button" ng:click="boost()" ng:disabled="hasActiveActivity()" />Complete Next Activity</button>
+							<input type="checkbox" ng:model="autoBoost" /> Auto-Boost
 						</div>
 					</fieldset>
 					
