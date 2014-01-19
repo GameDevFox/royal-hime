@@ -20,327 +20,318 @@ namespace.namespace( "com.everempire.royal.time", function()
 	// [ TIME REPORTING ]
 	// DeltaClock
 	
-    // Constructor
-	this.SystemClock = function() {};
-    
-    // Definition
-	this.SystemClock.prototype = 
+    this.buildSystemClock = function()
     {
-    	getTime: function() 
+    	var systemClock = {};
+    	
+    	systemClock.getTime = function()
     	{
     		return Date.now();
-    	}
+    	};
+    	
+    	return systemClock;
     };
     
-    // Constructor
-	this.ManualClock = function()
+	this.buildManualClock = function()
     {
-    	this.time = 0;
+		var manualClock = {};
+		
+		manualClock.time = 0;
+		
+		manualClock.getTime = function() 
+    	{
+    		return manualClock.time;
+    	};
+    
+    	manualClock.setTime = function( time )
+    	{
+    		manualClock.time = time;
+    	};
+    	
+    	return manualClock;
     };
     
-    // Definition
-    this.ManualClock.prototype = 
+    this.buildPlusClock = function( parentClock )
     {
-    	getTime: function() 
-    	{
-    		return this.time;
-    	},
-    
-    	setTime: function( time )
-    	{
-    		this.time = time;
-    	}
-    };
-    
-    // Constructor
-    this.PlusClock = function( parentClock )
-    {
-    	this.parentClock = parentClock;
+    	var plusClock = {};
     	
-    	this.plusTime = 0;
-    };
-    
-    // Definition
-    this.PlusClock.prototype = {
+    	plusClock.parentClock = parentClock;
+    	plusClock.plusTime = 0;
     	
-    	setPlusTime: function( plusTime )
+    	plusClock.setPlusTime = function( plusTime )
     	{
-    		this.plusTime = plusTime;
-    	},
+    		plusClock.plusTime = plusTime;
+    	};
     	
-    	getPlusTime: function()
+    	plusClock.getPlusTime = function()
     	{
-    		return this.plusTime;
-    	},
+    		return plusClock.plusTime;
+    	};
     	
-    	getTime: function()
+    	plusClock.getTime = function()
     	{
-    		var time = this.parentClock.getTime() + this.plusTime;
+    		var time = plusClock.parentClock.getTime() + plusClock.plusTime;
     		return time;
-    	}
+    	};
+    	
+    	return plusClock;
     };
     
-    // Constructor
-    this.StopClock = function( parentClock )
+    this.buildStopClock = function( parentClock )
     {
-    	this.parentClock = parentClock;
+    	var stopClock = {};
     	
-    	this.running = true;
-    	this.startTime = 0;
-    	this.plusTime = 0;
-    };
-    
-    // Definition
-    this.StopClock.prototype = {
+    	stopClock.parentClock = parentClock;
     	
-    	start: function() 
+    	stopClock.running = true;
+    	stopClock.startTime = 0;
+    	stopClock.plusTime = 0;
+    	
+    	stopClock.start = function() 
     	{
-    		if( !this.running ) 
+    		if( !stopClock.running ) 
     		{
-    			this.startTime = this.parentClock.getTime();
-    			this.running = true;
+    			stopClock.startTime = stopClock.parentClock.getTime();
+    			stopClock.running = true;
     		}
     		
-    		return this;
-    	},
+    		return stopClock;
+    	};
     	
-    	stop: function()
+    	stopClock.stop = function()
     	{
-    		if( this.running )
+    		if( stopClock.running )
     		{
-    			var baseTime = this.parentClock.getTime();
-    			this.plusTime += baseTime - this.startTime;
-    			this.running = false;
+    			var baseTime = stopClock.parentClock.getTime();
+    			stopClock.plusTime += baseTime - stopClock.startTime;
+    			stopClock.running = false;
     		}
     		
-    		return this;
-    	},
+    		return stopClock;
+    	};
     		
-    	toggle: function()
+    	stopClock.toggle = function()
     	{
-    		if( this.running )
+    		if( stopClock.running )
     		{
-    			this.stop();
+    			stopClock.stop();
     		}
     		else
     		{
-    			this.start();
+    			stopClock.start();
     		}
     		
-    		return this;
-    	},
+    		return stopClock;
+    	};
     	
-    	isRunning: function()
+    	stopClock.isRunning = function()
     	{
-    		return this.running;
-    	},
+    		return stopClock.running;
+    	};
     	
-    	setRunning: function( running )
+    	stopClock.setRunning = function( running )
     	{
     		if( running )
     		{
-    			this.start();
+    			stopClock.start();
     		}
     		else
     		{
-    			this.stop();
+    			stopClock.stop();
     		}
-    	},
+    	};
     	
-    	getTime: function()
+    	stopClock.getTime = function()
     	{
     		var time = null;
     		
-    		if( this.running )
+    		if( stopClock.running )
     		{
-    			var baseTime = this.parentClock.getTime();
-    			time = baseTime - this.startTime + this.plusTime;
+    			var baseTime = stopClock.parentClock.getTime();
+    			time = baseTime - stopClock.startTime + stopClock.plusTime;
     		}
     		else
     		{
-    			time = this.plusTime;
+    			time = stopClock.plusTime;
     		}
     		
     		return time;
-    	}
-    };
-    
-    // Constructor
-    this.ResetClock = function( parentClock ) 
-    {
-    	this.parentClock = parentClock;
+    	};
     	
-    	this.resetTime = 0;
+    	return stopClock;
     };
     
-    // Definition
-    this.ResetClock.prototype = 
+    this.buildResetClock = function( parentClock ) 
     {
-    	reset: function()
+    	var resetClock = {};
+    	
+    	resetClock.parentClock = parentClock;
+    	resetClock.resetTime = 0;
+    	
+    	resetClock.reset = function()
     	{
-    		this.resetTime = this.parentClock.getTime();
-    		return this;
-    	},
+    		resetClock.resetTime = resetClock.parentClock.getTime();
+    		return resetClock;
+    	};
     		
-    	getTime: function() 
+    	resetClock.getTime = function() 
     	{
-    		var baseTime = this.parentClock.getTime();
-    		var time = baseTime - this.resetTime;
+    		var baseTime = resetClock.parentClock.getTime();
+    		var time = baseTime - resetClock.resetTime;
     		
     		return time;
-    	}
+    	};
+    	
+    	return resetClock;
     };
     
-    // Constructor
-    this.DeltaClock = function( parentClock ) 
+    this.buildDeltaClock = function( parentClock ) 
     {
-    	this.parentClock = parentClock;
+    	var deltaClock = {};
     	
-    	this.lastTime = parentClock.getTime();
-    	this.deltaTime = 0;
-    };
-    
-    // Definition
-    this.DeltaClock.prototype = 
-    {
-    	lap: function()
-    	{
-    		var thisTime = this.parentClock.getTime();
-    		this.deltaTime = thisTime - this.lastTime;
-    		this.lastTime = thisTime;
-    		
-    		return this;
-    	},
+    	deltaClock.parentClock = parentClock;
     	
-    	clear: function()
-    	{
-    		this.deltaTime = 0;
-    		
-    		return this;
-    	},
+    	deltaClock.lastTime = parentClock.getTime();
+    	deltaClock.deltaTime = 0;
     	
-    	getDeltaTime: function()
+    	deltaClock.lap = function()
     	{
-    		return this.deltaTime;
-    	},
+    		var thisTime = deltaClock.parentClock.getTime();
+    		deltaClock.deltaTime = thisTime - deltaClock.lastTime;
+    		deltaClock.lastTime = thisTime;
     		
-    	getTime: function() 
+    		return deltaClock;
+    	};
+    	
+    	deltaClock.clear = function()
+    	{
+    		deltaClock.deltaTime = 0;
+    		
+    		return deltaClock;
+    	};
+    	
+    	deltaClock.getDeltaTime = function()
+    	{
+    		return deltaClock.deltaTime;
+    	};
+    		
+    	deltaClock.getTime = function() 
     	{
     		// TODO: [prince] Reconsider Delta Clock
     		// Make seperate clock to cache time per frame?
     		
-    		//var time = this.parentClock.getTime();
-    		return this.lastTime;
-    	}
+    		//var time = deltaClock.parentClock.getTime();
+    		return deltaClock.lastTime;
+    	};
+    	
+    	return deltaClock;
     };
     
-    
-    // Constructor
-    this.SpeedClock = function( parentClock ) 
+    this.buildSpeedClock = function( parentClock ) 
     {
-    	this.parentClock = parentClock;
+    	var speedClock = {};
     	
-    	this.speed = 1;
-    	this.switchTime = 0;
-    	this.plusTime = 0;
-    };
-    
-    // Definition
-    this.SpeedClock.prototype = 
-    {
-    	getSpeed: function()
-    	{
-    		return this.speed;
-    	},
+    	speedClock.parentClock = parentClock;
     	
-    	setSpeed: function( speed )
+    	speedClock.speed = 1;
+    	speedClock.switchTime = 0;
+    	speedClock.plusTime = 0;
+    	
+    	speedClock.getSpeed = function()
     	{
-    		var baseTime = this.parentClock.getTime();
-    		this.plusTime += ( ( baseTime - this.switchTime ) * this.speed );
-    		this.switchTime = baseTime;
-    		this.speed = speed;
-    	},
+    		return speedClock.speed;
+    	};
+    	
+    	speedClock.setSpeed = function( speed )
+    	{
+    		var baseTime = speedClock.parentClock.getTime();
+    		speedClock.plusTime += ( ( baseTime - speedClock.switchTime ) * speedClock.speed );
+    		speedClock.switchTime = baseTime;
+    		speedClock.speed = speed;
+    	};
     		
-    	getTime: function() 
+    	speedClock.getTime = function() 
     	{
-    		var baseTime = this.parentClock.getTime();
-    		var time = ( ( baseTime - this.switchTime ) * this.speed ) + this.plusTime;
+    		var baseTime = speedClock.parentClock.getTime();
+    		var time = ( ( baseTime - speedClock.switchTime ) * speedClock.speed ) + speedClock.plusTime;
     		return time;
-    	}
+    	};
+    	
+    	return speedClock;
     };
     
-    // Constructor
-    this.MotionClock = function( parentClock )
+    this.buildMotionClock = function( parentClock )
     {
-    	this.parentClock = parentClock;
+    	var motionClock = {};
     	
-    	this.initalTime = 0;
-    	this.finalTime = 0;
+    	motionClock.parentClock = parentClock;
     	
-    	this.offset = 0;
-    	this.motionOffset = 0;
+    	motionClock.initalTime = 0;
+    	motionClock.finalTime = 0;
     	
-    	this.filter = math.filters.linear;
-    };
-    
-    this.MotionClock.prototype = 
-    {
-    	setFilter: function( filter )
+    	motionClock.offset = 0;
+    	motionClock.motionOffset = 0;
+    	
+    	motionClock.filter = math.filters.linear;
+    	
+    	motionClock.setFilter = function( filter )
     	{
-    		this.filter = filter;
-    	},
+    		motionClock.filter = filter;
+    	};
     	
-    	move: function( offset, duration )
+    	motionClock.move = function( offset, duration )
     	{
-    		var baseTime = this.parentClock.getTime();
-    		if( baseTime < this.finalTime )
+    		var baseTime = motionClock.parentClock.getTime();
+    		if( baseTime < motionClock.finalTime )
     		{
     			// TODO: [prince] Special considerations
     			// Implement this
     		
     			// Caluclate remaining offset is old motion
-    			var motionTime = baseTime - this.initalTime;
-    			var theta = motionTime / this.duration;
-    			theta = this.filter( theta );
-    			var remainingOffset = ( 1 - theta ) * this.motionOffset;
+    			var motionTime = baseTime - motionClock.initalTime;
+    			var theta = motionTime / motionClock.duration;
+    			theta = motionClock.filter( theta );
+    			var remainingOffset = ( 1 - theta ) * motionClock.motionOffset;
     			
     			// Add remaining offset to new offset
     			var totalOffset = offset + remainingOffset;
-    			this.motionOffset = totalOffset - duration;
-    	    	this.offset += offset - motionTime;
+    			motionClock.motionOffset = totalOffset - duration;
+    	    	motionClock.offset += offset - motionTime;
     		}
     		else
     		{
-	    		this.motionOffset = offset - duration;
-		    	this.offset += this.motionOffset;
+	    		motionClock.motionOffset = offset - duration;
+		    	motionClock.offset += motionClock.motionOffset;
     		}
 	    	
-    		this.initalTime = baseTime;
-    		this.duration = duration;
-    		this.finalTime = this.initalTime + duration;
+    		motionClock.initalTime = baseTime;
+    		motionClock.duration = duration;
+    		motionClock.finalTime = motionClock.initalTime + duration;
     		
-    		return this;
-    	},
+    		return motionClock;
+    	};
     
-    	getTime: function()
+    	motionClock.getTime = function()
     	{
-    		var baseTime = this.parentClock.getTime();
+    		var baseTime = motionClock.parentClock.getTime();
     		
     		var time;
-    		if( baseTime < this.finalTime )
+    		if( baseTime < motionClock.finalTime )
     		{
-    			var theta = ( baseTime - this.initalTime ) / this.duration;
-    			theta = this.filter( theta );
-    			var totalOffset = this.offset - ( ( 1 - theta ) * this.motionOffset );
+    			var theta = ( baseTime - motionClock.initalTime ) / motionClock.duration;
+    			theta = motionClock.filter( theta );
+    			var totalOffset = motionClock.offset - ( ( 1 - theta ) * motionClock.motionOffset );
     			time = baseTime + totalOffset;
     		}
     		else
     		{
-    			time = baseTime + this.offset;
+    			time = baseTime + motionClock.offset;
     		}
     		
     		return time;
-    	}
+    	};
+    	
+    	return motionClock;
     };
     
     /////////////////////////////////////////////////
@@ -376,21 +367,22 @@ namespace.namespace( "com.everempire.royal.time", function()
     	for( var i = 0; i < arguments.length; i++ ) 
     	{
     		var className = arguments[i];
-    		var constructor = this[className];
+    		var buildFuncName = "build"+className;
+    		var buildFunc = this[buildFuncName];
     		
-    		if( constructor == null )
+    		if( buildFunc == null )
     		{
-    			throw "Could not find constructor for class named "+className+" in imports";
+    			throw "Could not find builder for clock type \""+buildFuncName+"\" in time module";
     		}
     		
     		var clock = null;
     		if( i == 0 )
     		{
-    			clock = new constructor();
+    			clock = buildFunc();
     		}
     		else
     		{
-    			clock = new constructor( clocks[i-1] );   			
+    			clock = buildFunc( clocks[i-1] );   			
     		}
     		
     		clock.className = className;

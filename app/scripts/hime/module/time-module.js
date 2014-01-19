@@ -44,7 +44,7 @@
 		$provide.factory( "$frameProvider" , function() 
 		{
 			// TODO: [prince] Factor out this clock
-			var clock = new time.SystemClock();
+			var clock = new time.buildSystemClock();
 			
 			var frameProvider = 
 			{	

@@ -6,7 +6,7 @@ describe( "time", function()
 	
 	beforeEach( function()
 	{
-		manualClock = new time.ManualClock();
+		manualClock = new time.buildManualClock();
 		manualClock.setTime( 1234 );
 	});
 	
@@ -22,7 +22,7 @@ describe( "time", function()
 	{
 		it( "returns the time of the parent clock, plus an offset", function()
 		{
-			var plusClock = new time.PlusClock( manualClock );
+			var plusClock = time.buildPlusClock( manualClock );
 			plusClock.setPlusTime( 1000 );
 
 			expect( plusClock.getPlusTime() ).toEqual( 1000 );
@@ -36,7 +36,7 @@ describe( "time", function()
 		
 		beforeEach( function()
 		{
-			stopClock = new time.StopClock( manualClock );
+			stopClock = time.buildStopClock( manualClock );
 		});
 		
 		it( "returns the change in time of the parent clock while StopClock is in a \"running\" state", function()
