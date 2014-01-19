@@ -2,25 +2,10 @@ var buildControllers = function( himeModule )
 {
 	himeModule.controller( "ClockController", function( $scope, gameClock ) 
 	{
-		$scope.getTime = function()
-		{
-			return gameClock.getTime();
-		};
-		
-		$scope.start = function()
-		{
-			gameClock.StopClock.start();
-		};
-		
-		$scope.stop = function()
-		{
-			gameClock.StopClock.stop();
-		};
-		
-		$scope.isRunning = function()
-		{
-			return gameClock.StopClock.isRunning();
-		};
+		$scope.getTime = gameClock.getTime;
+		$scope.start = gameClock.StopClock.start;
+		$scope.stop = gameClock.StopClock.stop;
+		$scope.isRunning = gameClock.StopClock.isRunning;
 	});
 	
 	himeModule.controller( "ActorController", function( $scope, actorService, activityService, areaService ) 
