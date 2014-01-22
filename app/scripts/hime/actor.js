@@ -13,12 +13,12 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		actor.maxEnergy = maxEnergy;
 		actor.energy = maxEnergy;
 		
-		actor.activity = null;
+		actor.activityId = null;
 		
 		return actor;
 	};
 	
-	this.buildActorService = function( actorData )
+	this.buildActorService = function( actorData, activityService )
 	{
 		var actorService = {};
 		
@@ -32,9 +32,17 @@ namespace.namespace( "com.everempire.hime.actor", function()
 			actorService.selectedActor = actor;
 		};
 		
-		actorService.getAll = function()
+		actorService.getSelectedActor = function()
 		{
-			return actorService.actors;
+			return actorService.selectedActor;
+		};
+		
+		actorService.getActivityProgress = function( actor )
+		{
+			var activityId = actor.activityId;
+			var progress = activityService.getProgress( activityId );
+			
+			return progress;
 		};
 		
 		var buildActor = this.buildActor;

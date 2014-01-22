@@ -15,20 +15,12 @@ var buildControllers = function( himeModule )
 		
 		// Functions
 		$scope.select = actorService.select;
-		
-		$scope.getProgress = function( activityId )
-		{
-			return activityService.getProgress( activityId );
-		};
+		$scope.getSelectedActor = actorService.getSelectedActor;
+		$scope.getActivityProgress = actorService.getActivityProgress;
 		
 		$scope.getRemainingTime = function( activityId )
 		{
 			return activityService.getRemainingTime( activityId );
-		};
-		
-		$scope.getSelectedActor = function()
-		{
-			return actorService.selectedActor;
 		};
 		
 		$scope.getLocationName = function( actor )

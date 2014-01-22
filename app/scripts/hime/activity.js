@@ -82,15 +82,15 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			
 		this.getProgress = function( activityId )
 		{
+			if( activityId == null )
+			{
+				return null;
+			}
+			
 			if( typeof activityId == "object" )
 			{
 				// Assume "activityId" is actually an object with an id
 				activityId = activityId.activityId;
-			}
-			
-			if( activityId == null )
-			{
-				return null;
 			}
 			
 			var activityFrame = this.activityFrames[activityId];
