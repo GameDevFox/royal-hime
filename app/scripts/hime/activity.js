@@ -5,6 +5,9 @@ namespace.namespace( "com.everempire.hime.activity", function()
 		var activityService = {};
 		
 		activityService.time = 0;
+		
+		// TODO: Activity frames do not have to be stored in the service. 
+		// They should be referenced anywhere and queried from anywhere
 		activityService.activityFrames = [];
 		activityService.gameClock = gameClock;
 			

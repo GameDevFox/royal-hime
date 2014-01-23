@@ -13,6 +13,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		actor.maxEnergy = maxEnergy;
 		actor.energy = maxEnergy;
 		
+		// This should be a direct reference to activity
 		actor.activityId = null;
 		
 		return actor;

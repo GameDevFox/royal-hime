@@ -25,6 +25,7 @@ var buildControllers = function( himeModule )
 	himeModule.controller( "ActivityController", function( $scope, activityService ) 
 	{
 		// Properties
+		// TODO: Better way to do this
 		$scope.autoBoost = true;
 		
 		// Functions
@@ -37,7 +38,7 @@ var buildControllers = function( himeModule )
 		$scope.speed = 1.2; // Meters per second
 		$scope.energyRate = 1.0; // Energy depletion rate
 		
-		$scope.$watch('running', function(newVal, oldVal)
+		$scope.$watch( 'running', function( newVal, oldVal )
 		{
 			if( newVal )
 			{
