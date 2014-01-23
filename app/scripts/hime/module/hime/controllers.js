@@ -8,7 +8,7 @@ var buildControllers = function( himeModule )
 		$scope.isRunning = gameClock.StopClock.isRunning;
 	});
 	
-	himeModule.controller( "ActorController", function( $scope, actorService, activityService, areaService ) 
+	himeModule.controller( "ActorController", function( $scope, actorService ) 
 	{
 		// Properties
 		$scope.actors = actorService.actors;
@@ -17,28 +17,8 @@ var buildControllers = function( himeModule )
 		$scope.select = actorService.select;
 		$scope.getSelectedActor = actorService.getSelectedActor;
 		$scope.getActivityProgress = actorService.getActivityProgress;
-		
-		$scope.getRemainingTime = function( activityId )
-		{
-			return activityService.getRemainingTime( activityId );
-		};
-		
-		$scope.getLocationName = function( actor )
-		{
-			var areaId = actor.parentAreaId;
-			
-			if( areaId == null )
-			{
-				return "None";
-			} 
-			else
-			{
-				var area = areaService.getArea( areaId );
-				return area.name;
-			}
-			
-			return areaId;
-		};
+		$scope.getRemainingActivityTime = actorService.getRemainingActivityTime;
+		$scope.getCurrentLocationName = actorService.getCurrentLocationName;
 	});
 
 	himeModule.controller( "ActivityController", function( $scope, activityService, gameClock ) 

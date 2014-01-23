@@ -18,7 +18,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		return actor;
 	};
 	
-	this.buildActorService = function( actorData, activityService )
+	this.buildActorService = function( actorData, activityService, areaService )
 	{
 		var actorService = {};
 		
@@ -43,6 +43,32 @@ namespace.namespace( "com.everempire.hime.actor", function()
 			var progress = activityService.getProgress( activityId );
 			
 			return progress;
+		};
+		
+		actorService.getRemainingActivityTime = function( actor )
+		{
+			var activityId = actor.activityId;
+			var remainingTime = activityService.getRemainingTime( activityId );
+			
+			return remainingTime;
+		};
+		
+		actorService.getCurrentLocationName = function( actor )
+		{
+			var areaId = actor.parentAreaId;
+			
+			if( areaId == null )
+			{
+				return "None";
+			} 
+			else
+			{
+				// TODO: Actor should have a direct reference to it's area. Not an id
+				var area = areaService.getArea( areaId );
+				return area.name;
+			}
+			
+			return null;
 		};
 		
 		var buildActor = this.buildActor;

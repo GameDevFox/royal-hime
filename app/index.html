@@ -35,6 +35,7 @@
 		<script type="text/javascript" src="scripts/main.js"></script>
 		
 	</head>
+	<!-- <body> -->
 	<body ee:refresh="60fps">
 	
 		<table style="width: 100%;">
@@ -80,8 +81,8 @@
 								<ee:Meter class="progress-meter" value="getActivityProgress( actor ) * 100" max-value="100">
 									<div ng:show="getActivityProgress( actor )">
 										Progress: {{ getActivityProgress( actor ) * 100 | number:0 }}%
-										<span ng:show="getRemainingTime( actor )">
-											( {{ getRemainingTime( actor ) | time }} )
+										<span ng:show="getRemainingActivityTime( actor )">
+											( {{ getRemainingActivityTime( actor ) | time }} )
 										</span>
 									</div>
 									<div class="ready-message" ng:hide="getActivityProgress( actor )">
@@ -90,7 +91,7 @@
 								</ee:Meter>
 								
 								<div>
-									Location: {{ getLocationName( actor ) }}
+									Location: {{ getCurrentLocationName( actor ) }}
 								</div>
 							</div>
 						</fieldset>

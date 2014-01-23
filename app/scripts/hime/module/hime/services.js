@@ -4,9 +4,9 @@ var $area = namespace.getNode( "com.everempire.hime.area" );
 
 var buildServices = function( himeModule )
 {
-	himeModule.factory( "actorService", function( actorData, activityService ) 
+	himeModule.factory( "actorService", function( actorData, activityService, areaService ) 
 	{
-		return $actor.buildActorService( actorData, activityService );
+		return $actor.buildActorService( actorData, activityService, areaService );
 	});
 
 	himeModule.factory( "activityService", function( gameClock ) 
