@@ -4,26 +4,19 @@ namespace.namespace( "com.everempire.hime.activity", function()
 	{
 		var activityService = {};
 		
-		this.buildActivityServiceFunc.call( activityService, gameClock );
-		
-		return activityService;
-	};
-	
-	this.buildActivityServiceFunc = function( gameClock )
-	{
-		this.time = 0;
-		this.activityFrames = [];
-		this.gameClock = gameClock;
+		activityService.time = 0;
+		activityService.activityFrames = [];
+		activityService.gameClock = gameClock;
 			
-		this.addActivity = function()
+		activityService.addActivity = function()
 		{
 			switch( arguments.length )
 			{
 				case 2:
-					return this.addActivityNow.apply( this, arguments );
+					return activityService.addActivityNow.apply( activityService, arguments );
 					break;
 				case 3:
-					return this.addActivityLater.apply( this, arguments );
+					return activityService.addActivityLater.apply( activityService, arguments );
 					break;
 				default:
 					throw [ "Illegal arguments for \"addActivity()\"", arguments ];
@@ -31,28 +24,28 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			}
 		};
 			
-		this.addActivityNow = function( activity, duration ) 
+		activityService.addActivityNow = function( activity, duration ) 
 		{	
 			if( duration == undefined )
 			{
 				throw "Must specify duration";
 			}
 			
-			var startTime = this.time;
+			var startTime = activityService.time;
 			var endTime = startTime + duration;
 			
-			return this.commitActivity( activity, startTime, endTime );
+			return activityService.commitActivity( activity, startTime, endTime );
 		};
 			
-		this.addActivityLater = function( activity, offset, duration )
+		activityService.addActivityLater = function( activity, offset, duration )
 		{
-			var startTime = this.time + offset;
+			var startTime = activityService.time + offset;
 			var endTime = startTime + duration;
 			
-			return this.commitActivity( activity, startTime, endTime );
+			return activityService.commitActivity( activity, startTime, endTime );
 		};
 			
-		this.commitActivity = function( activity, startTime, endTime )
+		activityService.commitActivity = function( activity, startTime, endTime )
 		{
 			var commitActivity;
 			
@@ -76,11 +69,11 @@ namespace.namespace( "com.everempire.hime.activity", function()
 				activity: commitActivity
 			};
 			
-			var activityId = this.activityFrames.push( activityFrame ) - 1;
+			var activityId = activityService.activityFrames.push( activityFrame ) - 1;
 			return activityId;
 		};
 			
-		this.getProgress = function( activityId )
+		activityService.getProgress = function( activityId )
 		{
 			if( activityId == null )
 			{
@@ -93,11 +86,11 @@ namespace.namespace( "com.everempire.hime.activity", function()
 				activityId = activityId.activityId;
 			}
 			
-			var activityFrame = this.activityFrames[activityId];
+			var activityFrame = activityService.activityFrames[activityId];
 			
 			if( activityFrame == undefined )
 			{
-				if( activityId < this.activityFrames.length )
+				if( activityId < activityService.activityFrames.length )
 				{
 					return -1;
 				}
@@ -105,14 +98,14 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			}
 			
 			var duration = activityFrame.endTime - activityFrame.startTime;
-			var elapsed = this.time - activityFrame.startTime;
+			var elapsed = activityService.time - activityFrame.startTime;
 			
 			var progress = elapsed / duration;
 			
 			return progress;
 		};
 			
-		this.getRemainingTime = function( activityId )
+		activityService.getRemainingTime = function( activityId )
 		{
 			if( activityId == null )
 			{
@@ -125,11 +118,11 @@ namespace.namespace( "com.everempire.hime.activity", function()
 				activityId = activityId.activityId;
 			}
 			
-			var activityFrame = this.activityFrames[activityId];
+			var activityFrame = activityService.activityFrames[activityId];
 			
 			if( activityFrame == undefined )
 			{
-				if( activityId < this.activityFrames.length )
+				if( activityId < activityService.activityFrames.length )
 				{
 					return -1;
 				}
@@ -137,21 +130,21 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			}
 			
 			var duration = activityFrame.endTime - activityFrame.startTime;
-			var elapsed = this.time - activityFrame.startTime;
+			var elapsed = activityService.time - activityFrame.startTime;
 			
 			var progress = duration - elapsed;
 			
 			return progress;
 		};
 		
-		this.getNextCompletedActivityId = function() 
+		activityService.getNextCompletedActivityId = function() 
 		{
 			var nextFrame = null;
 			var nextActivityId = null;
 			
-			for( var activityId in this.activityFrames )
+			for( var activityId in activityService.activityFrames )
 			{
-				var activityFrame = this.activityFrames[activityId];
+				var activityFrame = activityService.activityFrames[activityId];
 				
 				if( nextFrame == null )
 				{
@@ -172,65 +165,68 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			return nextActivityId;
 		};
 			
-		this.getNextCompletedActivity = function() 
+		activityService.getNextCompletedActivity = function() 
 		{
-			var nextActivityId = this.getNextCompletedActivityId();
-			var nextActivity = this.activityFrames[nextActivityId];
+			var nextActivityId = activityService.getNextCompletedActivityId();
+			var nextActivity = activityService.activityFrames[nextActivityId];
 			
 			return nextActivity;
 		};
-			
-		this.boost = function()
+		
+		activityService.hasActiveActivity = function()
 		{
-			var activityFrame = this.getNextCompletedActivity();
-			this.gameClock.MotionClock.move( activityFrame.endTime - this.time, 1500 );
+			var hasActiveActivity = activityService.getNextCompletedActivity() == null;
+			return hasActiveActivity;
+		};
+		
+		activityService.boost = function()
+		{
+			var activityFrame = activityService.getNextCompletedActivity();
+			activityService.gameClock.MotionClock.move( activityFrame.endTime - activityService.time, 1500 );
 		};
 			
-		this.updateTime = function( time )
+		activityService.updateTime = function( time )
 		{
-			this.setTime( this.time + time );
+			activityService.setTime( activityService.time + time );
 		};
 			
-		this.setTime = function( time ) 
+		activityService.setTime = function( time ) 
 		{
-			if( this.time > time )
+			if( activityService.time > time )
 			{
 				throw "Can't rewind ActivityService";
 			}
 			
-			if( this.time == time )
+			if( activityService.time == time )
 			{
 				return;
 			}
 			
-			this.time = time;
+			activityService.time = time;
 			
-			for( var activityId in this.activityFrames )
+			for( var activityId in activityService.activityFrames )
 			{
-				var activityFrame = this.activityFrames[activityId];
+				var activityFrame = activityService.activityFrames[activityId];
 				
 				if( activityFrame.activity.progress != null )
 				{
-					var progress = this.getProgress( activityId );
+					var progress = activityService.getProgress( activityId );
 					if( progress >= 0 )
 					{
 						activityFrame.activity.progress( progress );
 					}
 				}
 				
-				if( activityFrame.endTime <= this.time )
+				if( activityFrame.endTime <= activityService.time )
 				{
 					activityFrame.activity.complete();
 					
 					// Remove Activity Frame
-					delete this.activityFrames[activityId];
+					delete activityService.activityFrames[activityId];
 				}
 			}
 		};
-	};
-	
-	this.isActive = function( actor )
-	{
-		return actor.activity != null;
+		
+		return activityService;
 	};
 });

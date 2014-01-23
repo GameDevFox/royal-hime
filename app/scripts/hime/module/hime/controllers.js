@@ -2,6 +2,7 @@ var buildControllers = function( himeModule )
 {
 	himeModule.controller( "ClockController", function( $scope, gameClock ) 
 	{
+		// Functions
 		$scope.getTime = gameClock.getTime;
 		$scope.start = gameClock.StopClock.start;
 		$scope.stop = gameClock.StopClock.stop;
@@ -21,20 +22,14 @@ var buildControllers = function( himeModule )
 		$scope.getCurrentLocationName = actorService.getCurrentLocationName;
 	});
 
-	himeModule.controller( "ActivityController", function( $scope, activityService, gameClock ) 
+	himeModule.controller( "ActivityController", function( $scope, activityService ) 
 	{
+		// Properties
 		$scope.autoBoost = true;
 		
-		$scope.boost = function()
-		{
-			activityService.boost();
-		};
-		
-		$scope.hasActiveActivity = function()
-		{
-			var hasActiveActivity = activityService.getNextCompletedActivity() == null;
-			return hasActiveActivity;
-		};
+		// Functions
+		$scope.boost = activityService.boost;
+		$scope.hasActiveActivity = activityService.hasActiveActivity;
 	});
 
 	himeModule.controller( "AreaControl", function( $scope, actorService, areaService, activityService )
