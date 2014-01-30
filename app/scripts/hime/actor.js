@@ -1,5 +1,7 @@
 namespace.namespace( "com.everempire.hime.actor", function() 
 {
+	var $utils = namespace.getNode( "com.everempire.royal.utils" );
+	
 	this.buildActor = function( name, maxEnergy )
 	{
 		var actor = {};
@@ -76,7 +78,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 		
 		// Load Actors
 		var actorDefs = actorData["actors"];
-		each( actorDefs, function( actorDef )
+		$utils.each( actorDefs, function( actorDef )
 		{
 			var actor = buildActor( actorDef.name, actorDef.energy );
 			actorService.actors.push( actor );

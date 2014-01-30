@@ -1,5 +1,7 @@
 (function()
 {	
+	var $utils = namespace.getNode( "com.everempire.royal.utils" );
+	
 	var resources = 
 	{
 		areaData: "/data/areas.json",
@@ -9,7 +11,7 @@
 	
 	var onReady = function()
 	{
-		each( resources, loadResource );
+		$utils.each( resources, loadResource );
 	};
 	
 	var loadResource = function( value, key )
@@ -28,7 +30,7 @@
 			return key in loadedResources;
 		};
 		
-		if( all( resources, isKeyLoaded ) )
+		if( $utils.all( resources, isKeyLoaded ) )
 		{
 			configModule( loadedResources );
 		}
@@ -43,7 +45,7 @@
 		{
 			himeModule.constant( key, value );
 		};
-		each( loadedResources, injectModuleData );
+		$utils.each( loadedResources, injectModuleData );
 		
 		//Bootstrap angularjs
 		window.injector = angular.bootstrap( $("body"), [ "Hime", "Time" ] );
