@@ -4,8 +4,8 @@
 	
 	var resources = 
 	{
-		areaData: "/data/areas.json",
-		actorData: "/data/actors.json"
+		areaData: "data/areas.json",
+		actorData: "data/actors.json"
 	};
 	var loadedResources = {};
 	
