@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="javaScript" deleted="false" description="A describe block for the Jasmine testing framework" enabled="true" name="describe">describe( "${name}", function()
+{
+	${cursor}
+});</template><template autoinsert="false" context="javaScript" deleted="false" description="An &quot;it&quot; block for the Jasmine testing framework" enabled="true" name="it">it( "${description}", function()
+{
+	${cursor}
+	expect( true ).toBe( false );
+});</template></templates>
