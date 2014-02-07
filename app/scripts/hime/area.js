@@ -7,12 +7,12 @@
 			var areas = {};
 
 			// Create Areas
-			for( areaVarName in areaDefObj )
+			for( areaKey in areaDefObj )
 			{
-				var areaDef = areaDefObj[areaVarName];
+				var areaDef = areaDefObj[areaKey];
 
-				var area = this.buildArea( areaDef.name );
-				areas[areaVarName] = area;
+				var area = this.buildArea( areaDef.name, areaKey );
+				areas[areaKey] = area;
 			};
 
 			// Bind Areas together via paths
@@ -37,9 +37,6 @@
 					// Join the Areas together
 					var areaRelationship = areaRelationshipSystem.addRelationship( fromArea, toArea );
 					areaRelationship.distance = distance;
-
-					//var path = this.buildPath( toArea, distance );
-					//paths[toAreaKey] = path;
 				}
 			}
 
@@ -57,10 +54,11 @@
 			return areaService;
 		};
 
-		this.buildArea = function( name ) {
+		this.buildArea = function( name, key ) {
 
 			var area = {
-				name: name
+				name: name,
+				key: key
 			};
 
 			return area;

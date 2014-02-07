@@ -90,6 +90,18 @@ describe( "com.everempire.royal.relationship", function()
 				});
 			});
 
+			describe("getAllRelationships()", function()
+			{
+				it("returns an array containing all nodes in this system", function()
+				{
+					relationshipSystem.createRelationship(nodeA, nodeB);
+					relationshipSystem.createRelationship(nodeD, nodeA);
+					
+					var nodes = relationshipSystem.getAllNodes();
+					expect(nodes).toEqual([nodeA,nodeB,nodeD]);
+				});
+			});
+
 			describe("removeRelationship( nodeA, nodeB )", function()
 			{
 				it("removes a relationship between two nodes", function()

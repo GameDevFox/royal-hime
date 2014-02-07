@@ -109,6 +109,19 @@
 				return relations;
 			};
 
+			relationshipSystem.getAllNodes = function()
+			{
+				var nodeArrays = _.map(relationshipSystem.relations, function(relation)
+				{
+					return relation.nodes;
+				});
+				
+				var nodes = _.flatten( nodeArrays );
+				var uniqNodes = _.uniq( nodes );
+				
+				return uniqNodes;
+			};
+
 			return relationshipSystem;
 		};
 	});
