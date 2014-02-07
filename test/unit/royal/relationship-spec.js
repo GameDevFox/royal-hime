@@ -2,11 +2,11 @@ describe( "com.everempire.royal.relationship", function()
 {
 	var $relationship = namespace.getNode( "com.everempire.royal.relationship" );
 
-	describe( "createRelationshipSystem()", function()
+	describe( "buildRelationshipSystem()", function()
 	{
 		it( "creates a relationship system", function()
 		{
-			var relationshipSystem = $relationship.createRelationshipSystem();
+			var relationshipSystem = $relationship.buildRelationshipSystem();
 			expect( relationshipSystem ).not.toEqual( null );
 		});
 
@@ -21,7 +21,7 @@ describe( "com.everempire.royal.relationship", function()
 
 			beforeEach( function()
 			{
-				relationshipSystem = $relationship.createRelationshipSystem();
+				relationshipSystem = $relationship.buildRelationshipSystem();
 			});
 
 			describe("createRelationship( nodeA, nodeB )", function()
@@ -90,7 +90,7 @@ describe( "com.everempire.royal.relationship", function()
 				});
 			});
 
-			describe("getAllRelationships()", function()
+			describe("getAllNodes()", function()
 			{
 				it("returns an array containing all nodes in this system", function()
 				{
@@ -99,6 +99,23 @@ describe( "com.everempire.royal.relationship", function()
 					
 					var nodes = relationshipSystem.getAllNodes();
 					expect(nodes).toEqual([nodeA,nodeB,nodeD]);
+				});
+			});
+
+			describe("getAllRelationships()", function()
+			{
+				it("returns an array of all the realtionships in this system", function()
+				{
+					var dataAtoB = relationshipSystem.createRelationship(nodeA, nodeB);
+					dataAtoB.name = "dataAtoB";
+					var dataDtoA = relationshipSystem.createRelationship(nodeD, nodeA);
+					dataDtoA.name = "dataDtoA";
+					
+					var nodes = relationshipSystem.getAllRelationships();
+					expect(nodes).toEqual([
+					                       { nodes: [nodeA, nodeB], data: { name: "dataAtoB" } },
+					                       { nodes: [nodeD, nodeA], data: { name: "dataDtoA" } }
+					]);
 				});
 			});
 

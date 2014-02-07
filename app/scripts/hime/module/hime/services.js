@@ -8,7 +8,7 @@ var buildServices = function( himeModule )
 {
 	himeModule.factory( "areaRelationshipSystem", function()
 	{
-		return $relationship.createRelationshipSystem();
+		return $relationship.buildRelationshipSystem();
 	});
 
 	himeModule.factory( "actorService", function( actorData, activityService, areaService ) 

@@ -27,7 +27,7 @@
 			return relation;
 		};
 
-		this.createRelationshipSystem = function()
+		this.buildRelationshipSystem = function()
 		{
 			var relationshipSystem = {};
 
@@ -107,6 +107,11 @@
 				});
 
 				return relations;
+			};
+
+			relationshipSystem.getAllRelationships = function()
+			{
+				return relationshipSystem.relations;
 			};
 
 			relationshipSystem.getAllNodes = function()

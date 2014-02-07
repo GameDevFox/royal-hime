@@ -2,23 +2,35 @@
 {
 	namespace.namespace( "com.everempire.hime.area", function()
 	{
-		var loadAreas = function( areaRelationshipSystem, areaDefObj )
+		var buildArea = function( name, key ) {
+
+			var area = {
+				name: name,
+				key: key
+			};
+
+			return area;
+		};
+		this.buildArea = buildArea;
+		
+		var loadAreaData = function( areaService, areaData )
 		{
-			var areas = {};
-
-			// Create Areas
-			for( areaKey in areaDefObj )
+			// Load areas
+			var areas = areaService.areas;
+			for( areaKey in areaData )
 			{
-				var areaDef = areaDefObj[areaKey];
-
-				var area = this.buildArea( areaDef.name, areaKey );
+				var areaDef = areaData[areaKey];
+				var area = buildArea( areaDef.name, areaKey );
+				
+				// Add area
 				areas[areaKey] = area;
 			};
 
-			// Bind Areas together via paths
-			for( fromAreaKey in areaDefObj )
+			//Load areaRelationshipSystem
+			var areaRelationshipSystem = areaService.areaRelationshipSystem;
+			for( fromAreaKey in areaData )
 			{
-				var areaDef = areaDefObj[fromAreaKey];
+				var areaDef = areaData[fromAreaKey];
 
 				var fromArea = areas[fromAreaKey];
 
@@ -35,33 +47,34 @@
 					}
 
 					// Join the Areas together
-					var areaRelationship = areaRelationshipSystem.addRelationship( fromArea, toArea );
+					var areaRelationship = areaRelationshipSystem.createRelationship( fromArea, toArea );
 					areaRelationship.distance = distance;
 				}
 			}
-
-			return areas;
 		};
 
 		this.buildAreaService = function( areaRelationshipSystem, areaData )
 		{
 			var areaService = {};
 
-			// Load areas and areaRelationshipSystem
-			loadAreas( areaRelationshipSystem, areaData );
+			areaService.areas = {};
 			areaService.areaRelationshipSystem = areaRelationshipSystem;
 
-			return areaService;
-		};
+			// Load areas and areaRelationshipSystem
+			loadAreaData(areaService, areaData);
 
-		this.buildArea = function( name, key ) {
+			areaService.toJson = function()
+			{
+				var jsonObject = {};
+				jsonObject.areas = areaService.areas;
 
-			var area = {
-				name: name,
-				key: key
+				// Serialize data in areaRelationshipSystem
+				// TODO
+
+				return jsonObject;
 			};
 
-			return area;
+			return areaService;
 		};
 	});
 }());
