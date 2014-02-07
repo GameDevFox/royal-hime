@@ -1,9 +1,16 @@
+var $relationship = namespace.getNode("com.everempire.royal.relationship");
+
 var $activity = namespace.getNode("com.everempire.hime.activity");
 var $actor = namespace.getNode( "com.everempire.hime.actor" );
 var $area = namespace.getNode( "com.everempire.hime.area" );
 
 var buildServices = function( himeModule )
 {
+	himeModule.factory( "areaRelationshipSystem", function()
+	{
+		return $relationship.createRelationshipSystem();
+	});
+
 	himeModule.factory( "actorService", function( actorData, activityService, areaService ) 
 	{
 		return $actor.buildActorService( actorData, activityService, areaService );
@@ -14,8 +21,8 @@ var buildServices = function( himeModule )
 		return $activity.buildActivityService( gameClock );
 	});
 
-	himeModule.factory( "areaService", function( areaData )
+	himeModule.factory( "areaService", function( areaRelationshipSystem, areaData )
 	{
-		return $area.buildAreaService( areaData );
+		return $area.buildAreaService( areaRelationshipSystem, areaData );
 	});
 };

@@ -1,78 +1,69 @@
-namespace.namespace( "com.everempire.hime.area", function() 
+(function()
 {
-	this.buildAreaService = function( areaData )
+	namespace.namespace( "com.everempire.hime.area", function()
 	{
-		var areaService = {};
-		
-		areaService.areas = this.loadAreas( areaData );
-		
-		areaService.getArea = function( areaId )
+		var loadAreas = function( areaRelationshipSystem, areaDefObj )
 		{
-			var area = this.areas[areaId];
+			var areas = {};
+
+			// Create Areas
+			for( areaVarName in areaDefObj )
+			{
+				var areaDef = areaDefObj[areaVarName];
+
+				var area = this.buildArea( areaDef.name );
+				areas[areaVarName] = area;
+			};
+
+			// Bind Areas together via paths
+			for( fromAreaKey in areaDefObj )
+			{
+				var areaDef = areaDefObj[fromAreaKey];
+
+				var fromArea = areas[fromAreaKey];
+
+				for( toAreaKey in areaDef.paths )
+				{
+					var pathDef = areaDef.paths[toAreaKey];
+					var distance = pathDef["distance"];
+
+					var toArea = areas[toAreaKey];
+
+					if( toArea == null )
+					{
+						throw "Error when creating path for area '" + fromAreaKey + "': Could not find area '" + toAreaKey + "'";
+					}
+
+					// Join the Areas together
+					var areaRelationship = areaRelationshipSystem.addRelationship( fromArea, toArea );
+					areaRelationship.distance = distance;
+
+					//var path = this.buildPath( toArea, distance );
+					//paths[toAreaKey] = path;
+				}
+			}
+
+			return areas;
+		};
+
+		this.buildAreaService = function( areaRelationshipSystem, areaData )
+		{
+			var areaService = {};
+
+			// Load areas and areaRelationshipSystem
+			loadAreas( areaRelationshipSystem, areaData );
+			areaService.areaRelationshipSystem = areaRelationshipSystem;
+
+			return areaService;
+		};
+
+		this.buildArea = function( name ) {
+
+			var area = {
+				name: name
+			};
+
 			return area;
 		};
-		
-		return areaService;
-	};
-	
-	this.buildArea = function( name ) {
-		
-		var area = {
-			name: name,
-			paths: {},
-		};
-		
-		return area;
-	};
-	
-	this.buildPath = function( area, distance )
-	{
-		var path = {
-			area: area,
-			distance: distance,
-		};
-		
-		return path;
-	};
-	
-	this.loadAreas = function( areaDefObj )
-	{
-		var areas = {};
-		
-		// Create Areas
-		for( areaVarName in areaDefObj )
-		{
-			var areaDef = areaDefObj[areaVarName];
-			
-			var area = this.buildArea( areaDef.name );
-			areas[ areaVarName ] = area;
-		};
-		
-		// Bind Areas together via paths
-		for( areaVarName in areaDefObj )
-		{
-			var areaDef = areaDefObj[areaVarName];
-			
-			var paths = areas[ areaVarName ].paths;
-			
-			for( areaCode in areaDef.paths )
-			{
-				var pathDef = areaDef.paths[areaCode];
-				var distance = pathDef["distance"];
-				
-				var area = areas[areaCode];
-				
-				if( area == null )
-				{
-					throw "Error when creating path for area '" + areaVarName + "': Could not find area '" + areaCode + "'";
-				}
-				
-				var path = this.buildPath( area, distance );
-				
-				paths[areaCode] = path;
-			}
-		}
-		
-		return areas;
-	};
-});
+	});
+}());
