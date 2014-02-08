@@ -41,13 +41,15 @@ himeModule.directive( "eeMeter", function()
 	return eeMeter;
 });
 
-himeModule.run( function( actorService, areaService )
+
+var defaultAreaKey = "mainHall";
+himeModule.run(function(actorService, areaService, actorAreaRelationshipSystem)
 {
-	// Place all Actors in the "Main Hall" area
-	var defaultAreaId = "mainHall";
-	for( i in actorService.actors )
+	var defaultArea = areaService.areas[defaultAreaKey];
+
+	// Place all Actors in the default area
+	_.each(actorService.actors, function( actor )
 	{
-		var actor = actorService.actors[i];
-		actor.parentAreaId = defaultAreaId;
-	}
+		actorAreaRelationshipSystem.createRelationship(actor, defaultArea);
+	});
 });

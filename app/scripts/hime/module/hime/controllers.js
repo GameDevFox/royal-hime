@@ -19,7 +19,7 @@ var buildControllers = function( himeModule )
 		$scope.getSelectedActor = actorService.getSelectedActor;
 		$scope.getActivityProgress = actorService.getActivityProgress;
 		$scope.getRemainingActivityTime = actorService.getRemainingActivityTime;
-		$scope.getCurrentLocationName = actorService.getCurrentLocationName;
+		$scope.getCurrentAreaName = actorService.getCurrentAreaName;
 	});
 
 	himeModule.controller( "ActivityController", function( $scope, activityService ) 
@@ -33,7 +33,7 @@ var buildControllers = function( himeModule )
 		$scope.hasActiveActivity = activityService.hasActiveActivity;
 	});
 
-	himeModule.controller( "AreaControl", function( $scope, actorService, areaService, activityService )
+	himeModule.controller( "AreaControl", function($scope, actorService, areaService, activityService, actorAreaRelationshipSystem)
 	{	
 		$scope.speed = 1.2; // Meters per second
 		$scope.energyRate = 1.0; // Energy depletion rate
@@ -71,20 +71,20 @@ var buildControllers = function( himeModule )
 		
 		$scope.getPaths = function()
 		{
-			var paths;
-			
-			try {
-				var actor = actorService.selectedActor;
-				var areaId = actor.parentAreaId;
-				
-				var area = areaService.areas[areaId];
-				paths = area.paths;
-			}
-			catch( e )
+			var actor = actorService.selectedActor;
+			var area = actorAreaRelationshipSystem.getRelatedNode(actor);
+
+			var relatedAreas = areaService.areaRelationshipSystem.getRelatedNodes(area);
+
+			var paths = {};
+			_.each(relatedAreas, function(relatedArea)
 			{
-				paths = null;
-			}
-			
+				var data = areaService.areaRelationshipSystem.getRelationship(area, relatedArea);
+				var path = { area: relatedArea, distance: data.distance };
+
+				paths[relatedArea.key] = path;
+			});
+
 			return paths;
 		};
 		
@@ -96,36 +96,33 @@ var buildControllers = function( himeModule )
 		$scope.move = function( actor, destAreaPathName )
 		{
 			// TODO: [prince] Clean this up
-			var selectedActor = actorService.selectedActor;
-			var parentAreaId = selectedActor.parentAreaId;
-			var area = areaService.areas[parentAreaId];
+			var actor = actorService.selectedActor;
+			var fromArea = actorAreaRelationshipSystem.getRelatedNode(actor);
 			
-			var destAreaPathName = $scope.areaName;
+			var toAreaKey = $scope.areaName;
+			var toArea = areaService.areas[toAreaKey];
 			
-			// Get and Validate chosen path
-			var path = area.paths[destAreaPathName];
-			if( path == null )
+			// Get relationship data (if any) between "fromArea" to "toArea"
+			var data = areaService.areaRelationshipSystem.getRelationship(fromArea, toArea);
+			if( data == null )
 			{
 				console.log( "There is no path for area code: " + $scope.areaName );
-				$scope.exits();
 				return;
 			}
 			
 			// Calculate required time to move
-			var timeElapsed = path.distance / $scope.speed;
-			
-			//var selectedActor = $scope.selectedActor;
+			var timeElapsed = data.distance / $scope.speed;
 			
 			// Deplete energy
-			selectedActor.energy -= $scope.energyRate * timeElapsed / 100;
+			actor.energy -= $scope.energyRate * timeElapsed / 100;
 			
 			// Add Move Activity
-			selectedActor.activityId = activityService.addActivity( function()
+			actor.activityId = activityService.addActivity( function()
 			{
-				var areaId = firstIndexOf( areaService.areas, path.area );
-				selectedActor.parentAreaId = areaId;
+				actorAreaRelationshipSystem.removeRelationship(actor, fromArea);
+				actorAreaRelationshipSystem.createRelationship(actor, toArea);
 				
-				selectedActor.activityId = null;
+				actor.activityId = null;
 			}, timeElapsed * 1000 );
 			
 			// Clear pathNumber
@@ -143,9 +140,10 @@ var buildControllers = function( himeModule )
 		$scope.areaName = "";
 		
 		// Load Data
-		$http.get( $attrs.areaMap ).success( function( data ) {
-			$scope.areas = $area.loadAreas( data );
-		});
+		// TODO: Restore this
+//		$http.get( $attrs.areaMap ).success( function( data ) {
+//			$area.loadAreaData( $scope.areas, data );
+//		});
 		
 		$scope.createArea = function()
 		{

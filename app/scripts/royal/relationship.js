@@ -99,14 +99,34 @@
 					return result;
 				});
 
-				var relations = _.map( filteredRelations, function( relation )
+				var relatedNodes = _.map( filteredRelations, function( relation )
 				{
 					var remainingNodeArray = _.without( relation.nodes, node );
 					var remainingNode = remainingNodeArray[0];
 					return remainingNode;
 				});
 
-				return relations;
+				return relatedNodes;
+			};
+
+			relationshipSystem.getRelatedNode = function( node )
+			{
+				// Get all relations that have this node
+				var relation = _.find( relationshipSystem.relations, function( relation )
+				{
+					var result = hasNode( relation.nodes, node);
+					return result;
+				});
+
+				if( relation == null )
+				{
+					return null;
+				}
+
+				var resultArray = _.without(relation.nodes, node);
+				var result = resultArray[0];
+
+				return result;
 			};
 
 			relationshipSystem.getAllRelationships = function()

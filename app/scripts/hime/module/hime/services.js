@@ -6,23 +6,28 @@ var $area = namespace.getNode( "com.everempire.hime.area" );
 
 var buildServices = function( himeModule )
 {
-	himeModule.factory( "areaRelationshipSystem", function()
+	himeModule.factory("areaRelationshipSystem", function()
 	{
 		return $relationship.buildRelationshipSystem();
 	});
 
-	himeModule.factory( "actorService", function( actorData, activityService, areaService ) 
+	himeModule.factory("actorAreaRelationshipSystem", function()
 	{
-		return $actor.buildActorService( actorData, activityService, areaService );
+		return $relationship.buildRelationshipSystem();
 	});
 
-	himeModule.factory( "activityService", function( gameClock ) 
+	himeModule.factory("actorService", function(activityService, actorAreaRelationshipSystem, actorData)
+	{
+		return $actor.buildActorService(activityService, actorAreaRelationshipSystem, actorData);
+	});
+
+	himeModule.factory("activityService", function(gameClock)
 	{
 		return $activity.buildActivityService( gameClock );
 	});
 
-	himeModule.factory( "areaService", function( areaRelationshipSystem, areaData )
+	himeModule.factory("areaService", function(areaRelationshipSystem, areaData)
 	{
-		return $area.buildAreaService( areaRelationshipSystem, areaData );
+		return $area.buildAreaService(areaRelationshipSystem, areaData);
 	});
 };

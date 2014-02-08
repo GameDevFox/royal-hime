@@ -12,7 +12,7 @@
 			return area;
 		};
 		this.buildArea = buildArea;
-		
+
 		var loadAreaData = function( areaService, areaData )
 		{
 			// Load areas
@@ -21,7 +21,7 @@
 			{
 				var areaDef = areaData[areaKey];
 				var area = buildArea( areaDef.name, areaKey );
-				
+
 				// Add area
 				areas[areaKey] = area;
 			};
@@ -43,15 +43,24 @@
 
 					if( toArea == null )
 					{
-						throw "Error when creating path for area '" + fromAreaKey + "': Could not find area '" + toAreaKey + "'";
+						throw "Error when creating path for area \"" + fromAreaKey + "\": Could not find area \"" + toAreaKey + "\"";
 					}
 
-					// Join the Areas together
-					var areaRelationship = areaRelationshipSystem.createRelationship( fromArea, toArea );
-					areaRelationship.distance = distance;
+					try
+					{
+						// Join the Areas together
+						var data = areaRelationshipSystem.createRelationship( fromArea, toArea );
+						data.distance = distance;
+					}
+					catch( e )
+					{
+						// TODO: Remove try catch after implementing new format
+						// Ignore, old format might throw exception
+					}
 				}
 			}
 		};
+		this.loadAreaData = loadAreaData;
 
 		this.buildAreaService = function( areaRelationshipSystem, areaData )
 		{
@@ -69,7 +78,13 @@
 				jsonObject.areas = areaService.areas;
 
 				// Serialize data in areaRelationshipSystem
-				// TODO
+				var allRelationships = areaService.areaRelationshipSystem.getAllRelationships();
+				var paths = _.map( allRelationships, function( relationship )
+				{
+					var result = { areas: relationship.nodes, distance: relationship.data.distance };
+					return result;
+				});
+				jsonObject.paths = paths;
 
 				return jsonObject;
 			};

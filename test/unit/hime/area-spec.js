@@ -6,22 +6,10 @@ describe( "com.everempire.hime.area", function()
 
 	describe( "buildArea()", function() 
 	{
-		var roomName = "My Room";
-		var myRoom;
-
-		beforeEach( function() 
+		it( "builds an area with a given name and key", function()
 		{
-			myRoom = $area.buildArea( "My Room" );
-		});
-
-		it( "builds an area", function() 
-		{
-			expect( myRoom ).not.toEqual( undefined );
-		});
-
-		it( "assigns it the given name", function() 
-		{
-			expect( myRoom.name ).toEqual( roomName );
+			var myRoom = $area.buildArea( "My Room", "myRoom" );
+			expect( myRoom ).toEqual( { name: "My Room", key: "myRoom" } );
 		});
 	});
 
@@ -41,7 +29,18 @@ describe( "com.everempire.hime.area", function()
 					paths: { roomA: { distance: 30 } }
 				}
 		};
-		
+
+		var invalidAreaData = {
+				roomA: {
+					name: "Room A", key: "roomA",
+					paths: { roomD: { distance: 10 } }
+				},
+				roomB: {
+					name: "Room B", key: "roomB",
+					paths: { roomC: { distance: 20 } }
+				},
+		};
+
 		it("builds an area service backed by the \"areaRealtionshipSystem\" and populated by \"areaData\"", function()
 		{
 			var areaRelationshipSystem = $relationship.buildRelationshipSystem();
@@ -53,7 +52,7 @@ describe( "com.everempire.hime.area", function()
 				roomB: { name: "Room B", key: "roomB" },
 				roomC: { name: "Room C", key: "roomC" }
 			});
-			
+
 			var roomA = areas.roomA;
 			var roomB = areas.roomB;
 			var roomC = areas.roomC;
@@ -66,6 +65,18 @@ describe( "com.everempire.hime.area", function()
 			]);
 		});
 
+		it("throws an exception if the provided data is invalid", function()
+		{
+			var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+			var buildAreaServiceFunc = function()
+			{
+				$area.buildAreaService(areaRelationshipSystem, invalidAreaData);
+			};
+
+			expect(buildAreaServiceFunc)
+				.toThrow("Error when creating path for area \"roomA\": Could not find area \"roomD\"");
+		});
+
 		describe("areaService", function()
 		{
 			describe("toJson()", function()
@@ -76,7 +87,23 @@ describe( "com.everempire.hime.area", function()
 					var areaService = $area.buildAreaService(areaRelationshipSystem, areaData);
 
 					var jsonObject = areaService.toJson();
-					expect(jsonObject).toEqual({});
+
+					var areas = jsonObject.areas;
+					expect(areas).toEqual({
+						roomA: { name: "Room A", key: "roomA" },
+						roomB: { name: "Room B", key: "roomB" },
+						roomC: { name: "Room C", key: "roomC" }
+					});
+
+					var roomA = areas.roomA;
+					var roomB = areas.roomB;
+					var roomC = areas.roomC;
+
+					expect(jsonObject.paths).toEqual([
+						{ areas: [roomA, roomB], distance: 10 },
+						{ areas: [roomB, roomC], distance: 20 },
+						{ areas: [roomC, roomA], distance: 30 }
+					]);
 				});
 			});
 		});

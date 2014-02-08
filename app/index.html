@@ -21,6 +21,7 @@
 		<script type="text/javascript" src="scripts/royal/utils.js"></script>
 		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
 		<script type="text/javascript" src="scripts/royal/parent.js"></script>
+		<script type="text/javascript" src="scripts/royal/relationship.js"></script>
 		 
 		<script type="text/javascript" src="scripts/hime/area.js"></script>
 		<script type="text/javascript" src="scripts/hime/actor.js"></script>
@@ -36,7 +37,7 @@
 		
 	</head>
 	<!-- <body> -->
-	<body ee:refresh="60fps">
+	<body ee:refresh="30fps">
 	
 		<table style="width: 100%;">
 			<tr>
@@ -91,7 +92,7 @@
 								</ee:Meter>
 								
 								<div>
-									Location: {{ getCurrentLocationName( actor ) }}
+									Location: {{ getCurrentAreaName( actor ) }}
 								</div>
 							</div>
 						</fieldset>

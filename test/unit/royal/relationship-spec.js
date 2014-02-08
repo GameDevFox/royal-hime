@@ -18,6 +18,7 @@ describe( "com.everempire.royal.relationship", function()
 			var nodeB = { name: "nodeB" };
 			var nodeC = { name: "nodeC" };
 			var nodeD = { name: "nodeD" };
+			var nodeE = { name: "nodeE" };
 
 			beforeEach( function()
 			{
@@ -181,6 +182,29 @@ describe( "com.everempire.royal.relationship", function()
 					var relatedNodes = relationshipSystem.getRelatedNodes( nodeA );
 
 					expect( _.difference( expectedRelations, relatedNodes ) ).toEqual( [] );
+				});
+			});
+
+			describe("getRelatedNode( node )", function()
+			{
+				beforeEach(function()
+				{
+					relationshipSystem.createRelationship( nodeA, nodeB );
+					relationshipSystem.createRelationship( nodeC, nodeD );
+				});
+
+				it("returns a the first (and presumably only) node that is related to the given node", function()
+				{
+					var relatedNode = relationshipSystem.getRelatedNode( nodeB );
+
+					expect( relatedNode ).toEqual( nodeA );
+				});
+
+				it("returns null is there is no related node", function()
+				{
+					var relatedNode = relationshipSystem.getRelatedNode( nodeE );
+
+					expect( relatedNode ).toEqual( null );
 				});
 			});
 		});
