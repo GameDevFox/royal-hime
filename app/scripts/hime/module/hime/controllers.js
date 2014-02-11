@@ -135,27 +135,32 @@ var buildControllers = function( himeModule )
 		};
 	});
 
-	himeModule.controller( "AreaEditControl", function( $scope, $http, $attrs )
+	himeModule.controller( "AreaEditControl", function( $scope, areaData )
 	{
-		$scope.areaName = "";
-		
-		// Load Data
-		// TODO: Restore this
-//		$http.get( $attrs.areaMap ).success( function( data ) {
-//			$area.loadAreaData( $scope.areas, data );
-//		});
-		
-		$scope.createArea = function()
+		var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+		var areaService = $area.buildAreaService( areaRelationshipSystem, areaData );
+
+		$scope.areas = areaService.areas;
+
+		$scope.createArea = function(areaName, areaKey)
 		{
-			$scope.areas[$scope.areaCode] = {
-				"name": $scope.areaName,
-				"paths": []
-			};
-			
-			$scope.areaName = null;
-			$scope.areaCode = null;
+			var area = $area.buildArea(areaName, areaKey);
+			$scope.areas[area.key] = area;
 		};
-		
+
+		$scope.removeArea = function(area)
+		{
+			// Remove Area Paths
+			// TODO: Convert this
+//			for( i in area.paths )
+//			{
+//				$scope.removePath( areaIndex, i );
+//			}
+			
+			// Remove Area
+			delete $scope.areas[area.key];
+		};
+
 		$scope.createPath = function()
 		{
 			$scope.areas[$scope.areaCodeA].paths[$scope.areaCodeB] = {
@@ -173,20 +178,24 @@ var buildControllers = function( himeModule )
 			$scope.pathDistance = null;
 		};
 		
-		$scope.removeArea = function( areaIndex )
+		$scope.getPaths = function(area)
 		{
-			// Remove Area Paths
-			var area = $scope.areas[areaIndex];
-			for( i in area.paths )
+			var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
+			var paths = _.map(relatedAreas, function(relatedArea)
 			{
-				$scope.removePath( areaIndex, i );
-			}
+				var path = {};
+				path.areaName = relatedArea.name;
+
+				var data = areaRelationshipSystem.getRelationship(area, relatedArea);
+				path.distance = data.distance;
+
+				return path;
+			});
 			
-			// Remove Area
-			delete $scope.areas[areaIndex];
+			return paths;
 		};
 		
-		$scope.removePath = function( areaIndex, pathIndex )
+		$scope.removePath = function(fromArea, toAreaKey)
 		{
 			var area = $scope.areas[areaIndex];
 			var path = area.paths[pathIndex];
@@ -206,17 +215,17 @@ var buildControllers = function( himeModule )
 			area.paths.splice( pathIndex, 1 );
 		};
 		
-		$scope.selectArea = function( areaCode )
+		$scope.selectArea = function(areaKey)
 		{
 			console.log( $scope.areaCodeA );
 			
 			if( $scope.areaCodeA == null || $scope.areaCodeA.trim() == "" )
 			{
-				$scope.areaCodeA = areaCode;
+				$scope.areaCodeA = areaKey;
 			} 
 			else if( $scope.areaCodeB == null || $scope.areaCodeB.trim() == "" )
 			{
-				$scope.areaCodeB = areaCode;
+				$scope.areaCodeB = areaKey;
 			}
 		};
 		

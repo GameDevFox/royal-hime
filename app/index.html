@@ -36,8 +36,7 @@
 		<script type="text/javascript" src="scripts/main.js"></script>
 		
 	</head>
-	<!-- <body> -->
-	<body ee:refresh="30fps">
+	<body>
 	
 		<table style="width: 100%;">
 			<tr>
@@ -148,26 +147,28 @@
 				<td colspan="2">
 					<fieldset>
 						<legend>Edit Areas</legend>
-						<div ng:controller="AreaEditControl" data-area-map="data/areas.json">
-						
+						<div ng:controller="AreaEditControl">
+
 							<h2>Areas:</h2>
 							<ul>
-								<li ng:repeat="(areaCode, area) in areas">
-									<a href="" ng:click="selectArea( areaCode )">{{ areaCode }}</a> <input type="text" ng:model="area.name"/> [ <a href="" ng:click="removeArea( areaCode )" >Remove</a> ]
+								<li ng:repeat="area in areas">
+									<a href="" ng:click="selectArea(area.key)">{{ area.key }}</a>
+									<input type="text" ng:model="area.name"/>
+									[ <a href="" ng:click="removeArea(area)" >Remove</a> ]
 									<ul>
-										<li ng:repeat="path in area.paths">
-											{{ path.area.name }} : {{ path.distance }}m [ <a href="" ng:click="removePath( areaCode, $index )">X</a> ]
+										<li ng:repeat="path in getPaths(area)">
+											{{ path.areaName }} : {{ path.distance }}m [ <a href="" ng:click="removePath(area, path.areaKey)">X</a> ]
 										</li>
 									</ul>
 								</li>
 							</ul>
-							
+
 							<div>
-								<input type="text" ng:model="areaCode" placeholder="Area Code" />
+								<input type="text" ng:model="areaKey" placeholder="Area Key" />
 								<input type="text" ng:model="areaName" placeholder="Area Name" />
-								<input type="button" ng:click="createArea()" value="Create Area" />
+								<input type="button" ng:click="createArea(areaName,areaKey)" value="Create Area" />
 							</div>
-							
+
 							<div>
 								<input type="text" ng:model="areaCodeA" placeholder="Area Code A" />
 								<input type="text" ng:model="areaCodeB" placeholder="Area Code B" />
