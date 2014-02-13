@@ -152,14 +152,19 @@
 							<h2>Areas:</h2>
 							<ul>
 								<li ng:repeat="area in areas">
-									<a href="" ng:click="selectArea(area.key)">{{ area.key }}</a>
-									<input type="text" ng:model="area.name"/>
-									[ <a href="" ng:click="removeArea(area)" >Remove</a> ]
-									<ul>
-										<li ng:repeat="path in getPaths(area)">
-											{{ path.areaName }} : {{ path.distance }}m [ <a href="" ng:click="removePath(area, path.areaKey)">X</a> ]
-										</li>
-									</ul>
+
+									<div ng:controller="AreaEditNode">
+										<a href="" ng:click="selectArea(area.key)">{{ area.key }}</a>
+										<input type="text" ng:model="area.name"/>
+										[ <a href="" ng:click="removeArea(area)" >Remove</a> ]
+
+										<ul>
+											<li ng:repeat="path in paths">
+												{{ path.areaName }} : {{ path.distance }}m [ <a href="" ng:click="removePath(area, path.areaKey)">X</a> ]
+											</li>
+										</ul>
+									</div>
+
 								</li>
 							</ul>
 
