@@ -16,49 +16,33 @@
 		var loadAreaData = function( areaService, areaData )
 		{
 			// Load areas
-			var areas = areaService.areas;
-			for( areaKey in areaData )
-			{
-				var areaDef = areaData[areaKey];
-				var area = buildArea( areaDef.name, areaKey );
-
-				// Add area
-				areas[areaKey] = area;
-			};
+			areaService.areas = areaData.areas;
 
 			//Load areaRelationshipSystem
 			var areaRelationshipSystem = areaService.areaRelationshipSystem;
-			for( fromAreaKey in areaData )
+
+			var paths = areaData.paths;
+			_.each(paths, function(path)
 			{
-				var areaDef = areaData[fromAreaKey];
+				var areaKeys = path.areas;
+				var distance = path.distance;
 
-				var fromArea = areas[fromAreaKey];
+				var fromArea = areaService.areas[areaKeys[0]];
+				var toArea = areaService.areas[areaKeys[1]];
 
-				for( toAreaKey in areaDef.paths )
+				if(fromArea == null)
 				{
-					var pathDef = areaDef.paths[toAreaKey];
-					var distance = pathDef["distance"];
-
-					var toArea = areas[toAreaKey];
-
-					if( toArea == null )
-					{
-						throw "Error when creating path for area \"" + fromAreaKey + "\": Could not find area \"" + toAreaKey + "\"";
-					}
-
-					try
-					{
-						// Join the Areas together
-						var data = areaRelationshipSystem.createRelationship( fromArea, toArea );
-						data.distance = distance;
-					}
-					catch( e )
-					{
-						// TODO: Remove try catch after implementing new format
-						// Ignore, old format might throw exception
-					}
+					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find \"from\" area \"" + fromAreaKey + "\"";
 				}
-			}
+				else if(toArea == null)
+				{
+					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find \"to\" area \"" + toAreaKey + "\"";
+				}
+
+				// Join the Areas together
+				var data = areaRelationshipSystem.createRelationship( fromArea, toArea );
+				data.distance = distance;
+			});
 		};
 		this.loadAreaData = loadAreaData;
 
@@ -81,7 +65,8 @@
 				var allRelationships = areaService.areaRelationshipSystem.getAllRelationships();
 				var paths = _.map( allRelationships, function( relationship )
 				{
-					var result = { areas: relationship.nodes, distance: relationship.data.distance };
+					var areaKeyArray = _.pluck(relationship.nodes, "key");
+					var result = { areas: areaKeyArray, distance: relationship.data.distance };
 					return result;
 				});
 				jsonObject.paths = paths;

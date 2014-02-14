@@ -157,52 +157,26 @@ var buildControllers = function( himeModule )
 			{
 				areaRelationshipSystem.removeRelationship(area, relatedArea);
 			});
-			
+
 			// Remove Area
 			delete areaService.areas[area.key];
 		};
 
-		$scope.createPath = function()
+		$scope.createPath = function(areaAKey, areaBKey, pathDistance)
 		{
-			$scope.areas[$scope.areaCodeA].paths[$scope.areaCodeB] = {
-				area: $scope.areas[$scope.areaCodeB],
-				distance: $scope.pathDistance
-			};
-			
-			$scope.areas[$scope.areaCodeB].paths[$scope.areaCodeA] = {
-				area: $scope.areas[$scope.areaCodeA],
-				distance: $scope.pathDistance
-			};
-			
+			var areaA = $scope.areas[areaAKey];
+			var areaB = $scope.areas[areaBKey];
+
+			var data = areaRelationshipSystem.createRelationship(areaA, areaB);
+			data.distance = pathDistance;
+
 			$scope.areaCodeA = null;
 			$scope.areaCodeB = null;
 			$scope.pathDistance = null;
 		};
 		
-		$scope.removePath = function(fromArea, toAreaKey)
-		{
-			var area = $scope.areas[areaIndex];
-			var path = area.paths[pathIndex];
-			
-			// Remove Foreign Paths
-			var foreignPaths = path.area.paths;
-			for( i in foreignPaths )
-			{
-				var foreignPath = foreignPaths[i];
-				if( path.distance == foreignPath.distance && area === foreignPath.area )
-				{
-					foreignPaths.splice( i, 1 );
-				}
-			}
-			
-			// Remove Local Path
-			area.paths.splice( pathIndex, 1 );
-		};
-		
 		$scope.selectArea = function(areaKey)
 		{
-			console.log( $scope.areaCodeA );
-			
 			if( $scope.areaCodeA == null || $scope.areaCodeA.trim() == "" )
 			{
 				$scope.areaCodeA = areaKey;
@@ -215,32 +189,8 @@ var buildControllers = function( himeModule )
 		
 		$scope.generateJson = function()
 		{
-			var areasJson = {};
-			
-			for( var i in $scope.areas )
-			{
-				var area = $scope.areas[i];
-				
-				var areaJson = {
-					name: area.name,
-					paths: {}
-				};
-				
-				for( var j in area.paths )
-				{
-					var path = area.paths[j];
-					var areaCode = firstIndexOf( $scope.areas, path.area );
-					
-					var pathJson = { 
-						distance: path.distance
-					};
-					areaJson.paths[areaCode] = pathJson;
-				}
-				
-				areasJson[i] = areaJson;
-			}
-			
-			$scope.generatedJson = JSON.stringify( areasJson );
+			var areaJson = areaService.toJson();
+			$scope.generatedJson = JSON.stringify( areaJson );
 		};
 	});
 	
@@ -253,7 +203,7 @@ var buildControllers = function( himeModule )
 			var paths = _.map(relatedAreas, function(relatedArea)
 			{
 				var path = {};
-				path.areaName = relatedArea.name;
+				path.area = relatedArea;
 
 				var data = areaRelationshipSystem.getRelationship(area, relatedArea);
 				path.distance = data.distance;
@@ -264,9 +214,13 @@ var buildControllers = function( himeModule )
 			return paths;
 		};
 
+		$scope.removePath = function(fromArea, toArea)
+		{
+			areaRelationshipSystem.removeRelationship(fromArea, toArea);
+		};
+
 		$scope.$watch("getPaths(area)", function(newValue, oldValue)
 		{
-			console.log(newValue, oldValue);
 			$scope.$evalAsync("paths = getPaths(area)");
 		}, true);
 	});

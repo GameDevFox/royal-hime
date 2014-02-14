@@ -160,7 +160,7 @@
 
 										<ul>
 											<li ng:repeat="path in paths">
-												{{ path.areaName }} : {{ path.distance }}m [ <a href="" ng:click="removePath(area, path.areaKey)">X</a> ]
+												{{ path.area.name }} : {{ path.distance }}m [ <a href="" ng:click="removePath(area, path.area)">X</a> ]
 											</li>
 										</ul>
 									</div>
@@ -171,14 +171,14 @@
 							<div>
 								<input type="text" ng:model="areaKey" placeholder="Area Key" />
 								<input type="text" ng:model="areaName" placeholder="Area Name" />
-								<input type="button" ng:click="createArea(areaName,areaKey)" value="Create Area" />
+								<input type="button" ng:click="createArea(areaName, areaKey)" value="Create Area" />
 							</div>
 
 							<div>
 								<input type="text" ng:model="areaCodeA" placeholder="Area Code A" />
 								<input type="text" ng:model="areaCodeB" placeholder="Area Code B" />
 								<input type="number" ng:model="pathDistance" placeholder="Distance" />m
-								<input type="button" ng:click="createPath()" value="Create Path" />
+								<input type="button" ng:click="createPath(areaCodeA, areaCodeB, pathDistance)" value="Create Path" />
 							</div>
 							
 							<div>
