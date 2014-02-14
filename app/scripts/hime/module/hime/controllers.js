@@ -262,14 +262,12 @@ var buildControllers = function( himeModule )
 			});
 			
 			return paths;
-		}
-
-		$scope.paths = $scope.getPaths($scope.area);
+		};
 
 		$scope.$watch("getPaths(area)", function(newValue, oldValue)
 		{
 			console.log(newValue, oldValue);
-			$scope.$evalAsync("$apply()");
+			$scope.$evalAsync("paths = getPaths(area)");
 		}, true);
 	});
 };
