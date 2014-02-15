@@ -27,16 +27,19 @@
 				var areaKeys = path.areas;
 				var distance = path.distance;
 
-				var fromArea = areaService.areas[areaKeys[0]];
-				var toArea = areaService.areas[areaKeys[1]];
+				var fromAreaKey = areaKeys[0];
+				var toAreaKey = areaKeys[1];
+
+				var fromArea = areaService.areas[fromAreaKey];
+				var toArea = areaService.areas[toAreaKey];
 
 				if(fromArea == null)
 				{
-					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find \"from\" area \"" + fromAreaKey + "\"";
+					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + fromAreaKey + "\"";
 				}
 				else if(toArea == null)
 				{
-					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find \"to\" area \"" + toAreaKey + "\"";
+					throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + toAreaKey + "\"";
 				}
 
 				// Join the Areas together

@@ -16,29 +16,37 @@ describe( "com.everempire.hime.area", function()
 	describe("buildAreaService( areaRelationshipSystem, areaData )", function()
 	{
 		var areaData = {
+			areas: {
 				roomA: { 
-					name: "Room A", key: "roomA", 
-					paths: { roomB: { distance: 10 } }
+					name: "Room A", key: "roomA"
 				},
 				roomB: {
-					name: "Room B", key: "roomB",
-					paths: { roomC: { distance: 20 } }
+					name: "Room B", key: "roomB"
 				},
 				roomC: {
-					name: "Room C", key: "roomC",
-					paths: { roomA: { distance: 30 } }
+					name: "Room C", key: "roomC"
 				}
+			},
+			paths: [
+				{ areas: ["roomA", "roomB"], distance: 10 },
+				{ areas: ["roomB", "roomC"], distance: 20 },
+				{ areas: ["roomC", "roomA"], distance: 30 }
+			]
 		};
 
 		var invalidAreaData = {
+			areas: {
 				roomA: {
-					name: "Room A", key: "roomA",
-					paths: { roomD: { distance: 10 } }
+					name: "Room A", key: "roomA"
 				},
 				roomB: {
-					name: "Room B", key: "roomB",
-					paths: { roomC: { distance: 20 } }
-				},
+					name: "Room B", key: "roomB"
+				}
+			},
+			paths: [
+				{ areas: ["roomA", "roomD"], distance: 10 },
+				{ areas: ["roomB", "roomC"], distance: 20 },
+			]
 		};
 
 		it("builds an area service backed by the \"areaRealtionshipSystem\" and populated by \"areaData\"", function()
@@ -74,7 +82,7 @@ describe( "com.everempire.hime.area", function()
 			};
 
 			expect(buildAreaServiceFunc)
-				.toThrow("Error when creating path for area \"roomA\": Could not find area \"roomD\"");
+				.toThrow("Error when creating relationship from \"roomA\" to \"roomD\": Could not find area \"roomD\"");
 		});
 
 		describe("areaService", function()
@@ -88,22 +96,18 @@ describe( "com.everempire.hime.area", function()
 
 					var jsonObject = areaService.toJson();
 
-					var areas = jsonObject.areas;
-					expect(areas).toEqual({
-						roomA: { name: "Room A", key: "roomA" },
-						roomB: { name: "Room B", key: "roomB" },
-						roomC: { name: "Room C", key: "roomC" }
+					expect(jsonObject).toEqual({
+						areas: {
+							roomA: { name: "Room A", key: "roomA" },
+							roomB: { name: "Room B", key: "roomB" },
+							roomC: { name: "Room C", key: "roomC" }
+						},
+						paths: [
+							{ areas: ["roomA", "roomB"], distance: 10 },
+							{ areas: ["roomB", "roomC"], distance: 20 },
+							{ areas: ["roomC", "roomA"], distance: 30 }
+						]
 					});
-
-					var roomA = areas.roomA;
-					var roomB = areas.roomB;
-					var roomC = areas.roomC;
-
-					expect(jsonObject.paths).toEqual([
-						{ areas: [roomA, roomB], distance: 10 },
-						{ areas: [roomB, roomC], distance: 20 },
-						{ areas: [roomC, roomA], distance: 30 }
-					]);
 				});
 			});
 		});
