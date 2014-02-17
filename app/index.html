@@ -41,11 +41,11 @@
 		<table style="width: 100%;">
 			<tr>
 				<td colspan="2">
-					<div class="clockController" ng:controller="ClockController">
+					<div ee:update="clockController" class="clockController" ng:controller="ClockController">
 						<fieldset>
 							<legend>Time</legend>
 							
-							<ee:Meter class="time-meter" value="getTime()" max-value="1000 * 60 * 60 * 24"> <!-- 1 Day -->
+							<ee:Meter class="time-meter" value="getTime()" max-value="1 * 60 * 60 * 24"> <!-- 1 Day -->
 								{{ getTime() | time }}
 							</ee:Meter>
 							

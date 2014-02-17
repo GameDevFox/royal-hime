@@ -41,6 +41,20 @@ himeModule.directive( "eeMeter", function()
 	return eeMeter;
 });
 
+himeModule.directive( "eeUpdate", function()
+{
+	var eeUpdate =
+	{
+		link: function( scope, element, attrs )
+		{
+			var updateClass =  attrs["eeUpdate"];
+			
+			
+		}
+	};
+	
+	return eeUpdate;
+});
 
 var defaultAreaKey = "mainHall";
 himeModule.run(function(actorService, areaService, actorAreaRelationshipSystem)
