@@ -41,13 +41,11 @@
 		<table style="width: 100%;">
 			<tr>
 				<td colspan="2">
-					<div ee:update="clockController" class="clockController" ng:controller="ClockController">
+					<div class="clockController" ng:controller="ClockController">
 						<fieldset>
 							<legend>Time</legend>
 							
-							<ee:Meter class="time-meter" value="getTime()" max-value="1 * 60 * 60 * 24"> <!-- 1 Day -->
-								{{ getTime() | time }}
-							</ee:Meter>
+							<ee:Meter class="time-meter" ee:update="timeMeter" />
 							
 							<div>
 								<button class="stop" ng:click="stop()" ng:show="isRunning()">Pause</button>
@@ -60,34 +58,25 @@
 			
 			<tr>
 				<td style="width: 250px; vertical-align: top;">
-					
+
 					<div ng:controller="ActorController">
-					
+
 						<fieldset style="height: 100%;">
 							<legend>Actors</legend>
-							
+
 							<div class="actor" ng:repeat="actor in actors" ng:class="{selected: getSelectedActor() == actor}" ng:click="$parent.select( actor )">
-								
+
 								{{ actor.name }}
-								
+
 								<ee:Meter 
 									class="energy-meter" 
-									ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }" 
-									value="actor.energy" 
-									max-value="actor.maxEnergy">
-										En: {{ actor.energy | number:1 }} / {{ actor.maxEnergy }}
+									ee:update="actorEnergyMeter"
+									ng:class="{full: actor.energy >= actor.maxEnergy, half: actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4, quarter: actor.energy <= actor.maxEnergy / 4 && actor.energy > 0, empty: actor.energy <= 0 }">
 								</ee:Meter>
 								
-								<ee:Meter class="progress-meter" value="getActivityProgress( actor ) * 100" max-value="100">
-									<div ng:show="getActivityProgress( actor )">
-										Progress: {{ getActivityProgress( actor ) * 100 | number:0 }}%
-										<span ng:show="getRemainingActivityTime( actor )">
-											( {{ getRemainingActivityTime( actor ) | time }} )
-										</span>
-									</div>
-									<div class="ready-message" ng:hide="getActivityProgress( actor )">
-										Ready
-									</div>
+								<ee:Meter 
+									class="progress-meter"
+									ee:update="actorProgressMeter">
 								</ee:Meter>
 								
 								<div>

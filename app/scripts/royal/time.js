@@ -403,7 +403,7 @@ namespace.namespace( "com.everempire.royal.time", function()
     };
     
     this.formatTime = function( text )
-	{			
+	{
 		var seconds = Math.round( text / 1000 );
 		var minutes = null;
 		var hours = null;
@@ -414,19 +414,19 @@ namespace.namespace( "com.everempire.royal.time", function()
 			minutes = Math.floor( seconds / 60 );
 			seconds = seconds % 60;
 		}
-		
+
 		if( minutes >= 60 )
 		{
 			hours = Math.floor( minutes / 60 );
 			minutes = minutes % 60;
 		}
-		
+
 		if( hours >= 24 )
 		{
 			days = Math.floor( hours / 24 );
 			hours = hours % 24;
 		}
-		
+
 		var msg = "";
 		if( days != null )
 		{
@@ -441,7 +441,9 @@ namespace.namespace( "com.everempire.royal.time", function()
 			msg += " " + formatDigits( minutes, hours ) + "m";
 		}
 		msg += " " + formatDigits( seconds, minutes ) + "s";
-	
+
+		msg = msg.trim();
+
 		return msg;
 	};
 	

@@ -29,30 +29,109 @@ himeModule.directive( "eeMeter", function()
 	var eeMeter =
 	{
 		restrict: "E",
-		scope: 
-		{
-			value: "=",
-			maxValue: "="
-		},
-		transclude: true,
 		templateUrl: "templates/meter.html"
 	};
 	
 	return eeMeter;
 });
 
-himeModule.directive( "eeUpdate", function()
+himeModule.directive( "eeUpdate", function($interval, $filter, gameClock, actorService)
 {
-	var eeUpdate =
+	var updateMeter = function(element, progress, message)
 	{
-		link: function( scope, element, attrs )
-		{
-			var updateClass =  attrs["eeUpdate"];
-			
-			
-		}
+		// Set Message
+		$(element).find(".message").html(message);
+
+		// Set Bar
+		var bar = $(element).find(".bar");
+		bar.html(message);
+		
+		var width = (progress * 100) + "%";
+		bar.css("width", width);
+	};
+
+	var funcLookup = {};
+	
+	var timeFilter = $filter("time");
+	var maxTime = 1000 * 60 * 60;
+	funcLookup.timeMeter = function(element, clock)
+	{
+		var time = clock.getTime();
+		var progress = time / maxTime;
+		var message = timeFilter(time);
+
+		updateMeter(element, progress, message);
+	};
+
+	funcLookup.actorEnergyMeter = function(element, clock)
+	{
+		var scope = element.scope();
+		var actor = scope.actor;
+
+		var progress = actor.energy / actor.maxEnergy;
+		var message = "En: " + actor.energy + " / " + actor.maxEnergy;
+
+		updateMeter(element, progress, message);
 	};
 	
+	funcLookup.actorProgressMeter = function(element, clock)
+	{
+		var scope = element.scope();
+		var actor = scope.actor;
+
+		var progress = actorService.getActivityProgress(actor);
+		var remainingActivityTime = actorService.getRemainingActivityTime( actor );
+		
+		var message;
+		if(progress == null)
+		{
+			// TODO: [prince] Factor this markup out somehow
+			message = 
+				'<div class="ready-message">' +
+					'Ready' +
+				'</div>';
+		}
+		else
+		{
+			// TODO: [prince] Factor this markup out somehow
+			message = 
+				'<div>' +
+					'Progress: ' + (progress * 100).toFixed(0) + '%';
+			
+			if(remainingActivityTime != null)
+			{
+				message += 
+					'<span ng:show="getRemainingActivityTime( actor )">' +
+						'( ' + timeFilter(remainingActivityTime) + ' )' +
+					'</span>';
+			}
+			
+			message += '</div>';
+		}
+
+		updateMeter(element, progress, message);
+	};
+
+	var eeUpdate =
+	{
+		link: function(scope, element, attrs)
+		{
+			var updateFuncName =  attrs["eeUpdate"];
+			var updateFunc = funcLookup[updateFuncName];
+
+			var promise = $interval(function()
+			{
+				gameClock.lap();
+				updateFunc.call(this, element, gameClock);
+			}, 1000 / 10, false);
+
+			element.on("$destroy", function() 
+			{
+				$interval.cancel(promise);
+			});
+		}
+	};
+
 	return eeUpdate;
 });
 
