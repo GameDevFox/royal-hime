@@ -8,6 +8,8 @@ var $area = namespace.getNode( "com.everempire.hime.area" );
 // Create Module
 var himeModule = angular.module( "Hime", [] );
 
+himeModule.constant("fps", 60);
+
 buildServices( himeModule );
 buildControllers( himeModule );
 
@@ -35,7 +37,7 @@ himeModule.directive( "eeMeter", function()
 	return eeMeter;
 });
 
-himeModule.directive( "eeUpdate", function($interval, $filter, gameClock, actorService)
+himeModule.directive( "eeUpdate", function($interval, $filter, actorService, updateService)
 {
 	var updateMeter = function(element, progress, message)
 	{
@@ -69,9 +71,29 @@ himeModule.directive( "eeUpdate", function($interval, $filter, gameClock, actorS
 		var actor = scope.actor;
 
 		var progress = actor.energy / actor.maxEnergy;
-		var message = "En: " + actor.energy + " / " + actor.maxEnergy;
+		var message = "En: " + (actor.energy).toFixed(1) + " / " + actor.maxEnergy;
 
 		updateMeter(element, progress, message);
+
+		var cssClass = "";
+		if(actor.energy >= actor.maxEnergy)
+		{
+			cssClass = "full";
+		}
+		else if(actor.energy <= actor.maxEnergy / 2 && actor.energy > actor.maxEnergy / 4)
+		{
+			cssClass = "half";
+		}
+		else if(actor.energy <= actor.maxEnergy / 4 && actor.energy > 0)
+		{
+			cssClass = "quarter";
+		}
+		else if(actor.energy <= 0)
+		{
+			cssClass = "empty";
+		}
+
+		element.attr("class", "energy-meter " + cssClass);
 	};
 	
 	funcLookup.actorProgressMeter = function(element, clock)
@@ -119,15 +141,16 @@ himeModule.directive( "eeUpdate", function($interval, $filter, gameClock, actorS
 			var updateFuncName =  attrs["eeUpdate"];
 			var updateFunc = funcLookup[updateFuncName];
 
-			var promise = $interval(function()
+			var updateFunction = function(clock)
 			{
-				gameClock.lap();
-				updateFunc.call(this, element, gameClock);
-			}, 1000 / 10, false);
+				// TODO: Consider swapping element and clock
+				updateFunc.call(this, element, clock);
+			};
+			updateService.add(updateFunction);
 
 			element.on("$destroy", function() 
 			{
-				$interval.cancel(promise);
+				updateService.remove(updateFunction);
 			});
 		}
 	};
