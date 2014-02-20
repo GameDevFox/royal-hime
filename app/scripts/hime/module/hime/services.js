@@ -22,18 +22,24 @@ var buildServices = function(himeModule)
 		return $actor.buildActorService(activityService, actorAreaRelationshipSystem, actorData);
 	});
 
-	himeModule.factory("activityService", function(gameClock)
+	himeModule.factory("activityService", function(gameClock, updateService)
 	{
-		return $activity.buildActivityService(gameClock);
+		var activityService = $activity.buildActivityService(gameClock);
+		updateService.add(activityService.update);
+
+		return activityService;
 	});
 
 	himeModule.factory("areaService", function(areaRelationshipSystem, areaData)
 	{
 		return $area.buildAreaService(areaRelationshipSystem, areaData);
 	});
-	
+
 	himeModule.factory("updateService", function($interval, gameClock)
 	{
-		return $update.buildUpdateService($interval, gameClock);
+		var updateService = $update.buildUpdateService($interval, gameClock);
+		updateService.start();
+
+		return updateService;
 	});
 };

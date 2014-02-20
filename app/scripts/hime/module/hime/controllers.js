@@ -1,6 +1,6 @@
 var buildControllers = function( himeModule )
 {
-	himeModule.controller( "ClockController", function( $scope, $filter, gameClock ) 
+	himeModule.controller( "ClockController", function( $scope, gameClock )
 	{
 		// Functions
 		$scope.getTime = gameClock.getTime;

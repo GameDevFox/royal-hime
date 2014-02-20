@@ -2,7 +2,8 @@
 {
 	namespace.namespace( "com.everempire.hime.update", function()
 	{
-		this.buildUpdateService = function($interval, gameClock, fps)
+		// TODO: Validate that clock has the "lap()" method
+		this.buildUpdateService = function($interval, clock, fps)
 		{
 			var updateService = {};
 
@@ -13,19 +14,26 @@
 			{
 				_.each(updateFunctions, function(func)
 				{
-					gameClock.lap();
-					func.call(this, gameClock);
+					clock.lap();
+					func.call(this, clock);
 				});
 			};
 
 			updateService.start = function()
 			{
-				promise = $interval(runUpdateFunctions, 1000 / fps, false);
+				if(promise == null)
+				{
+					promise = $interval(runUpdateFunctions, 1000 / fps, false);
+				}
 			};
 
 			updateService.stop = function()
 			{
-				$interval.cancel(promise);
+				if(promise != null)
+				{
+					$interval.cancel(promise);
+					promise == null;
+				}
 			};
 
 			updateService.add = function(func)
@@ -48,8 +56,6 @@
 
 				updateFunctions = updateFunctions.splice(index, 1);
 			};
-
-			updateService.start();
 
 			return updateService;
 		};

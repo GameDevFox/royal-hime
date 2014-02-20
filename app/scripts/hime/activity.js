@@ -9,6 +9,8 @@ namespace.namespace( "com.everempire.hime.activity", function()
 		// TODO: Activity frames do not have to be stored in the service. 
 		// They should be referenced anywhere and queried from anywhere
 		activityService.activityFrames = [];
+
+		// TODO: Factor out this dependancy on gameClock
 		activityService.gameClock = gameClock;
 			
 		activityService.addActivity = function()
@@ -187,7 +189,13 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			var activityFrame = activityService.getNextCompletedActivity();
 			activityService.gameClock.MotionClock.move( activityFrame.endTime - activityService.time, 1500 );
 		};
-			
+
+		activityService.update = function(clock)
+		{
+			var time = clock.getTime();
+			activityService.setTime(time);
+		};
+
 		activityService.updateTime = function( time )
 		{
 			activityService.setTime( activityService.time + time );
