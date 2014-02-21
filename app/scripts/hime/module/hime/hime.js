@@ -55,7 +55,7 @@ himeModule.directive( "eeUpdate", function($interval, $filter, actorService, upd
 	var funcLookup = {};
 	
 	var timeFilter = $filter("time");
-	var maxTime = 1000 * 60;
+	var maxTime = 1000 * 60 * 60;
 	funcLookup.timeMeter = function(element, clock)
 	{
 		var time = clock.getTime();
