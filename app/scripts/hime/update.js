@@ -32,7 +32,7 @@
 				if(promise != null)
 				{
 					$interval.cancel(promise);
-					promise == null;
+					promise = null;
 				}
 			};
 
@@ -54,7 +54,12 @@
 					throw "This function was never added to this service";
 				}
 
-				updateFunctions = updateFunctions.splice(index, 1);
+				updateFunctions.splice(index, 1);
+			};
+			
+			updateService.isRunning = function()
+			{
+				return promise != null;
 			};
 
 			return updateService;
