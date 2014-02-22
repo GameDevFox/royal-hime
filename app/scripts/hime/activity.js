@@ -166,27 +166,69 @@ namespace.namespace( "com.everempire.hime.activity", function()
 			}
 			
 			var nextActivityId = parseInt( nextActivityId );
-			
+
 			return nextActivityId;
 		};
-			
-		activityService.getNextCompletedActivity = function() 
+
+		activityService.getLastCompletedActivityId = function() 
+		{
+			var lastFrame = null;
+			var lastActivityId = null;
+
+			for( var activityId in activityService.activityFrames )
+			{
+				var activityFrame = activityService.activityFrames[activityId];
+
+				if( lastFrame == null )
+				{
+					lastFrame = activityFrame;
+					lastActivityId = activityId;
+					continue;
+				}
+
+				if( activityFrame.endTime > lastFrame.endTime )
+				{
+					lastFrame = activityFrame;
+					lastActivityId = activityId;
+				}
+			}
+
+			lastActivityId = parseInt( lastActivityId );
+
+			return lastActivityId;
+		};
+
+		activityService.getNextCompletedActivity = function()
 		{
 			var nextActivityId = activityService.getNextCompletedActivityId();
 			var nextActivity = activityService.activityFrames[nextActivityId];
-			
+
 			return nextActivity;
 		};
-		
+
+		activityService.getLastCompletedActivity = function()
+		{
+			var lastActivityId = activityService.getLastCompletedActivityId();
+			var lastActivity = activityService.activityFrames[lastActivityId];
+
+			return lastActivity;
+		};
+
 		activityService.hasActiveActivity = function()
 		{
 			var hasActiveActivity = activityService.getNextCompletedActivity() == null;
 			return hasActiveActivity;
 		};
-		
-		activityService.boost = function()
+
+		activityService.completeNextActivity = function()
 		{
 			var activityFrame = activityService.getNextCompletedActivity();
+			activityService.gameClock.MotionClock.move( activityFrame.endTime - activityService.time, 1500 );
+		};
+
+		activityService.completeAllActivities = function()
+		{
+			var activityFrame = activityService.getLastCompletedActivity();
 			activityService.gameClock.MotionClock.move( activityFrame.endTime - activityService.time, 1500 );
 		};
 

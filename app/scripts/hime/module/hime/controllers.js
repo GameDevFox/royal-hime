@@ -25,10 +25,11 @@ var buildControllers = function( himeModule )
 	himeModule.controller( "ActivityController", function( $scope, activityService ) 
 	{
 		// Properties
-		$scope.$parent.isAutoBoost = true;
+		$scope.isAutoBoost = true;
 		
 		// Functions
-		$scope.boost = activityService.boost;
+		$scope.completeNextActivity = activityService.completeNextActivity;
+		$scope.completeAllActivities = activityService.completeAllActivities;
 		$scope.hasActiveActivity = activityService.hasActiveActivity;
 	});
 
@@ -64,14 +65,19 @@ var buildControllers = function( himeModule )
 			return hasActivity;
 		};
 		
+		$scope.isActorSelected = function()
+		{
+			return actorService.selectedActor != null;
+		};
+
 		$scope.move = function( areaKey )
 		{
 			// TODO: [prince] Clean this up
 			var actor = actorService.selectedActor;
+			
 			var fromArea = actorAreaRelationshipSystem.getRelatedNode(actor);
-			
 			var toArea = areaService.areas[areaKey];
-			
+
 			// Get relationship data (if any) between "fromArea" to "toArea"
 			var data = areaService.areaRelationshipSystem.getRelationship(fromArea, toArea);
 			if( data == null )
@@ -79,29 +85,35 @@ var buildControllers = function( himeModule )
 				console.log( "There is no path for area code: " + $scope.areaName );
 				return;
 			}
-			
+
 			// Calculate required time to move
 			var timeElapsed = data.distance / $scope.getSpeed();
-			
+
 			// Deplete energy
-			actor.energy -= $scope.energyRate * timeElapsed / 100;
-			
+			actor.energy -= ($scope.getEnergyRate() * timeElapsed) / 100;
+
 			// Add Move Activity
 			actor.activityId = activityService.addActivity( function()
 			{
 				actorAreaRelationshipSystem.removeRelationship(actor, fromArea);
 				actorAreaRelationshipSystem.createRelationship(actor, toArea);
-				
+
 				actor.activityId = null;
 			}, timeElapsed * 1000 );
-			
+
 			// Clear pathNumber
 			$scope.pathNumber = null;
-			
-			// Optionally engage "auto-boost"
-			if( $scope.isAutoBoost )
+
+			var hasActivity = function(actor)
 			{
-				activityService.boost();
+				return actor.activityId != null;
+			};
+
+			// Optionally engage "auto-boost"
+			if($scope.isAutoBoost && _.all(actorService.actors, hasActivity))
+			{
+				// TODO: Don't auto boost if waiting would be shorter
+				activityService.completeNextActivity();
 			}
 		};
 	});

@@ -92,25 +92,23 @@
 					
 				</td>
 				<td style="vertical-align: top;">
-				
+
 					<fieldset class="activity-controller">
 						<legend>Activity</legend>
 						<div ng:controller="ActivityController">
-							<button class="boost-button" ng:click="boost()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
+							<button class="boost-button" ng:click="completeNextActivity()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
+							<button class="super-boost-button" ng:click="completeAllActivities()" ng:disabled="hasActiveActivity()">Complete All Activities</button>
 							<input type="checkbox" ng:model="isAutoBoost"/> Auto-Boost
 						</div>
-					</fieldset>
-					
-					<fieldset>
-						<legend>Navigation</legend>
-						
-						<div ng:controller="AreaController">
-							
+
+						<fieldset ng:controller="AreaController" ng:show="isActorSelected()">
+							<legend>Navigation</legend>
+
 							<div>
 								<input type="checkbox" ng:model="running"/>
 								Running (Speed: {{ getSpeed() }} m/s)
 							</div>
-							
+
 							<div>
 								<div ng:show="hasActivity()">
 									<h3>Exits:</h3>
@@ -121,9 +119,10 @@
 									</ul>
 								</div>
 							</div>
-						</div>
+						</fieldset>
+
 					</fieldset>
-				
+
 				</td>
 			</tr>
 			
