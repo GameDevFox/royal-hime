@@ -42,4 +42,24 @@ var buildServices = function(himeModule)
 
 		return updateService;
 	});
+
+	himeModule.provider("updateFunctions", function()
+	{
+		var updateFunctions = {};
+
+		var provider =
+		{
+			register: function(name, func)
+			{
+				updateFunctions[name] = func;
+			},
+
+			$get: function()
+			{
+				return updateFunctions;
+			}
+		};
+
+		return provider;
+	});
 };

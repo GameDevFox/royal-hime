@@ -2,18 +2,18 @@
 <html xmlns:ee="http://everempire.com" xmlns:ng="http://angularjs.org">
 	<head>
 		<title>Royal</title>
-		
+
 		<!-- Styles -->
 		<link rel="StyleSheet" type="text/css" href="styles/hime.css">
-		 
+
 		<!-- Libraries --> 
 		<script type="text/javascript" src="scripts/lib/angular-1.2.1.js"></script>
 		<script type="text/javascript" src="scripts/lib/jquery-2.0.3.js"></script>
 		<script type="text/javascript" src="scripts/lib/underscore-1.5.2.js"></script>
-		 
+
 		<!-- Scripts -->
 		<script type="text/javascript" src="scripts/utils.js"></script>
-		
+
 		<script type="text/javascript" src="scripts/royal/namespace.js"></script>
 		<script type="text/javascript" src="scripts/royal/math.js"></script>
 		<script type="text/javascript" src="scripts/royal/type.js"></script>
@@ -22,20 +22,22 @@
 		<script type="text/javascript" src="scripts/royal/advanced.js"></script>
 		<script type="text/javascript" src="scripts/royal/parent.js"></script>
 		<script type="text/javascript" src="scripts/royal/relationship.js"></script>
-		 
+
 		<script type="text/javascript" src="scripts/hime/area.js"></script>
 		<script type="text/javascript" src="scripts/hime/actor.js"></script>
 		<script type="text/javascript" src="scripts/hime/activity.js"></script>
 		<script type="text/javascript" src="scripts/hime/update.js"></script>
-		
+
 		<!-- Angular Modules -->
 		<script type="text/javascript" src="scripts/hime/module/hime/services.js"></script>
 		<script type="text/javascript" src="scripts/hime/module/hime/controllers.js"></script>
-		<script type="text/javascript" src="scripts/hime/module/hime/hime.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/hime/updateFunctions.js"></script>
+		<script type="text/javascript" src="scripts/hime/module/hime/module.js"></script>
+
 		<script type="text/javascript" src="scripts/hime/module/time-module.js"></script>
-		
+
 		<script type="text/javascript" src="scripts/main.js"></script>
-		
+
 	</head>
 	<body>
 	
@@ -95,23 +97,18 @@
 						<legend>Activity</legend>
 						<div ng:controller="ActivityController">
 							<button class="boost-button" ng:click="boost()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
-							<input type="checkbox" ng:model="autoBoost" /> Auto-Boost
+							<input type="checkbox" ng:model="isAutoBoost"/> Auto-Boost
 						</div>
 					</fieldset>
 					
 					<fieldset>
 						<legend>Navigation</legend>
 						
-						<div ng:controller="AreaControl">
+						<div ng:controller="AreaController">
 							
 							<div>
 								<input type="checkbox" ng:model="running"/>
-								Running
-							</div>
-							
-							<div>
-								<input type="checkbox" ng:model="throttle">
-								Throttle
+								Running (Speed: {{ getSpeed() }} m/s)
 							</div>
 							
 							<div>
@@ -119,12 +116,9 @@
 									<h3>Exits:</h3>
 									<ul ng:controller="AreaPathsController" class="paths">
 										<li ng:repeat="path in paths">
-											<a ng:click="move()" ng:mouseover="setAreaName( path.area.key )" >{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / speed * 1000 | time }} )</a>
+											<a ng:click="move(path.area.key)">{{ path.area.name }} : {{ path.distance }}m ( {{ path.distance / getSpeed() * 1000 | time }} )</a>
 										</li>
 									</ul>
-									
-									<input type="text" ng:model="areaName" placeholder="Where do you want to go?" />
-									<input type="button" ng:click="move()" value="Move" />
 								</div>
 							</div>
 						</div>

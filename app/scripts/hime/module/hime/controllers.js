@@ -25,12 +25,85 @@ var buildControllers = function( himeModule )
 	himeModule.controller( "ActivityController", function( $scope, activityService ) 
 	{
 		// Properties
-		// TODO: Better way to do this
-		$scope.autoBoost = true;
+		$scope.$parent.isAutoBoost = true;
 		
 		// Functions
 		$scope.boost = activityService.boost;
 		$scope.hasActiveActivity = activityService.hasActiveActivity;
+	});
+
+	himeModule.controller( "AreaController", function($scope, actorService, areaService, activityService, actorAreaRelationshipSystem)
+	{
+		var baseSpeed = 1.2; // Meters per second
+		var baseEnergyRate = 1.0; // Energy depletion rate
+
+		$scope.getSpeed = function()
+		{
+			return $scope.running ? baseSpeed * 2 : baseSpeed;
+		};
+
+		$scope.getEnergyRate = function()
+		{
+			return $scope.running ? baseEnergyRate * 2 : baseEnergyRate;
+		};
+
+		$scope.hasActivity = function()
+		{
+			var hasActivity;
+
+			// "try" block in case of null pointer
+			try 
+			{
+				hasActivity = actorService.selectedActor.activityId == null;
+			}
+			catch( e )
+			{
+				hasActivity = false;
+			}
+			
+			return hasActivity;
+		};
+		
+		$scope.move = function( areaKey )
+		{
+			// TODO: [prince] Clean this up
+			var actor = actorService.selectedActor;
+			var fromArea = actorAreaRelationshipSystem.getRelatedNode(actor);
+			
+			var toArea = areaService.areas[areaKey];
+			
+			// Get relationship data (if any) between "fromArea" to "toArea"
+			var data = areaService.areaRelationshipSystem.getRelationship(fromArea, toArea);
+			if( data == null )
+			{
+				console.log( "There is no path for area code: " + $scope.areaName );
+				return;
+			}
+			
+			// Calculate required time to move
+			var timeElapsed = data.distance / $scope.getSpeed();
+			
+			// Deplete energy
+			actor.energy -= $scope.energyRate * timeElapsed / 100;
+			
+			// Add Move Activity
+			actor.activityId = activityService.addActivity( function()
+			{
+				actorAreaRelationshipSystem.removeRelationship(actor, fromArea);
+				actorAreaRelationshipSystem.createRelationship(actor, toArea);
+				
+				actor.activityId = null;
+			}, timeElapsed * 1000 );
+			
+			// Clear pathNumber
+			$scope.pathNumber = null;
+			
+			// Optionally engage "auto-boost"
+			if( $scope.isAutoBoost )
+			{
+				activityService.boost();
+			}
+		};
 	});
 
 	himeModule.controller( "AreaPathsController", function($scope, actorService, areaService, actorAreaRelationshipSystem)
@@ -60,91 +133,11 @@ var buildControllers = function( himeModule )
 		}, true);
 	});
 
-	himeModule.controller( "AreaControl", function($scope, actorService, areaService, activityService, actorAreaRelationshipSystem)
-	{	
-		$scope.speed = 1.2; // Meters per second
-		$scope.energyRate = 1.0; // Energy depletion rate
-		
-		$scope.$watch( 'running', function( newVal, oldVal )
-		{
-			if( newVal )
-			{
-				$scope.speed = 2.4;
-				$scope.energyRate = 3.0;
-			}
-			else
-			{
-				$scope.speed = 1.2;
-				$scope.energyRate = 1.0;
-			}
-		});
-		
-		$scope.hasActivity = function()
-		{
-			var hasActivity;
-			
-			// Try block in case of null pointer
-			try 
-			{
-				hasActivity = actorService.selectedActor.activityId == null;
-			}
-			catch( e )
-			{
-				hasActivity = false;
-			}
-			
-			return hasActivity;
-		};
-		
-		$scope.setAreaName = function( areaCode )
-		{
-			$scope.areaName = areaCode;
-		};
-		
-		$scope.move = function( actor, destAreaPathName )
-		{
-			// TODO: [prince] Clean this up
-			var actor = actorService.selectedActor;
-			var fromArea = actorAreaRelationshipSystem.getRelatedNode(actor);
-			
-			var toAreaKey = $scope.areaName;
-			var toArea = areaService.areas[toAreaKey];
-			
-			// Get relationship data (if any) between "fromArea" to "toArea"
-			var data = areaService.areaRelationshipSystem.getRelationship(fromArea, toArea);
-			if( data == null )
-			{
-				console.log( "There is no path for area code: " + $scope.areaName );
-				return;
-			}
-			
-			// Calculate required time to move
-			var timeElapsed = data.distance / $scope.speed;
-			
-			// Deplete energy
-			actor.energy -= $scope.energyRate * timeElapsed / 100;
-			
-			// Add Move Activity
-			actor.activityId = activityService.addActivity( function()
-			{
-				actorAreaRelationshipSystem.removeRelationship(actor, fromArea);
-				actorAreaRelationshipSystem.createRelationship(actor, toArea);
-				
-				actor.activityId = null;
-			}, timeElapsed * 1000 );
-			
-			// Clear pathNumber
-			$scope.pathNumber = null;
-			
-			if( $scope.throttle )
-			{
-				activityService.boost();
-			}
-		};
-	});
+	//////////////////////////
+	// AREA EDIT CONTROLLER //
+	//////////////////////////
 
 	var areaRelationshipSystem = $relationship.buildRelationshipSystem();
-
 	himeModule.controller( "AreaEditControl", function( $scope, areaData )
 	{
 		var areaService = $area.buildAreaService( areaRelationshipSystem, areaData );
