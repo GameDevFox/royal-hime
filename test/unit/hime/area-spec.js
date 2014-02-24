@@ -4,6 +4,26 @@ describe( "com.everempire.hime.area", function()
 	
 	var $relationship = namespace.getNode( "com.everempire.royal.relationship" );
 
+	var areaData = 
+	{
+		areas: {
+			roomA: {
+				name: "Room A", key: "roomA"
+			},
+			roomB: {
+				name: "Room B", key: "roomB"
+			},
+			roomC: {
+				name: "Room C", key: "roomC"
+			}
+		},
+		paths: [
+			{ areas: ["roomA", "roomB"], distance: 10 },
+			{ areas: ["roomB", "roomC"], distance: 20 },
+			{ areas: ["roomC", "roomA"], distance: 30 }
+		]
+	};
+
 	describe( "buildArea()", function() 
 	{
 		it( "builds an area with a given name and key", function()
@@ -13,27 +33,8 @@ describe( "com.everempire.hime.area", function()
 		});
 	});
 
-	describe("buildAreaService( areaRelationshipSystem, areaData )", function()
+	describe("buildAreaService(areaRelationshipSystem, areaData)", function()
 	{
-		var areaData = {
-			areas: {
-				roomA: { 
-					name: "Room A", key: "roomA"
-				},
-				roomB: {
-					name: "Room B", key: "roomB"
-				},
-				roomC: {
-					name: "Room C", key: "roomC"
-				}
-			},
-			paths: [
-				{ areas: ["roomA", "roomB"], distance: 10 },
-				{ areas: ["roomB", "roomC"], distance: 20 },
-				{ areas: ["roomC", "roomA"], distance: 30 }
-			]
-		};
-
 		var invalidAreaData = {
 			areas: {
 				roomA: {
@@ -45,6 +46,21 @@ describe( "com.everempire.hime.area", function()
 			},
 			paths: [
 				{ areas: ["roomA", "roomD"], distance: 10 },
+				{ areas: ["roomB", "roomC"], distance: 20 },
+			]
+		};
+
+		var invalidAreaData2 = {
+			areas: {
+				roomA: {
+					name: "Room A", key: "roomA"
+				},
+				roomB: {
+					name: "Room B", key: "roomB"
+				}
+			},
+			paths: [
+				{ areas: ["roomD", "roomA"], distance: 10 },
 				{ areas: ["roomB", "roomC"], distance: 20 },
 			]
 		};
@@ -83,31 +99,62 @@ describe( "com.everempire.hime.area", function()
 
 			expect(buildAreaServiceFunc)
 				.toThrow("Error when creating relationship from \"roomA\" to \"roomD\": Could not find area \"roomD\"");
+
+			var buildAreaServiceFunc2 = function()
+			{
+				$area.buildAreaService(areaRelationshipSystem, invalidAreaData2);
+			};
+
+			expect(buildAreaServiceFunc2)
+				.toThrow("Error when creating relationship from \"roomD\" to \"roomA\": Could not find area \"roomD\"");
+		});
+	});
+
+	describe("areaService", function()
+	{
+		describe("magages the creation and deletion of areas and their paths", function()
+		{
+			var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+			var areaService = $area.buildAreaService(areaRelationshipSystem);
+
+			var areaA = areaService.createArea("Area A", "areaA");
+			var areaB = areaService.createArea("Area B", "areaB");
+			var areaC = areaService.createArea("Area C", "areaC");
+
+			areaService.removeArea(areaB);
+
+			areaService.createPath(areaA.key, areaC.key, 123);
+
+			var areaJson = areaService.toJson();
+			expect(areaJson).toEqual({
+				areas : {
+					areaA : { name : 'Area A', key : 'areaA' },
+					areaC : { name : 'Area C', key : 'areaC' }
+				},
+				paths : [ { areas : [ 'areaA', 'areaC' ], distance : 123 } ]
+			});
 		});
 
-		describe("areaService", function()
+		describe("toJson()", function()
 		{
-			describe("toJson()", function()
+			it("returns an object that can be serialized to a JSON string", function()
 			{
-				it("returns an object that can be serialized to a JSON string", function()
-				{
-					var areaRelationshipSystem = $relationship.buildRelationshipSystem();
-					var areaService = $area.buildAreaService(areaRelationshipSystem, areaData);
+				var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+				var areaService = $area.buildAreaService(areaRelationshipSystem, areaData);
 
-					var jsonObject = areaService.toJson();
+				var jsonObject = areaService.toJson();
 
-					expect(jsonObject).toEqual({
-						areas: {
-							roomA: { name: "Room A", key: "roomA" },
-							roomB: { name: "Room B", key: "roomB" },
-							roomC: { name: "Room C", key: "roomC" }
-						},
-						paths: [
-							{ areas: ["roomA", "roomB"], distance: 10 },
-							{ areas: ["roomB", "roomC"], distance: 20 },
-							{ areas: ["roomC", "roomA"], distance: 30 }
-						]
-					});
+				expect(jsonObject).toEqual({
+					areas: {
+						roomA: { name: "Room A", key: "roomA" },
+						roomB: { name: "Room B", key: "roomB" },
+						roomC: { name: "Room C", key: "roomC" }
+					},
+					paths: [
+						{ areas: ["roomA", "roomB"], distance: 10 },
+						{ areas: ["roomB", "roomC"], distance: 20 },
+						{ areas: ["roomC", "roomA"], distance: 30 }
+					]
 				});
 			});
 		});

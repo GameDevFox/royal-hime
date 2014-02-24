@@ -33,7 +33,7 @@ var buildControllers = function( himeModule )
 		$scope.hasActiveActivity = activityService.hasActiveActivity;
 	});
 
-	himeModule.controller( "AreaController", function($scope, actorService, areaService, activityService, actorAreaRelationshipSystem)
+	himeModule.controller( "MoveActivityController", function($scope, actorService, areaService, activityService, actorAreaRelationshipSystem)
 	{
 		var baseSpeed = 1.2; // Meters per second
 		var baseEnergyRate = 1.0; // Energy depletion rate
@@ -150,44 +150,24 @@ var buildControllers = function( himeModule )
 	//////////////////////////
 
 	var areaRelationshipSystem = $relationship.buildRelationshipSystem();
-	himeModule.controller( "AreaEditControl", function( $scope, areaData )
+	himeModule.controller( "AreaController", function( $scope, areaData )
 	{
 		var areaService = $area.buildAreaService( areaRelationshipSystem, areaData );
 
 		$scope.areas = areaService.areas;
 
-		$scope.createArea = function(areaName, areaKey)
-		{
-			var area = $area.buildArea(areaName, areaKey);
-			$scope.areas[area.key] = area;
-		};
-
-		$scope.removeArea = function(area)
-		{
-			// Remove Area Paths
-			var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
-			_.each(relatedAreas, function(relatedArea)
-			{
-				areaRelationshipSystem.removeRelationship(area, relatedArea);
-			});
-
-			// Remove Area
-			delete areaService.areas[area.key];
-		};
+		$scope.createArea = areaService.createArea;
+		$scope.removeArea = areaService.removeArea;
 
 		$scope.createPath = function(areaAKey, areaBKey, pathDistance)
 		{
-			var areaA = $scope.areas[areaAKey];
-			var areaB = $scope.areas[areaBKey];
-
-			var data = areaRelationshipSystem.createRelationship(areaA, areaB);
-			data.distance = pathDistance;
+			areaService.createPath(areaAKey, areaBKey, pathDistance);
 
 			$scope.areaCodeA = null;
 			$scope.areaCodeB = null;
 			$scope.pathDistance = null;
 		};
-		
+
 		$scope.selectArea = function(areaKey)
 		{
 			if( $scope.areaCodeA == null || $scope.areaCodeA.trim() == "" )
@@ -199,20 +179,22 @@ var buildControllers = function( himeModule )
 				$scope.areaCodeB = areaKey;
 			}
 		};
-		
+
 		$scope.generateJson = function()
 		{
 			var areaJson = areaService.toJson();
 			$scope.generatedJson = JSON.stringify( areaJson );
 		};
 	});
-	
+
 	himeModule.controller( "AreaEditNode", function($scope)
 	{
+		$scope.removePath = areaRelationshipSystem.removeRelationship;
+
 		$scope.getPaths = function(area)
 		{
 			var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
-			
+
 			var paths = _.map(relatedAreas, function(relatedArea)
 			{
 				var path = {};
@@ -225,11 +207,6 @@ var buildControllers = function( himeModule )
 			});
 			
 			return paths;
-		};
-
-		$scope.removePath = function(fromArea, toArea)
-		{
-			areaRelationshipSystem.removeRelationship(fromArea, toArea);
 		};
 
 		$scope.$watch("getPaths(area)", function(newValue, oldValue)

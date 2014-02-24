@@ -57,7 +57,40 @@
 			areaService.areaRelationshipSystem = areaRelationshipSystem;
 
 			// Load areas and areaRelationshipSystem
-			loadAreaData(areaService, areaData);
+			if(areaData != null)
+			{
+				loadAreaData(areaService, areaData);
+			}
+
+			areaService.createArea = function(areaName, areaKey)
+			{
+				var area = buildArea(areaName, areaKey);
+				areaService.areas[area.key] = area;
+
+				return area;
+			};
+
+			areaService.removeArea = function(area)
+			{
+				// Remove Area Paths
+				var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
+				_.each(relatedAreas, function(relatedArea)
+				{
+					areaRelationshipSystem.removeRelationship(area, relatedArea);
+				});
+
+				// Remove Area
+				delete areaService.areas[area.key];
+			};
+
+			areaService.createPath = function(areaAKey, areaBKey, pathDistance)
+			{
+				var areaA = areaService.areas[areaAKey];
+				var areaB = areaService.areas[areaBKey];
+
+				var data = areaRelationshipSystem.createRelationship(areaA, areaB);
+				data.distance = pathDistance;
+			};
 
 			areaService.toJson = function()
 			{
