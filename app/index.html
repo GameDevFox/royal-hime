@@ -91,11 +91,11 @@
 					</div>
 					
 				</td>
-				<td style="vertical-align: top;">
+				<td ng:controller="ActivityController" style="vertical-align: top;">
 
 					<fieldset class="activity-controller">
 						<legend>Activity</legend>
-						<div ng:controller="ActivityController">
+						<div>
 							<button class="boost-button" ng:click="completeNextActivity()" ng:disabled="hasActiveActivity()">Complete Next Activity</button>
 							<button class="super-boost-button" ng:click="completeAllActivities()" ng:disabled="hasActiveActivity()">Complete All Activities</button>
 							<input type="checkbox" ng:model="isAutoBoost"/> Auto-Boost
