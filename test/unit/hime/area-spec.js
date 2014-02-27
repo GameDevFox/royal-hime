@@ -112,7 +112,7 @@ describe( "com.everempire.hime.area", function()
 
 	describe("areaService", function()
 	{
-		describe("magages the creation and deletion of areas and their paths", function()
+		it("magages the creation and deletion of areas and their paths", function()
 		{
 			var areaRelationshipSystem = $relationship.buildRelationshipSystem();
 			var areaService = $area.buildAreaService(areaRelationshipSystem);
@@ -121,9 +121,10 @@ describe( "com.everempire.hime.area", function()
 			var areaB = areaService.createArea("Area B", "areaB");
 			var areaC = areaService.createArea("Area C", "areaC");
 
-			areaService.removeArea(areaB);
-
 			areaService.createPath(areaA.key, areaC.key, 123);
+			areaService.createPath(areaB.key, areaC.key, 456);
+
+			areaService.removeArea(areaB);
 
 			var areaJson = areaService.toJson();
 			expect(areaJson).toEqual({
