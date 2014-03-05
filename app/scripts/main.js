@@ -11,7 +11,7 @@
 	
 	var onReady = function()
 	{
-		$utils.each( resources, loadResource );
+		_.each( resources, loadResource );
 	};
 	
 	var loadResource = function( value, key )
@@ -30,7 +30,7 @@
 			return key in loadedResources;
 		};
 		
-		if( $utils.all( resources, isKeyLoaded ) )
+		if( _.all( resources, isKeyLoaded ) )
 		{
 			configModule( loadedResources );
 		}
@@ -45,7 +45,7 @@
 		{
 			himeModule.constant( key, value );
 		};
-		$utils.each( loadedResources, injectModuleData );
+		_.each( loadedResources, injectModuleData );
 		
 		//Bootstrap angularjs
 		window.injector = angular.bootstrap( $("body"), [ "Hime", "Time" ] );

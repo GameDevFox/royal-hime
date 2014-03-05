@@ -24,7 +24,7 @@ namespace.namespace( "com.everempire.hime.actor", function()
 
 	var loadActors = function( actors, actorDefs )
 	{
-		$utils.each( actorDefs, function( actorDef )
+		_.each( actorDefs, function( actorDef )
 		{
 			var actor = buildActor( actorDef.name, actorDef.energy );
 			actors.push( actor );
