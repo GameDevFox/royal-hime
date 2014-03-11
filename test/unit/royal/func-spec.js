@@ -2,20 +2,29 @@ describe("com.everempire.royal.func", function()
 {
 	$func = namespace.getNode("com.everempire.royal.func");
 
-	describe("getFuncName(func)", function()
+	function myFunc(   name , age  ) // <-- Intentional white space
+	{
+		return name+" is "+age+" years old";
+	}
+
+	describe("getName(func)", function()
 	{
 		it("returns the name of a function", function()
 		{
-			function myFunc(name, age)
-			{
-				return name+" is "+age+" years old";
-			}
-
-			var funcName = $func.getFuncName(myFunc);
+			var funcName = $func.getName(myFunc);
 			expect(funcName).toEqual("myFunc");
 
-			var funcName2 = $func.getFuncName(Number);
+			var funcName2 = $func.getName(Number);
 			expect(funcName2).toEqual("Number");
 		})
+	});
+
+	describe("getArgs(func)", function()
+	{
+		it("returns an array of arguments names for a function", function()
+		{
+			var args = $func.getArgs(myFunc);
+			expect(args).toEqual(["name", "age"]);
+		});
 	});
 });
