@@ -2,99 +2,97 @@
 {
 	namespace.namespace( "com.everempire.royal.type", function() 
 	{
-		// Native types
-		this.isUndefined = function( value )
+		var $func = namespace.getNode("com.everempire.royal.func");
+
+		var buildType = function(constructor)
 		{
-			return typeof( value ) == "undefined";
+			var type = $func.getName(constructor);
+
+			var typeFunc = function(value)
+			{
+				if(value == null)
+				{
+					return false;
+				}
+
+				var valueType = $func.getName(value.constructor);
+				return valueType == type;
+			};
+			return typeFunc;
 		};
-		
-		this.isNull = function( value )
+		this.buildType = buildType;
+
+		// Helper functions
+		var buildLogicalTypeFunction = function(iterativeFunction)
 		{
-			return !this.isUndefined( value ) && value == null;
-		};
-		
-		this.isBoolean = function( value )
-		{
-			return typeof( value ) == "boolean";
-		};
-		
-		this.isNumber = function( value )
-		{
-			return typeof( value ) == "number";
-		};
-		
-		this.isString = function( value )
-		{
-			return typeof( value ) == "string";
-		};
-		
-		this.isFunction = function( value )
-		{
-			return typeof( value ) == "function";
-		};
-		
-		this.isArray = function ( value ) 
-		{
-			return Object.prototype.toString.apply( value ) == "[object Array]";
-		};
-		
-		this.isObject = function( value )
-		{
-			return !this.isNull( value ) && ( typeof( value ) == "object" );
+			var logicalTypeFunc = function()
+			{
+				// TODO: Replace with generic function
+				var types = Array.prototype.slice.call(arguments, 0);
+
+				var typeFunc = function(value)
+				{
+					var result = iterativeFunction(types, function(type)
+					{
+						return type(value);
+					});
+
+					return result;
+				};
+
+				return typeFunc;
+			};
+
+			return logicalTypeFunc;
 		};
 
-		// Native Type Categories
-		this.isEmpty = function( value )
-		{
-			return (
-				this.isUndefined( value )
-				|| this.isNull( value )
-			);
-		};
+		var and = buildLogicalTypeFunction(_.all);
+		this.and = and;
 		
-		// TODO: [prince] These aren't needed right now and have no tests
-		// Uncomment later
-		/*
-		this.isNumeric = function( value )
-		{
-			return (
-				this.isBoolean( value )
-				|| this.isNumber( value )
-			);
-		};
+		var or = buildLogicalTypeFunction(_.any);
+		this.or = or;
 		
-		this.isContant = function( value )
+		// Native types
+		var nativeTypes = [Number, String, Boolean, Object, Array, Function, Date, RegExp];
+
+		_.each(nativeTypes, function(type)
 		{
-			return (
-				this.isBoolean( value )
-				|| this.isNumber( value )
-				|| this.isString( value )
-			);
+			var typeName = $func.getName(type);
+			var typeFuncName = "is"+typeName;
+			this[typeFuncName] = buildType(type);
+		},
+		this);
+
+		var isUndefined = function(value)
+		{
+			return typeof(value) == "undefined";
 		};
+		this.isUndefined = isUndefined;
+
+		var isNull = function(value)
+		{
+			return !isUndefined(value) && value == null;
+		};
+		this.isNull = isNull;
+
+		// Simple Types
+		// TODO: Build these with function builder
+		var isNumber = this.isNumber;
 		
-		this.isComplex = function( value )
+		var isInteger = function(value)
 		{
-			return (
-				this.isFunction( value )
-				|| this.isObject( value )
-			);
+			return isNumber(value) && (value % 1 == 0);
 		};
-		*/
+		this.isInteger = isInteger;
+
+		var isPositive = function(value)
+		{
+			return isNumber(value) && value > 0;
+		};
+		this.isPositive = isPositive;
 		
-		this.getType = function( value )
-		{
-			var type;
-			
-			if( this.isNull( value ) )
-			{
-				type = "null";
-			}
-			else
-			{
-				type = typeof( value );
-			}
-			
-			return type;
-		};
+		// Composite Types
+		var isEmpty = or(isUndefined, isNull);
+		this.isEmpty = isEmpty;
 	});
 }());
