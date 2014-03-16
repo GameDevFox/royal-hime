@@ -31,5 +31,15 @@
 
 			return args;
 		};
+
+		this.get = function(object, propertyName)
+		{
+			return object[propertyName];
+		};
+
+		this.set = function(object, propertyName, value)
+		{
+			object[propertyName] = value;
+		};
 	});
 }());
