@@ -16,7 +16,7 @@ describe("com.everempire.royal.func", function()
 
 			var funcName2 = $func.getName(Number);
 			expect(funcName2).toEqual("Number");
-		})
+		});
 	});
 
 	describe("getArgs(func)", function()
@@ -25,6 +25,26 @@ describe("com.everempire.royal.func", function()
 		{
 			var args = $func.getArgs(myFunc);
 			expect(args).toEqual(["name", "age"]);
+		});
+	});
+
+	var player = { name: "Prince", age: 21 };
+
+	describe("get(object, parameterName)", function()
+	{
+		it("gets the parameter of an object by name", function()
+		{
+			var playerName = $func.get(player, "name");
+			expect(playerName).toEqual("Prince");
+		});
+	});
+
+	describe("set(object, parameterName, value)", function()
+	{
+		it("sets the parameter of an object by name", function()
+		{
+			$func.set(player, "age", 24);
+			expect(player.age).toEqual(24);
 		});
 	});
 });
