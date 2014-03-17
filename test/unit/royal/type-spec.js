@@ -167,4 +167,21 @@ describe( "com.everempire.royal.type", function()
 			expect(isPostiveInteger(123)).toBe(true);
 		});
 	});
+
+	describe("not(type)", function()
+	{
+		it("returns a function that is the inverse of the given type function", function()
+		{
+			var isPostiveInteger = $type.or($type.isInteger, $type.isPositive);
+			var isNotPositiveInteger = $type.not(isPostiveInteger);
+
+			expect(isNotPositiveInteger(null)).toBe(true);
+			expect(isNotPositiveInteger("123")).toBe(true);
+			expect(isNotPositiveInteger(0)).toBe(false);
+			expect(isNotPositiveInteger(123.5)).toBe(false);
+			expect(isNotPositiveInteger(-123)).toBe(false);
+			expect(isNotPositiveInteger(-123.5)).toBe(true);
+			expect(isNotPositiveInteger(123)).toBe(false);
+		});
+	});
 });

@@ -48,9 +48,20 @@
 
 		var and = buildLogicalTypeFunction(_.all);
 		this.and = and;
-		
+
 		var or = buildLogicalTypeFunction(_.any);
 		this.or = or;
+
+		var not = function(type)
+		{
+			var notFunc = function()
+			{
+				return !type.apply(this, arguments);
+			};
+
+			return notFunc;
+		};
+		this.not = not;
 		
 		// Native types
 		var nativeTypes = [Number, String, Boolean, Object, Array, Function, Date, RegExp];
@@ -76,7 +87,7 @@
 		this.isNull = isNull;
 
 		// Simple Types
-		// TODO: Build these with function builder
+		// TODO: Build these with validated function builder
 		var isNumber = this.isNumber;
 		
 		var isInteger = function(value)
