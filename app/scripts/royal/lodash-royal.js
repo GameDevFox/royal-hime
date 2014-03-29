@@ -12,13 +12,12 @@ _.mixin(
 		_.each(collection, func, context);
 
 		return results;
-	}
+	},
 
-	_.map([
-	  [ "James", 21, 100 ],
-	  [ "Erica", 18, 110 ],
-	  [ "James", 24, 86 ],
-	  [ "Melissa", 45, 72 ]
-	],
-	_.partial(_.zipObject, [ "name", "age", "score" ]));
+	zipObjects: function(keys)
+	{
+		var values = _.rest(arguments);
+		var result = _.map(values, _.partial(_.zipObject, keys));
+		return result;
+	}
 });
