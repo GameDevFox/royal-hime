@@ -1,19 +1,35 @@
-(function()
-{	
-	var $utils = namespace.getNode( "com.everempire.royal.utils" );
-	
+require.config(
+{
+	paths:
+	{
+		angular: "lib/angular",
+		jquery: "lib/jquery",
+		lodash: "lib/lodash"
+	},
+
+	shim:
+	{
+		angular:
+		{
+			exports: "angular"
+		}
+	}
+});
+
+require(["angular", "jquery", "lodash", "royal-hime/hime-module"], function(angular, $, _)
+{
 	var resources = 
 	{
 		areaData: "data/areas.json",
 		actorData: "data/actors.json"
 	};
 	var loadedResources = {};
-	
+
 	var onReady = function()
 	{
 		_.each( resources, loadResource );
 	};
-	
+
 	var loadResource = function( value, key )
 	{
 		$.get( value, function( data )
@@ -29,29 +45,29 @@
 		{
 			return key in loadedResources;
 		};
-		
+
 		if( _.all( resources, isKeyLoaded ) )
 		{
 			configModule( loadedResources );
 		}
 	};
-	
+
 	var configModule = function( loadedResources )
 	{
 		// Load data into Hime module
 		var himeModule = angular.module( "Hime" );
-		
+
 		var injectModuleData = function( value, key )
 		{
 			himeModule.constant( key, value );
 		};
 		_.each( loadedResources, injectModuleData );
-		
+
 		//Bootstrap angularjs
 		window.injector = angular.bootstrap( $("body"), [ "Hime", "Time" ] );
 		
 		window.rootScope = getScope( "body" );
 	};
-	
+
 	$(document).ready( onReady );
-}());
+});
