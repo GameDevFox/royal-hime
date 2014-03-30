@@ -1,18 +1,18 @@
-namespace.namespace( "com.everempire.hime.activity", function() 
+namespace.namespace( "com.everempire.hime.activity", function()
 {
 	this.buildActivityService = function( gameClock )
 	{
 		var activityService = {};
-		
+
 		activityService.time = 0;
-		
-		// TODO: Activity frames do not have to be stored in the service. 
+
+		// TODO: Activity frames do not have to be stored in the service.
 		// They should be referenced anywhere and queried from anywhere
 		activityService.activityFrames = [];
 
 		// TODO: Factor out this dependancy on gameClock
 		activityService.gameClock = gameClock;
-			
+
 		activityService.addActivity = function()
 		{
 			switch( arguments.length )
@@ -28,71 +28,71 @@ namespace.namespace( "com.everempire.hime.activity", function()
 					break;
 			}
 		};
-			
-		activityService.addActivityNow = function( activity, duration ) 
-		{	
+
+		activityService.addActivityNow = function( activity, duration )
+		{
 			if( duration == undefined )
 			{
 				throw "Must specify duration";
 			}
-			
+
 			var startTime = activityService.time;
 			var endTime = startTime + duration;
-			
+
 			return activityService.commitActivity( activity, startTime, endTime );
 		};
-			
+
 		activityService.addActivityLater = function( activity, offset, duration )
 		{
 			var startTime = activityService.time + offset;
 			var endTime = startTime + duration;
-			
+
 			return activityService.commitActivity( activity, startTime, endTime );
 		};
-			
+
 		activityService.commitActivity = function( activity, startTime, endTime )
 		{
 			var commitActivity;
-			
+
 			if( typeof activity == "function" )
 			{
 				commitActivity = { complete: activity };
 			}
-			else if( angular.isArray( activity ) )	
+			else if( angular.isArray( activity ) )
 			{
 				commitActivity = { complete: activity[0], progress: activity[1] };
-			} 
+			}
 			else
 			{
 				commitActivity = activity;
 			}
-			
-			var activityFrame = 
+
+			var activityFrame =
 			{
 				startTime: startTime,
 				endTime: endTime,
 				activity: commitActivity
 			};
-			
+
 			var activityId = activityService.activityFrames.push( activityFrame ) - 1;
 			return activityId;
 		};
-			
+
 		activityService.getProgress = function( activityId )
 		{
 			if( activityId == null )
 			{
 				return null;
 			}
-			
+
 			if( typeof activityId == "object" )
 			{
 				// Assume "activityId" is actually an object with an id
 				activityId = activityId.activityId;
 			}
-			
+
 			var activityFrame = activityService.activityFrames[activityId];
-			
+
 			if( activityFrame == undefined )
 			{
 				if( activityId < activityService.activityFrames.length )
@@ -101,30 +101,30 @@ namespace.namespace( "com.everempire.hime.activity", function()
 				}
 				throw "No Activity found for Activity Id: " + activityId;
 			}
-			
+
 			var duration = activityFrame.endTime - activityFrame.startTime;
 			var elapsed = activityService.time - activityFrame.startTime;
-			
+
 			var progress = elapsed / duration;
-			
+
 			return progress;
 		};
-			
+
 		activityService.getRemainingTime = function( activityId )
 		{
 			if( activityId == null )
 			{
 				return null;
 			}
-			
+
 			if( typeof activityId == "object" )
 			{
 				// Assume "activityId" is actually an object with an id
 				activityId = activityId.activityId;
 			}
-			
+
 			var activityFrame = activityService.activityFrames[activityId];
-			
+
 			if( activityFrame == undefined )
 			{
 				if( activityId < activityService.activityFrames.length )
@@ -133,44 +133,44 @@ namespace.namespace( "com.everempire.hime.activity", function()
 				}
 				throw "No Activity found for Activity Id: " + activityId;
 			}
-			
+
 			var duration = activityFrame.endTime - activityFrame.startTime;
 			var elapsed = activityService.time - activityFrame.startTime;
-			
+
 			var progress = duration - elapsed;
-			
+
 			return progress;
 		};
-		
-		activityService.getNextCompletedActivityId = function() 
+
+		activityService.getNextCompletedActivityId = function()
 		{
 			var nextFrame = null;
 			var nextActivityId = null;
-			
+
 			for( var activityId in activityService.activityFrames )
 			{
 				var activityFrame = activityService.activityFrames[activityId];
-				
+
 				if( nextFrame == null )
 				{
 					nextFrame = activityFrame;
 					nextActivityId = activityId;
 					continue;
 				}
-				
+
 				if( activityFrame.endTime < nextFrame.endTime )
 				{
 					nextFrame = activityFrame;
 					nextActivityId = activityId;
 				}
 			}
-			
+
 			var nextActivityId = parseInt( nextActivityId );
 
 			return nextActivityId;
 		};
 
-		activityService.getLastCompletedActivityId = function() 
+		activityService.getLastCompletedActivityId = function()
 		{
 			var lastFrame = null;
 			var lastActivityId = null;
@@ -242,25 +242,25 @@ namespace.namespace( "com.everempire.hime.activity", function()
 		{
 			activityService.setTime( activityService.time + time );
 		};
-			
-		activityService.setTime = function( time ) 
+
+		activityService.setTime = function( time )
 		{
 			if( activityService.time > time )
 			{
 				throw "Can't rewind ActivityService";
 			}
-			
+
 			if( activityService.time == time )
 			{
 				return;
 			}
-			
+
 			activityService.time = time;
-			
+
 			for( var activityId in activityService.activityFrames )
 			{
 				var activityFrame = activityService.activityFrames[activityId];
-				
+
 				if( activityFrame.activity.progress != null )
 				{
 					var progress = activityService.getProgress( activityId );
@@ -269,17 +269,17 @@ namespace.namespace( "com.everempire.hime.activity", function()
 						activityFrame.activity.progress( progress );
 					}
 				}
-				
+
 				if( activityFrame.endTime <= activityService.time )
 				{
 					activityFrame.activity.complete();
-					
+
 					// Remove Activity Frame
 					delete activityService.activityFrames[activityId];
 				}
 			}
 		};
-		
+
 		return activityService;
 	};
 });
