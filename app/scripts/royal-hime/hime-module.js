@@ -5,8 +5,8 @@
 //var $actor = namespace.getNode( "com.everempire.hime.actor" );
 //var $area = namespace.getNode( "com.everempire.hime.area" );
 
-define(["angular", "./hime-module/services", "./hime-module/controllers"], 
-		function(angular, serviceFactory, controllerFactory)
+define(["angular", "./hime-module/services", "./hime-module/controllers", "./hime-module/updateFunctions"], 
+		function(angular, serviceFactory, controllerFactory, updateFunctionFactory)
 {
 	// Create Module
 	var himeModule = angular.module( "Hime", [] );
@@ -15,7 +15,7 @@ define(["angular", "./hime-module/services", "./hime-module/controllers"],
 
 	serviceFactory.build(himeModule);
 	controllerFactory.build(himeModule);
-	buildUpdateFunctions(himeModule);
+	updateFunctionFactory.build(himeModule);
 
 	himeModule.factory( "gameClock", function()
 	{
