@@ -12,12 +12,12 @@ define(["royal/relationship"], function($relationship)
 			$scope.stop = gameClock.StopClock.stop;
 			$scope.isRunning = gameClock.StopClock.isRunning;
 		});
-		
-		himeModule.controller( "ActorController", function( $scope, actorService ) 
+
+		himeModule.controller( "ActorController", function( $scope, actorService )
 		{
 			// Properties
 			$scope.actors = actorService.actors;
-			
+
 			// Functions
 			$scope.select = actorService.select;
 			$scope.getSelectedActor = actorService.getSelectedActor;
@@ -26,11 +26,11 @@ define(["royal/relationship"], function($relationship)
 			$scope.getCurrentAreaName = actorService.getCurrentAreaName;
 		});
 
-		himeModule.controller( "ActivityController", function( $scope, activityService ) 
+		himeModule.controller( "ActivityController", function( $scope, activityService )
 		{
 			// Properties
 			$scope.isAutoBoost = true;
-			
+
 			// Functions
 			$scope.completeNextActivity = activityService.completeNextActivity;
 			$scope.completeAllActivities = activityService.completeAllActivities;
@@ -57,7 +57,7 @@ define(["royal/relationship"], function($relationship)
 				var hasActivity;
 
 				// "try" block in case of null pointer
-				try 
+				try
 				{
 					hasActivity = actorService.selectedActor.activityId == null;
 				}
@@ -65,10 +65,10 @@ define(["royal/relationship"], function($relationship)
 				{
 					hasActivity = false;
 				}
-				
+
 				return hasActivity;
 			};
-			
+
 			$scope.isActorSelected = function()
 			{
 				return actorService.selectedActor != null;
@@ -78,7 +78,7 @@ define(["royal/relationship"], function($relationship)
 			{
 				// TODO: [prince] Clean this up
 				var actor = actorService.selectedActor;
-				
+
 				var fromArea = actorAreaRelationshipSystem.getRelatedNode(actor);
 				var toArea = areaService.areas[areaKey];
 
@@ -177,7 +177,7 @@ define(["royal/relationship"], function($relationship)
 				if( $scope.areaCodeA == null || $scope.areaCodeA.trim() == "" )
 				{
 					$scope.areaCodeA = areaKey;
-				} 
+				}
 				else if( $scope.areaCodeB == null || $scope.areaCodeB.trim() == "" )
 				{
 					$scope.areaCodeB = areaKey;
@@ -209,7 +209,7 @@ define(["royal/relationship"], function($relationship)
 
 					return path;
 				});
-				
+
 				return paths;
 			};
 

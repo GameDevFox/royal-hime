@@ -1,7 +1,7 @@
 define(function()
 {
 	var relationship = {};
-	
+
 	var hasNode = function( nodes, node )
 	{
 		var result = nodes[0] == node || nodes[1] == node;
@@ -140,15 +140,15 @@ define(function()
 			{
 				return relation.nodes;
 			});
-			
+
 			var nodes = _.flatten( nodeArrays );
 			var uniqNodes = _.uniq( nodes );
-			
+
 			return uniqNodes;
 		};
 
 		return relationshipSystem;
 	};
-	
+
 	return relationship;
 });

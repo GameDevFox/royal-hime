@@ -56,7 +56,7 @@
 
 				updateFunctions.splice(index, 1);
 			};
-			
+
 			updateService.isRunning = function()
 			{
 				return promise != null;

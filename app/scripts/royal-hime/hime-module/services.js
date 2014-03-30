@@ -8,7 +8,7 @@
 define(function()
 {
 	var serviceFactory = {};
-	
+
 	serviceFactory.build = function(himeModule)
 	{
 		himeModule.factory("areaRelationshipSystem", function()
@@ -67,6 +67,6 @@ define(function()
 			return provider;
 		});
 	};
-	
+
 	return serviceFactory;
 });
