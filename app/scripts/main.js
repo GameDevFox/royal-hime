@@ -16,7 +16,8 @@ require.config(
 	}
 });
 
-require(["angular", "jquery", "lodash", "royal-hime/hime-module"], function(angular, $, _)
+require(["angular", "jquery", "lodash", "royal-hime/hime-module", "royal-hime/time-module"],
+		function(angular, $, _, himeModule, timeModule)
 {
 	var resources = 
 	{
@@ -52,21 +53,19 @@ require(["angular", "jquery", "lodash", "royal-hime/hime-module"], function(angu
 		}
 	};
 
-	var configModule = function( loadedResources )
+	var configModule = function(loadedResources)
 	{
 		// Load data into Hime module
-		var himeModule = angular.module( "Hime" );
-
-		var injectModuleData = function( value, key )
+		var injectModuleData = function(value, key)
 		{
-			himeModule.constant( key, value );
+			himeModule.constant(key, value);
 		};
-		_.each( loadedResources, injectModuleData );
+		_.each(loadedResources, injectModuleData);
 
 		//Bootstrap angularjs
-		window.injector = angular.bootstrap( $("body"), [ "Hime", "Time" ] );
-		
-		window.rootScope = getScope( "body" );
+		window.injector = angular.bootstrap($("body"), [himeModule.name, timeModule.name]);
+
+		window.rootScope = getScope("body");
 	};
 
 	$(document).ready( onReady );

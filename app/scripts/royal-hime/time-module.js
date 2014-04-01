@@ -1,6 +1,6 @@
-(function()
+define(["angular"], function(angular)
 {
-	angular.module( "Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider )
+	var timeModule = angular.module("Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider)
 	{
 		var math = namespace.getNode("com.everempire.royal.math");
 		var time = namespace.getNode("com.everempire.royal.time");
@@ -8,7 +8,7 @@
 		var area = namespace.getNode("com.everempire.hime.area");
 
 		// TODO: [prince] This is a hack way to update activity service
-		$compileProvider.directive( "eeRefresh", function( $frameProvider, gameClock, activityService )
+		$compileProvider.directive( "eeRefresh", function($frameProvider, gameClock, activityService)
 		{
 			var directiveDefinition =
 			{
@@ -99,4 +99,6 @@
 			return frameProvider;
 		});
 	});
-}());
+
+	return timeModule;
+});

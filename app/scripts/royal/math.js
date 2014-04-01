@@ -1,20 +1,24 @@
-namespace.namespace( "com.everempire.royal.math", function() 
+define(function()
 {
-	this.filters = {
-		
+	var math = {};
+
+	math.filters = {
+
 		linear: function( theta )
 		{
 			return theta;
 		},
-		
+
 		easeInCubic: function( theta )
 		{
 			return Math.pow( theta - 1, 3 ) + 1;
 		},
-		
+
 		easeOutCubic: function( theta )
 		{
 			return Math.pow( theta , 3 );
 		}
 	};
+
+	return math;
 });

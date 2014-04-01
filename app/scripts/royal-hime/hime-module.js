@@ -5,8 +5,10 @@
 //var $actor = namespace.getNode( "com.everempire.hime.actor" );
 //var $area = namespace.getNode( "com.everempire.hime.area" );
 
-define(["angular", "./hime-module/services", "./hime-module/controllers", "./hime-module/updateFunctions"], 
-		function(angular, serviceFactory, controllerFactory, updateFunctionFactory)
+define(["angular", "./hime-module/services", "./hime-module/controllers", "./hime-module/updateFunctions",
+        "royal/time"],
+		function(angular, serviceFactory, controllerFactory, updateFunctionFactory,
+				$time)
 {
 	// Create Module
 	var himeModule = angular.module( "Hime", [] );
@@ -78,4 +80,6 @@ define(["angular", "./hime-module/services", "./hime-module/controllers", "./him
 			actorAreaRelationshipSystem.createRelationship(actor, defaultArea);
 		});
 	});
+
+	return himeModule;
 });
