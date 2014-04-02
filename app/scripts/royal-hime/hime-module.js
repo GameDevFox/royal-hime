@@ -1,14 +1,7 @@
-//var $math = namespace.getNode( "com.everempire.royal.math" );
-//var $time = namespace.getNode( "com.everempire.royal.time" );
-//
-//var $activity = namespace.getNode("com.everempire.hime.activity");
-//var $actor = namespace.getNode( "com.everempire.hime.actor" );
-//var $area = namespace.getNode( "com.everempire.hime.area" );
-
 define(["angular", "./hime-module/services", "./hime-module/controllers", "./hime-module/updateFunctions",
-        "royal/time"],
+        "royal/time", "royal/math"],
 		function(angular, serviceFactory, controllerFactory, updateFunctionFactory,
-				$time)
+				$time, $math)
 {
 	// Create Module
 	var himeModule = angular.module( "Hime", [] );

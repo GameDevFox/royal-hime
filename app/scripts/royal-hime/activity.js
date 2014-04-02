@@ -1,6 +1,8 @@
-namespace.namespace( "com.everempire.hime.activity", function()
+define(function()
 {
-	this.buildActivityService = function( gameClock )
+	var activity = {};
+
+	activity.buildActivityService = function( gameClock )
 	{
 		var activityService = {};
 
@@ -282,4 +284,6 @@ namespace.namespace( "com.everempire.hime.activity", function()
 
 		return activityService;
 	};
+
+	return activity;
 });

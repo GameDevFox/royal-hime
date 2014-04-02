@@ -1,8 +1,8 @@
-namespace.namespace( "com.everempire.hime.actor", function()
+define(function()
 {
-	var $utils = namespace.getNode("com.everempire.royal.utils");
+	var $actor = {};
 
-	var buildActor = function(name, maxEnergy)
+	$actor.buildActor = function(name, maxEnergy)
 	{
 		var actor = {};
 
@@ -20,18 +20,17 @@ namespace.namespace( "com.everempire.hime.actor", function()
 
 		return actor;
 	};
-	this.buildActor = buildActor;
 
 	var loadActors = function( actors, actorDefs )
 	{
 		_.each( actorDefs, function( actorDef )
 		{
-			var actor = buildActor( actorDef.name, actorDef.energy );
+			var actor = $actor.buildActor( actorDef.name, actorDef.energy );
 			actors.push( actor );
 		});
 	};
 
-	var buildActorService = function(activityService, actorAreaRelationshipSystem, actorData)
+	$actor.buildActorService = function(activityService, actorAreaRelationshipSystem, actorData)
 	{
 		var actorService = {};
 
@@ -78,5 +77,6 @@ namespace.namespace( "com.everempire.hime.actor", function()
 
 		return actorService;
 	};
-	this.buildActorService = buildActorService;
+
+	return $actor;
 });

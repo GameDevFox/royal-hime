@@ -272,7 +272,7 @@ define(["./math"], function($math)
 		motionClock.offset = 0;
 		motionClock.motionOffset = 0;
 
-		motionClock.filter = math.filters.linear;
+		motionClock.filter = $math.filters.linear;
 
 		motionClock.setFilter = function( filter )
 		{

@@ -1,11 +1,11 @@
-//var $relationship = namespace.getNode("com.everempire.royal.relationship");
-
-//var $activity = namespace.getNode("com.everempire.hime.activity");
-//var $actor = namespace.getNode("com.everempire.hime.actor");
-//var $area = namespace.getNode("com.everempire.hime.area");
-//var $update = namespace.getNode("com.everempire.hime.update");
-
-define(function()
+define([
+	"../update",
+	"../activity",
+	"royal/relationship",
+	"../actor",
+	"../area"
+],
+function($update, $activity, $relationship, $actor, $area)
 {
 	var serviceFactory = {};
 
