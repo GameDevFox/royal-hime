@@ -1,4 +1,4 @@
-define(["angular"], function(angular)
+define(["angular", "royal/time"], function(angular, $time)
 {
 	var timeModule = angular.module("Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider)
 	{
@@ -33,7 +33,7 @@ define(["angular"], function(angular)
 
 		$filterProvider.register( "time", function()
 		{
-			return time.formatTime;
+			return $time.formatTime;
 		});
 
 		$provide.factory( "$frameProvider" , function()

@@ -70,3 +70,9 @@ require(["angular", "jquery", "lodash", "royal-hime/hime-module", "royal-hime/ti
 
 	$(document).ready( onReady );
 });
+
+// Global Utils - These aren't really needed but are here for convenience
+function getScope( selector )
+{
+	return angular.element($( selector )).scope();
+};

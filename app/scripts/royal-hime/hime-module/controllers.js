@@ -1,4 +1,4 @@
-define(["royal/relationship"], function($relationship)
+define(["royal/relationship", "../area"], function($relationship, $area)
 {
 	var controllerFactory = {};
 
