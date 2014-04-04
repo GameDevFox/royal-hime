@@ -1,45 +1,46 @@
-(function()
+define(["lodash"], function(_)
 {
-	namespace.namespace( "com.everempire.royal.func", function()
+	var $func = {};
+
+	$func.getName = function(func)
 	{
-		this.getName = function(func)
+		var funcStr = func.toString();
+
+		var spaceIdx = funcStr.indexOf(" ");
+		var paranIdx = funcStr.indexOf("(");
+
+		var funcName = funcStr.substring(spaceIdx+1, paranIdx);
+		return funcName;
+	};
+
+	$func.getArgs = function(func)
+	{
+		var funcStr = func.toString();
+
+		var openingParanIdx = funcStr.indexOf("(");
+		var closingParanIdx = funcStr.indexOf(")");
+
+		var argsStr = funcStr.substring(openingParanIdx+1, closingParanIdx).trim();
+		var argParts = argsStr.split(",");
+
+		// Pass in pre-defined "trim" funciton here instead to creating an inline function
+		var args = _.map(argParts, function(argStr)
 		{
-			var funcStr = func.toString();
+			return argStr.trim();
+		});
 
-			var spaceIdx = funcStr.indexOf(" ");
-			var paranIdx = funcStr.indexOf("(");
+		return args;
+	};
 
-			var funcName = funcStr.substring(spaceIdx+1, paranIdx);
-			return funcName;
-		};
+	$func.get = function(object, propertyName)
+	{
+		return object[propertyName];
+	};
 
-		this.getArgs = function(func)
-		{
-			var funcStr = func.toString();
+	$func.set = function(object, propertyName, value)
+	{
+		object[propertyName] = value;
+	};
 
-			var openingParanIdx = funcStr.indexOf("(");
-			var closingParanIdx = funcStr.indexOf(")");
-
-			var argsStr = funcStr.substring(openingParanIdx+1, closingParanIdx).trim();
-			var argParts = argsStr.split(",");
-
-			// Pass in pre-defined "trim" funciton here instead to creating an inline function
-			var args = _.map(argParts, function(argStr)
-			{
-				return argStr.trim();
-			});
-
-			return args;
-		};
-
-		this.get = function(object, propertyName)
-		{
-			return object[propertyName];
-		};
-
-		this.set = function(object, propertyName, value)
-		{
-			object[propertyName] = value;
-		};
-	});
-}());
+	return $func;
+});

@@ -1,23 +1,28 @@
-_.mixin(
+define(["lodash"], function(_)
 {
-	mapByName: function(collection, keyIterator, valueIterator, context)
+	_.mixin(
 	{
-		var results = {};
-
-		var func = function(value, key, collection)
+		mapByName: function(collection, keyIterator, valueIterator, context)
 		{
-			var name = keyIterator(value, key, collection);
-			results[name] = valueIterator(value, key, collection);
-		};
-		_.each(collection, func, context);
+			var results = {};
 
-		return results;
-	},
+			var func = function(value, key, collection)
+			{
+				var name = keyIterator(value, key, collection);
+				results[name] = valueIterator(value, key, collection);
+			};
+			_.each(collection, func, context);
 
-	zipObjects: function(keys)
-	{
-		var values = _.rest(arguments);
-		var result = _.map(values, _.partial(_.zipObject, keys));
-		return result;
-	}
+			return results;
+		},
+
+		zipObjects: function(keys)
+		{
+			var values = _.rest(arguments);
+			var result = _.map(values, _.partial(_.zipObject, keys));
+			return result;
+		}
+	});
+
+	return _;
 });

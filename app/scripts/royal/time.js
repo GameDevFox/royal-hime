@@ -18,9 +18,9 @@ define(["./math"], function($math)
 	// [ TIME REPORTING ]
 	// DeltaClock
 
-	var time = {};
+	var $time = {};
 
-	time.buildSystemClock = function()
+	$time.buildSystemClock = function()
 	{
 		var systemClock = {};
 
@@ -32,7 +32,7 @@ define(["./math"], function($math)
 		return systemClock;
 	};
 
-	time.buildManualClock = function()
+	$time.buildManualClock = function()
 	{
 		var manualClock = {};
 
@@ -51,7 +51,7 @@ define(["./math"], function($math)
 		return manualClock;
 	};
 
-	time.buildPlusClock = function( parentClock )
+	$time.buildPlusClock = function( parentClock )
 	{
 		var plusClock = {};
 
@@ -77,7 +77,7 @@ define(["./math"], function($math)
 		return plusClock;
 	};
 
-	time.buildStopClock = function( parentClock )
+	$time.buildStopClock = function( parentClock )
 	{
 		var stopClock = {};
 
@@ -161,7 +161,7 @@ define(["./math"], function($math)
 		return stopClock;
 	};
 
-	time.buildResetClock = function( parentClock )
+	$time.buildResetClock = function( parentClock )
 	{
 		var resetClock = {};
 
@@ -185,7 +185,7 @@ define(["./math"], function($math)
 		return resetClock;
 	};
 
-	time.buildDeltaClock = function( parentClock )
+	$time.buildDeltaClock = function( parentClock )
 	{
 		var deltaClock = {};
 
@@ -227,7 +227,7 @@ define(["./math"], function($math)
 		return deltaClock;
 	};
 
-	time.buildSpeedClock = function( parentClock )
+	$time.buildSpeedClock = function( parentClock )
 	{
 		var speedClock = {};
 
@@ -260,7 +260,7 @@ define(["./math"], function($math)
 		return speedClock;
 	};
 
-	time.buildMotionClock = function( parentClock )
+	$time.buildMotionClock = function( parentClock )
 	{
 		var motionClock = {};
 
@@ -339,9 +339,9 @@ define(["./math"], function($math)
 	/////////////////////////////////////////////////
 
 	// Build a clock with all features
-	time.buildFullClock = function()
+	$time.buildFullClock = function()
 	{
-		var clock = time.buildClock(
+		var clock = $time.buildClock(
 			"SystemClock",
 			"ResetClock",
 			"SpeedClock",
@@ -359,7 +359,7 @@ define(["./math"], function($math)
 	};
 
 	// Pass in clock types in order you want them built
-	time.buildClock = function()
+	$time.buildClock = function()
 	{
 		var clocks = [];
 
@@ -368,7 +368,7 @@ define(["./math"], function($math)
 		{
 			var className = arguments[i];
 			var buildFuncName = "build"+className;
-			var buildFunc = time[buildFuncName];
+			var buildFunc = $time[buildFuncName];
 
 			if( buildFunc == null )
 			{
@@ -402,7 +402,7 @@ define(["./math"], function($math)
 		return finalClock;
 	};
 
-	time.formatTime = function( text )
+	$time.formatTime = function( text )
 	{
 		var seconds = Math.round( text / 1000 );
 		var minutes = null;
@@ -463,5 +463,5 @@ define(["./math"], function($math)
 		return digits;
 	}
 
-	return time;
+	return $time;
 });

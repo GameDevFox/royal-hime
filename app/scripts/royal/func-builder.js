@@ -1,42 +1,43 @@
-(function()
+define(function()
 {
-	namespace.namespace("com.everempire.royal.func-builder", function()
+	var funcBuilder = {};
+
+	funcBuilder.buildValidatedFunc = function(types, func)
 	{
-		this.buildValidatedFunc = function(types, func)
+		var validatedFunc = function()
 		{
-			var validatedFunc = function()
+			var args = arguments;
+			var exceptions = [];
+
+			// Validate Arguments
+			_.each(types, function(isType, index)
 			{
-				var args = arguments;
-				var exceptions = [];
+				var arg = args[index];
 
-				// Validate Arguments
-				_.each(types, function(isType, index)
+				if(!isType(arg))
 				{
-					var arg = args[index];
-
-					if(!isType(arg))
+					var exception =
 					{
-						var exception =
-						{
-							message: "Argument is invalid",
-							type: isType,
-							argIndex: index,
-							argValue: arg
-						};
-						exceptions.push(exception);
-					}
-				});
-
-				if(exceptions.length > 0)
-				{
-					throw exceptions;
+						message: "Argument is invalid",
+						type: isType,
+						argIndex: index,
+						argValue: arg
+					};
+					exceptions.push(exception);
 				}
+			});
 
-				// If all arguments are valid, call function
-				func.apply(this, arguments);
-			};
+			if(exceptions.length > 0)
+			{
+				throw exceptions;
+			}
 
-			return validatedFunc;
+			// If all arguments are valid, call function
+			func.apply(this, arguments);
 		};
-	});
-}())
+
+		return validatedFunc;
+	};
+
+	return funcBuilder;
+});
