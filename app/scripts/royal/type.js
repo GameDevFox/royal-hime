@@ -20,7 +20,7 @@ define(["./func"], function($func)
 	};
 
 	// Helper functions
-	var buildLogicalTypeFunction = function(iterativeFunction)
+	var buildLogicalTypeFunction = function(iterativeFunc)
 	{
 		var logicalTypeFunc = function()
 		{
@@ -29,7 +29,7 @@ define(["./func"], function($func)
 
 			var typeFunc = function(value)
 			{
-				var result = iterativeFunction(types, function(type)
+				var result = iterativeFunc(types, function(type)
 				{
 					return type(value);
 				});
@@ -90,6 +90,28 @@ define(["./func"], function($func)
 
 	// Composite Types
 	$type.isEmpty = $type.or($type.isUndefined, $type.isNull);
+
+	// TODO: Types are (notNull?) and (function)
+	$type.has = function(key, type)
+	{
+		var result;
+		if(type != undefined)
+		{
+			result = function(value)
+			{
+				var keyValue = value[key];
+				return keyValue != undefined && type(keyValue);
+			}
+		}
+		else
+		{
+			result = function(value)
+			{
+				return value[key] != undefined;
+			}
+		}
+		return result;
+	}
 
 	return $type;
 });

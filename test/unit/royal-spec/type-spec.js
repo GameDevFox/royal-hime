@@ -182,5 +182,102 @@ define(["royal/type"], function($type)
 				expect(isNotPositiveInteger(123)).toBe(false);
 			});
 		});
+
+		describe("has(key, value)", function()
+		{
+			var player;
+			var data;
+			var number;
+
+			beforeEach(function()
+			{
+				player =
+				{
+					name: "Prince",
+					hp: 100,
+					gold: 500
+				};
+
+				data = [1, "Two", 3];
+
+				number = 13;
+			});
+
+			it("returns a type function that returns true if the object has" +
+					"a value indexed by \"key\"", function()
+			{
+				var hasName = $type.has("name");
+				var hasHP = $type.has("hp");
+				var hasItems = $type.has("items");
+
+				var hasFirst = $type.has(0);
+				var hasThird = $type.has(2);
+				var hasFourth = $type.has(3);
+
+				expect(hasName(player)).toBe(true);
+				expect(hasHP(player)).toBe(true);
+				expect(hasItems(player)).toBe(false);
+				expect(hasFirst(player)).toBe(false);
+				expect(hasThird(player)).toBe(false);
+				expect(hasFourth(player)).toBe(false);
+
+				expect(hasName(data)).toBe(false);
+				expect(hasHP(data)).toBe(false);
+				expect(hasItems(data)).toBe(false);
+				expect(hasFirst(data)).toBe(true);
+				expect(hasThird(data)).toBe(true);
+				expect(hasFourth(data)).toBe(false);
+
+				expect(hasName(number)).toBe(false);
+				expect(hasHP(number)).toBe(false);
+				expect(hasItems(number)).toBe(false);
+				expect(hasFirst(number)).toBe(false);
+				expect(hasThird(number)).toBe(false);
+				expect(hasFourth(number)).toBe(false);
+			});
+
+			it("with \"type\" it also makes sure that the value indexd by " +
+					"\"key\" is the type provided",
+				function()
+			{
+				var hasName = $type.has("name", $type.isString);
+				var hasHP = $type.has("hp", $type.isNumber);
+				var hasGold = $type.has("gold", $type.isString);
+				var hasItems = $type.has("items", $type.isArray);
+
+				var hasFirst = $type.has(0, $type.isNumber);
+				var hasSecond = $type.has(1, $type.isNumber);
+				var hasFourth = $type.has(3, $type.isNumber);
+
+				expect(hasName(player)).toBe(true);
+				expect(hasHP(player)).toBe(true);
+				expect(hasGold(player)).toBe(false);
+				expect(hasItems(player)).toBe(false);
+				expect(hasFirst(data)).toBe(true);
+				expect(hasSecond(data)).toBe(false);
+				expect(hasFourth(data)).toBe(false);
+			});
+
+			it("can be used to express object types", function()
+			{
+				var notQuiteAPlayer =
+				{
+					name: "Prince",
+					hp: "100",	// Since "hp" is a string, it doesn't
+								// match the "Player" type
+					gold: 500
+				};
+
+				var isPlayer = $type.and(
+					$type.isObject,
+					$type.has("name", $type.isString),
+					$type.has("hp", $type.isNumber),
+					$type.has("gold", $type.isNumber)
+				);
+
+				expect(isPlayer(player)).toBe(true);
+				expect(isPlayer(notQuiteAPlayer)).toBe(false);
+			});
+		});
 	});
 });
