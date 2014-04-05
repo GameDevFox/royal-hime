@@ -1,4 +1,4 @@
-require(["royal/schedule"], function($schedule)
+define(["royal/schedule"], function($schedule)
 {
 	describe("royal/schedule", function()
 	{

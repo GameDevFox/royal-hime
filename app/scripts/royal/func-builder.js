@@ -39,7 +39,7 @@ define(function()
 		return validatedFunc;
 	};
 
-	$funcBuilder.buildDependentFunc(deps, func)
+	$funcBuilder.buildDependentFunc = function(deps, func)
 	{
 		// Empty
 	};
