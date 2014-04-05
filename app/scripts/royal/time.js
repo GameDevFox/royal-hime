@@ -267,10 +267,12 @@ define(["./math"], function($math)
 		motionClock.parentClock = parentClock;
 
 		motionClock.initalTime = 0;
+		motionClock.duration = 0;
 		motionClock.finalTime = 0;
 
 		motionClock.offset = 0;
 		motionClock.motionOffset = 0;
+		motionClock.lastOffset = 0;
 
 		motionClock.filter = $math.filters.linear;
 
@@ -291,18 +293,20 @@ define(["./math"], function($math)
 				var motionTime = baseTime - motionClock.initalTime;
 				var theta = motionTime / motionClock.duration;
 				theta = motionClock.filter( theta );
-				var remainingOffset = ( 1 - theta ) * motionClock.motionOffset;
+				var remainingOffset = ( 1 - theta ) * motionClock.lastOffset;
 
 				// Add remaining offset to new offset
 				var totalOffset = offset + remainingOffset;
 				motionClock.motionOffset = totalOffset - duration;
-				motionClock.offset += offset - motionTime;
+				motionClock.offset += offset;
 			}
 			else
 			{
 				motionClock.motionOffset = offset - duration;
 				motionClock.offset += motionClock.motionOffset;
 			}
+
+			motionClock.lastOffset = offset;
 
 			motionClock.initalTime = baseTime;
 			motionClock.duration = duration;
@@ -372,7 +376,8 @@ define(["./math"], function($math)
 
 			if( buildFunc == null )
 			{
-				throw "Could not find builder for clock type \""+buildFuncName+"\" in time module";
+				throw "Could not find builder \""+buildFuncName+"\" in time " +
+					"module to build \"" + className + "\"";
 			}
 
 			var clock = null;

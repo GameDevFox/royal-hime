@@ -155,22 +155,68 @@ define(["royal/time", "royal/math"], function($time, $math)
 
 		describe("motionClock", function()
 		{
+			var motionClock;
+
+			beforeEach(function()
+			{
+				motionClock = $time.buildMotionClock(manualClock);
+				motionClock.setFilter($math.filters.linear);
+			});
+
 			it("prodives a transition to animate the progression of time", function()
 			{
-				var motionClock = $time.buildMotionClock(manualClock);
 				expect(motionClock.getTime()).toEqual(1234);
-
-				motionClock.setFilter($math.filters.linear);
 
 				manualClock.setTime(2000);
 				expect(motionClock.getTime()).toEqual(2000);
 
 				motionClock.move(10000, 2000);
+				expect(motionClock.getTime()).toEqual(2000);
+
 				manualClock.setTime(3000);
 				expect(motionClock.getTime()).toEqual(7000);
 
 				manualClock.setTime(4000);
 				expect(motionClock.getTime()).toEqual(12000);
+			});
+
+			it("resets the motion if move() is called during a motion",
+					function()
+			{
+				manualClock.setTime(2000);
+				motionClock.move(8000, 2000);
+				manualClock.setTime(3000);
+				expect(motionClock.getTime()).toEqual(6000);
+
+				motionClock.move(6000, 1000);
+				expect(motionClock.getTime()).toEqual(6000);
+
+				manualClock.setTime(3500);
+				expect(motionClock.getTime()).toEqual(11000);
+
+				manualClock.setTime(4000);
+				expect(motionClock.getTime()).toEqual(16000);
+			});
+		});
+
+		describe("buildClock(clockTypes...)", function()
+		{
+			it("builds a clock hierarchy from a list of clock types", function()
+			{
+				var clock = $time.buildClock("ManualClock", "DeltaClock");
+				expect(clock).not.toBe(null);
+			});
+
+			it("throws exception if a clock type can't be found by name", function()
+			{
+				var runBuildClock = function()
+				{
+					var clock = $time.buildClock("ManualClock", "FakeClock");
+				}
+
+				expect(runBuildClock).toThrow("Could not find builder " +
+						"\"buildFakeClock\" in time module to build " +
+						"\"FakeClock\"");
 			});
 		});
 
