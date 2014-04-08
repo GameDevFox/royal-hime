@@ -27,7 +27,7 @@ define(function()
 
 			var result = end <= time;
 			return result;
-		});
+		};
 
 		var fireTrigger = function(triggerName, event)
 		{
@@ -36,6 +36,7 @@ define(function()
 		};
 		var fireOnBegin = _.partial(fireTrigger, "onBegin");
 		var fireOnDuring = _.partial(fireTrigger, "onDuring");
+		var fireOnEnd = _.partial(fireTrigger, "onEnd");
 
 		schedule.advanceTo = function(newTime)
 		{
@@ -61,9 +62,10 @@ define(function()
 			var newlyExpiredEvents = _.remove(activeEvents, becameExpired);
 
 			// Fire onDuring Trigger
-			_.each(newlyExpiredEvents, fireOnEnd);
+			_.each(activeEvents, fireOnDuring);
 
 			// Fire onEnd Trigger
+			_.each(newlyExpiredEvents, fireOnEnd);
 		};
 
 		schedule.add = function(event)
