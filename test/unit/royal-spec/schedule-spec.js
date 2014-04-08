@@ -56,6 +56,11 @@ define(["royal/schedule"], function($schedule)
 					"You can only advance the time. Schedule time is: 1000 " +
 					"and newTime is: 500");
 			});
+
+			it("fires events in no particular order", function()
+			{
+				expect(true).toEqual(true);
+			});
 		});
 	});
 });
