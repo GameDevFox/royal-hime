@@ -39,10 +39,5 @@ define(function()
 		return validatedFunc;
 	};
 
-	$funcBuilder.buildDependentFunc = function(deps, func)
-	{
-		// Empty
-	};
-
 	return $funcBuilder;
 });

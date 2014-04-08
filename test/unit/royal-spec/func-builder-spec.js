@@ -50,19 +50,5 @@ define(["royal/func-builder", "royal/type"], function($funcBuilder, $type)
 				expect(getException(funcD)).toEqual(null);
 			});
 		});
-
-		describe("buildDependentFunc(deps, func)", function()
-		{
-			it("does something", function()
-			{
-				var func = $funcBuilder.buildDependentFunc({
-					// Function dependencies
-				}, function()
-				{
-					// Base function
-				});
-				expect(true).toBe(false);
-			});
-		});
 	});
 });

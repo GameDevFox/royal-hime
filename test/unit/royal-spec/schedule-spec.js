@@ -2,58 +2,60 @@ define(["royal/schedule"], function($schedule)
 {
 	describe("royal/schedule", function()
 	{
+		var schedule;
+
 		beforeEach(function()
 		{
-			var schedule = $schedule.buildSchedule();
+			schedule = $schedule.buildSchedule();
 		});
 
 		describe("schedule", function()
 		{
-			it("works", function()
+			it("tracks events and fires triggers based on time", function()
 			{
-				$schedule.add({ timeFrame: { start:5000, duration:10000 }, triggers: {
-					onDuration: function()
-					{
-						console.log("Currently executing event");
+				var started = false;
+				var duringCount = 0;
+				var finished = false;
+
+				schedule.add(
+				{
+					timeFrame: { origin:1000, length:3000 },
+					triggers: {
+						onBegin: function()
+						{
+							started = true;
+						},
+						onDuring: function()
+						{
+							duringCount++;
+						},
+						onEnd: function()
+						{
+							finished = true;
+						}
 					}
-				}});
+				});
+
+				schedule.advanceTo(500);
+				expect([ started, duringCount, finished ]).toEqual([false, 0, false]);
+
+				schedule.advanceTo(1000);
+				expect([ started, duringCount, finished ]).toEqual([true, 1, false]);
+			});
+
+			it("throws exception if you try to rewind the schedule", function()
+			{
+				schedule.advanceTo(1000);
+
+				var rewindSchedule = function()
+				{
+					schedule.advanceTo(500);
+				};
+
+				expect(rewindSchedule).toThrow(
+					"You can only advance the time. Schedule time is: 1000 " +
+					"and newTime is: 500");
 			});
 		});
-
-//		it("does something", function()
-//		{
-//			buildEvent(optionalStartTime) // event
-//			relativeTo(scheduleTime) // relativeEvent
-//			start(time) // [Required]
-//
-//			duration(duration)
-//			// OR
-//			end(time)
-//
-//			// All Optional
-//			onStart(func)
-//			onProgress(func)
-//			onEnd(func)
-//
-//			done() // [Optional] Finalizes (removes init functions) and validates event
-//
-//			// startTime, triggerFunction
-//			var instant = $schedule.buildEvent().start(1000).onStart(function()
-//			{
-//				// This fires when 1000 is passed
-//			});
-//
-//			// time, duration, startFunc, duringFunc, endFunc
-//			var event = $schedule.buildEvent(5000, 3000, function()
-//			{
-//				// This fires when 5000 is passed
-//			});
-//
-//			// schedule, relativeTime
-//			var immediateEvent = $schedule.buildImmediateEvent(schedule, 2000);
-//
-//			var clock = $time.buildManualClock();
-//			var schedule = $schedule.buildSchedule(clock);
-//		});
 	});
 });
