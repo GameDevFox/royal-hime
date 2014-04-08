@@ -130,7 +130,7 @@ define(["royal-hime/activity"], function($activity)
 				it( "returns negative value for a progress that hasn't started yet", function()
 				{
 					var progress = activityService.getProgress( activityId );
-					expect( progress )
+					expect( progress );
 				});
 
 				it( "returns -1 when the activity is complete", function()

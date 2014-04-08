@@ -101,17 +101,17 @@ define(["./func"], function($func)
 			{
 				var keyValue = value[key];
 				return keyValue != undefined && type(keyValue);
-			}
+			};
 		}
 		else
 		{
 			result = function(value)
 			{
 				return value[key] != undefined;
-			}
+			};
 		}
 		return result;
-	}
+	};
 
 	return $type;
 });

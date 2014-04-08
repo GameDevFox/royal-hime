@@ -26,11 +26,6 @@ require(["angular", "jquery", "lodash", "royal-hime/hime-module", "royal-hime/ti
 	};
 	var loadedResources = {};
 
-	var onReady = function()
-	{
-		_.each( resources, loadResource );
-	};
-
 	var loadResource = function( value, key )
 	{
 		$.get( value, function( data )
@@ -39,7 +34,12 @@ require(["angular", "jquery", "lodash", "royal-hime/hime-module", "royal-hime/ti
 			checkResources( loadedResources );
 		});
 	};
-	
+
+	var onReady = function()
+	{
+		_.each( resources, loadResource );
+	};
+
 	var checkResources = function( loadedResources ) 
 	{
 		var isKeyLoaded = function( value, key )

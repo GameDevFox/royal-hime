@@ -212,7 +212,7 @@ define(["royal/time", "royal/math"], function($time, $math)
 				var runBuildClock = function()
 				{
 					var clock = $time.buildClock("ManualClock", "FakeClock");
-				}
+				};
 
 				expect(runBuildClock).toThrow("Could not find builder " +
 						"\"buildFakeClock\" in time module to build " +
@@ -242,6 +242,6 @@ define(["royal/time", "royal/math"], function($time, $math)
 
 			timeStr = $time.formatTime(1234567890);
 			expect(timeStr).toEqual("14d 06h 56m 08s");
-		})
+		});
 	});
 });
