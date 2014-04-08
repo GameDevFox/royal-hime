@@ -20,6 +20,15 @@ define(function()
 			return result;
 		};
 
+		var becameExpired = function(event)
+		{
+			var timeFrame = event.timeFrame;
+			var end = timeFrame.origin + timeFrame.length;
+
+			var result = end <= time;
+			return result;
+		});
+
 		var fireTrigger = function(triggerName, event)
 		{
 			var trigger = event.triggers[triggerName];
@@ -27,12 +36,6 @@ define(function()
 		};
 		var fireOnBegin = _.partial(fireTrigger, "onBegin");
 		var fireOnDuring = _.partial(fireTrigger, "onDuring");
-
-		var fireOnBeginAndOnDuring = function(event)
-		{
-			fireOnBegin(event);
-			fireOnDuring(event);
-		};
 
 		schedule.advanceTo = function(newTime)
 		{
@@ -49,7 +52,18 @@ define(function()
 			var newlyActiveEvents = _.remove(pendingEvents, becameActive);
 
 			// Fire onBegin trigger
-			_.each(newlyActiveEvents, fireOnBeginAndOnDuring);
+			_.each(newlyActiveEvents, fireOnBegin);
+
+			// Add to activeEvents
+			activeEvents = activeEvents.concat(newlyActiveEvents);
+
+			// Remove finished events
+			var newlyExpiredEvents = _.remove(activeEvents, becameExpired);
+
+			// Fire onDuring Trigger
+			_.each(newlyExpiredEvents, fireOnEnd);
+
+			// Fire onEnd Trigger
 		};
 
 		schedule.add = function(event)
