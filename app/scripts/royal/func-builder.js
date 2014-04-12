@@ -1,8 +1,8 @@
 define(function()
 {
-	var funcBuilder = {};
+	var $funcBuilder = {};
 
-	funcBuilder.buildValidatedFunc = function(types, func)
+	$funcBuilder.buildValidatedFunc = function(types, func)
 	{
 		var validatedFunc = function()
 		{
@@ -39,5 +39,5 @@ define(function()
 		return validatedFunc;
 	};
 
-	return funcBuilder;
+	return $funcBuilder;
 });
