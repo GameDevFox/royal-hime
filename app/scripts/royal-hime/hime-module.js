@@ -15,9 +15,6 @@ define(["angular", "./hime-module/services", "./hime-module/controllers", "./him
 	himeModule.factory( "gameClock", function()
 	{
 		var gameClock = $time.buildFullClock();
-		//gameClock.SpeedClock.setSpeed( 1 );
-		//gameClock.PlusClock.setPlusTime( 1000000 );
-		//gameClock.DeltaClock.clear();
 		gameClock.MotionClock.setFilter( $math.filters.easeInCubic );
 
 		window.gameClock = gameClock;
