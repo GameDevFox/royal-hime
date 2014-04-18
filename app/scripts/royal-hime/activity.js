@@ -1,5 +1,57 @@
 define(function()
 {
+	// var nextActivity = buildActivity(rest); // Rest until
+
+	// var nextActivity = buildActivity(move, { dest: entrance, running: true });
+	// actor.startActivity(nextActivity);
+
+	// actor.cancelActivity();
+	// var nextActivity = buildActivity(rest, { duration: 3600 }); // 1 Hour
+	// actor.startActivity(nextActivity);
+
+	// Activity Properties:
+	// duration
+	// endOn
+	//
+	// onStart
+	// onDuring
+	// onEnd
+
+	var activities =
+	{
+		move:
+		{
+			name: "Move",
+			triggers:
+			{
+				onDuring: function()
+				{
+					// Deplete energy at a certain rate depending on options
+				},
+
+				onEnd: function(actor)
+				{
+					// Move actor to new area
+
+					// Factor this out
+					actor.activityId = null;
+				}
+			}
+		},
+
+		rest:
+		{
+			name: "Rest",
+			triggers:
+			{
+				onDuring: function()
+				{
+
+				},
+			}
+		},
+	};
+
 	var activity = {};
 
 	activity.buildActivityService = function( gameClock )

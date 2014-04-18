@@ -49,22 +49,16 @@ define(function()
 
 			time = newTime;
 
-			// Process New Events
+			// Move newly active events to activeEvents
 			var newlyActiveEvents = _.remove(pendingEvents, becameActive);
-
-			// Fire onBegin trigger
-			_.each(newlyActiveEvents, fireOnBegin);
-
-			// Add to activeEvents
 			activeEvents = activeEvents.concat(newlyActiveEvents);
 
-			// Remove finished events
+			// Remove expired events from activeEvents
 			var newlyExpiredEvents = _.remove(activeEvents, becameExpired);
 
-			// Fire onDuring Trigger
+			// Fire triggers
+			_.each(newlyActiveEvents, fireOnBegin);
 			_.each(activeEvents, fireOnDuring);
-
-			// Fire onEnd Trigger
 			_.each(newlyExpiredEvents, fireOnEnd);
 		};
 
