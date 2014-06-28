@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "An Experimental HTML5 Game",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "start-coverage-webapp": "java -jar test/jscover/JSCover-all.jar -ws --report-dir=test/jscover/report --no-instrument=app/scripts/lib --no-instrument=test/jasmine --no-instrument=test/unit",
+
+    "coverage": "xdg-open http://localhost:8080/jscoverage.html?test/jasmine/SpecRunner.html"
   },
   "repository": {
     "type": "git",
