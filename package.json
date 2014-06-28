@@ -1,0 +1,17 @@
+{
+  "name": "royal-hime",
+  "version": "0.0.1",
+  "description": "An Experimental HTML5 Game",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prince86EKNJ/royal-hime"
+  },
+  "author": "Edward Nicholes Jr.",
+  "bugs": {
+    "url": "https://github.com/Prince86EKNJ/royal-hime/issues"
+  },
+  "homepage": "https://github.com/Prince86EKNJ/royal-hime"
+}
