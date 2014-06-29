@@ -7,6 +7,9 @@
   ],
   "description": "An Experimental HTML5 Game",
   "dependencies": {
-    "angular": "1.2.x"
+    "angular": "1.2.1",
+    "jquery": "2.0.3",
+    "lodash": "2.4.1",
+    "requirejs": "2.1.11"
   }
 }
