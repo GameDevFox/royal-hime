@@ -1,0 +1,12 @@
+{
+  "name": "royal-hime",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Prince86EKNJ/royal-hime",
+  "authors": [
+    "Edward Nicholes Jr. <Prince86EKNJ@gmail.com>"
+  ],
+  "description": "An Experimental HTML5 Game",
+  "dependencies": {
+    "angular": "1.2.x"
+  }
+}
