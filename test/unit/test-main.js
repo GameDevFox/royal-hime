@@ -16,6 +16,11 @@ require.config({
   // Karma serves files under /base, which is the basePath from your config file
   baseUrl: '/base',
 
+  paths: {
+    lodash: "app/scripts/lib/lodash",
+    royal: "app/scripts/royal"
+  },
+
   // dynamically load all test files
   deps: allTestFiles,
 
