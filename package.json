@@ -7,7 +7,11 @@
     "bower": "1.3.5"
 
     "karma": "0.12.16",
-    "karma-cli": "0.0.4"
+    "karma-cli": "0.0.4",
+    "karma-jasmine": "^0.1.5",
+    "requirejs": "^2.1.14",
+    "karma-requirejs": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.1.4"
   },
   "scripts": {
     "postinstall": "bower install",
@@ -15,10 +19,12 @@
     "prestart": "npm install",
     "start": "http-server -p 8000 app",
 
-    "test": "karma start",
+    "pretest": "npm install",
+    "test": "karma start test/karma.conf.js",
+    "pretest-watch": "npm install",
+    "test-watch": "karma start test/karma.conf.js --no-single-run",
 
     "start-coverage-webapp": "java -jar test/jscover/JSCover-all.jar -ws --report-dir=test/jscover/report --no-instrument=app/scripts/lib --no-instrument=test/jasmine --no-instrument=test/unit",
-
     "coverage": "xdg-open http://localhost:8080/jscoverage.html?test/jasmine/SpecRunner.html"
   },
   "repository": {
