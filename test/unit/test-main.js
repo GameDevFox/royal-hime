@@ -17,8 +17,9 @@ require.config({
   baseUrl: '/base',
 
   paths: {
-    lodash: "app/scripts/lib/lodash",
-    royal: "app/scripts/royal"
+    "lodash": "app/scripts/lib/lodash",
+    "royal": "app/scripts/royal",
+    "royal-hime": "app/scripts/royal-hime"
   },
 
   // dynamically load all test files

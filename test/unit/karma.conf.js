@@ -18,7 +18,9 @@ module.exports = function(config) {
       'test/unit/test-main.js',
       { pattern: 'app/scripts/lib/lodash.js', included: false },
       { pattern: 'app/scripts/royal/*.js', included: false },
-      { pattern: 'test/unit/royal-spec/*-spec.js', included: false }
+      { pattern: 'app/scripts/royal-hime/*.js', included: false },
+      { pattern: 'test/unit/royal-spec/*-spec.js', included: false },
+      { pattern: 'test/unit/royal-hime-spec/*-spec.js', included: false }
     ],
 
 
@@ -31,7 +33,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'app/scripts/royal/*.js': ['coverage']
+      'app/scripts/royal/*.js': ['coverage'],
+      'app/scripts/royal-hime/*.js': ['coverage']
     },
 
 

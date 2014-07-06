@@ -27,10 +27,7 @@
     "pretest": "npm install",
     "test": "karma start test/unit/karma.conf.js",
     "pretest-watch": "npm install",
-    "test-watch": "karma start test/unit/karma.conf.js --no-single-run",
-
-    "start-coverage-webapp": "java -jar test/jscover/JSCover-all.jar -ws --report-dir=test/jscover/report --no-instrument=app/scripts/lib --no-instrument=test/jasmine --no-instrument=test/unit",
-    "coverage": "xdg-open http://localhost:8080/jscoverage.html?test/jasmine/SpecRunner.html"
+    "test-watch": "karma start test/unit/karma.conf.js --no-single-run"
   },
   "repository": {
     "type": "git",
