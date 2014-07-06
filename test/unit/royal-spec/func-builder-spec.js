@@ -1,4 +1,4 @@
-define(["royal/func-builder", "royal/type"], function($funcBuilder, $type)
+define(["royal/func-builder", "royal/type", "lodash"], function($funcBuilder, $type, _)
 {
 	describe("royal/func-builder", function()
 	{
@@ -35,16 +35,16 @@ define(["royal/func-builder", "royal/type"], function($funcBuilder, $type)
 
 				var funcA = function() { validatedFunc(-20, "Hello World", function() {}) };
 				var expectedExceptionA = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: -20 }];
-				expect(getException(funcA)).toEqual(expectedExceptionA);
+				expect(_.isEqual(getException(funcA), expectedExceptionA)).toEqual(true);
 
 				var funcB = function() { validatedFunc(20, null, function() {}) };
 				var expectedExceptionB = [{ message: "Argument is invalid", type: isNotNull, argIndex: 1, argValue: null }];
-				expect(getException(funcB)).toEqual(expectedExceptionB);
+				expect(_.isEqual(getException(funcB), expectedExceptionB)).toEqual(true);
 
 				var funcC = function() { validatedFunc(null, "Hello World", true) };
 				var expectedExceptionC = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: null },
 					{ message: "Argument is invalid", type: $type.isFunction, argIndex: 2, argValue: true }];
-				expect(getException(funcC)).toEqual(expectedExceptionC);
+				expect(_.isEqual(getException(funcC), expectedExceptionC)).toEqual(true);
 
 				var funcD = function() { validatedFunc(20, "Hello World", function() {}) };
 				expect(getException(funcD)).toEqual(null);

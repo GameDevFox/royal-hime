@@ -55,12 +55,19 @@ define(["royal/relationship"], function($relationship)
 							relationshipSystem.createRelationship( nodeB, nodeA );
 						};
 
-						expect( createRelationshipFunc )
-							.toThrow( {
-								msg: "There is already a relationship between these two nodes",
-								nodeA: nodeB,
-								nodeB: nodeA
-							});
+						var error = null;
+						try
+						{
+							createRelationshipFunc()
+						}
+						catch(e)
+						{
+							error = e;
+						}
+
+						expect(error.msg).toEqual("There is already a relationship between these two nodes");
+						expect(error.nodeA).toEqual(nodeB);
+						expect(error.nodeB).toEqual(nodeA);
 					});
 				});
 
@@ -141,12 +148,19 @@ define(["royal/relationship"], function($relationship)
 							relationshipSystem.removeRelationship( nodeB, nodeA );
 						};
 
-						expect( removeRelationshipFunc )
-							.toThrow( {
-								msg: "There is no relationship between these two nodes",
-								nodeA: nodeB,
-								nodeB: nodeA
-							});
+						var error = null;
+						try
+						{
+							removeRelationshipFunc();
+						}
+						catch(e)
+						{
+							error = e;
+						}
+
+						expect(error.msg).toEqual("There is no relationship between these two nodes");
+						expect(error.nodeA).toEqual(nodeB);
+						expect(error.nodeB).toEqual(nodeA);
 					});
 				});
 
