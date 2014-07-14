@@ -22,13 +22,13 @@ define(["royal/data-point"], function(dataPoint)
 			point = dataPoint.buildPoint(10);
 		});
 
-		describe("bindBefore(point, opName, func)", function()
+		describe("bindBeforeSet(point, func)", function()
 		{
 			it("bind a function to be called before a point's operation", function()
 			{
 				var oldValue = null;
 				var valueArg = null;
-				dataPoint.bindBefore(point, "set", function(value)
+				dataPoint.bindBeforeSet(point, function(value)
 				{
 					oldValue = this.get();
 					valueArg = value;
@@ -47,13 +47,13 @@ define(["royal/data-point"], function(dataPoint)
 			});
 		});
 
-		describe("bindAfter(point, opName, func)", function()
+		describe("bindAfterSet(point, func)", function()
 		{
 			it("bind a function to be called after a point's operation", function()
 			{
 				var newValue = null;
 				var valueArg = null;
-				dataPoint.bindAfter(point, "set", function(value)
+				dataPoint.bindAfterSet(point, function(value)
 				{
 					newValue = this.get();
 					valueArg = value;

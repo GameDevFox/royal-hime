@@ -1,5 +1,7 @@
 define(function()
 {
+	var setOpName = "set";
+
 	var dataPoint = {};
 
 	dataPoint.buildPoint = function(initialValue)
@@ -26,9 +28,9 @@ define(function()
 		return point;
 	};
 
-	dataPoint.bindBefore = function(point, opName, func)
+	dataPoint.bindBeforeSet = function(point, func)
 	{
-		var oldFunc = point[opName];
+		var oldFunc = point[setOpName];
 
 		var newFunc = function(arg)
 		{
@@ -37,12 +39,12 @@ define(function()
 			return result;
 		};
 
-		point[opName] = newFunc;
+		point[setOpName] = newFunc;
 	};
 
-	dataPoint.bindAfter = function(point, opName, func)
+	dataPoint.bindAfterSet = function(point, func)
 	{
-		var oldFunc = point[opName];
+		var oldFunc = point[setOpName];
 
 		var newFunc = function(arg)
 		{
@@ -51,7 +53,7 @@ define(function()
 			return result;
 		};
 
-		point[opName] = newFunc;
+		point[setOpName] = newFunc;
 	};
 
 	return dataPoint;
