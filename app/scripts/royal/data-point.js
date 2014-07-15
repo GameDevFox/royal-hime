@@ -1,4 +1,4 @@
-define(function()
+define(["lodash"], function(_)
 {
 	var setOpName = "set";
 
@@ -8,21 +8,17 @@ define(function()
 	{
 		var model = initialValue;
 
-		var getter = function()
+		var point = {};
+
+		point.get = function()
 		{
 			return model;
 		};
 
-		var setter = function(value)
+		point.set = function(value)
 		{
 			model = value;
 			return model;
-		};
-
-		var point =
-		{
-			get: getter,
-			set: setter
 		};
 
 		return point;
@@ -54,6 +50,59 @@ define(function()
 		};
 
 		point[setOpName] = newFunc;
+	};
+
+	dataPoint.attachOnSet = function(point)
+	{
+		var onSetFuncs = [];
+
+		dataPoint.bindAfterSet(point, function(arg)
+		{
+			_(onSetFuncs).each(function(setFunc)
+			{
+				setFunc(arg);
+			});
+		});
+
+		point.onSet = function(func)
+		{
+			onSetFuncs.push(func);
+			return point;
+		};
+
+		point.offSet = function(func)
+		{
+			_(onSetFuncs).remove(_.partial(_.isEqual, func));
+			return point;
+		};
+	};
+
+	dataPoint.buildExprPoint = function()
+	{
+		var point = buildPoint();
+
+		var func = _(arguments).shift();
+		var args = arguments;
+
+		point.eval = function()
+		{
+			var value = func.apply(this, args);
+			point.set(value);
+		};
+
+		_(args).each(function(depPoint)
+		{
+			// TODO: Include check to attach "onSet" if it doesn't exist
+			depPoint.onSet(point.eval);
+		});
+
+		point.eval();
+
+		dataPoint.attachOnSet(point);
+		var pointCopy = _.clone(point);
+		delete pointCopy.set;
+
+		return pointCopy;
 	};
 
 	return dataPoint;
