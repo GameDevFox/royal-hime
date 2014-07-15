@@ -71,5 +71,63 @@ define(["royal/data-point"], function(dataPoint)
 				expect(point.get()).toEqual(13);
 			});
 		});
+
+		describe("attachOnSet(point)", function()
+		{
+			it("attaches \"onSet\" and \"offSet\" method to the point that trigger functions after set", function()
+			{
+				dataPoint.attachOnSet(point);
+
+				var x = null;
+				var myFunc = function(value)
+				{
+					x = value;
+				};
+
+				point.set(1);
+				expect(x).toEqual(null);
+
+				point.onSet(myFunc);
+				point.set(2);
+				expect(x).toEqual(2);
+
+				point.offSet(myFunc);
+				point.set(3);
+				expect(x).toEqual(2);
+			});
+		});
+
+		describe("buildExprPoint(func, args...)", function()
+		{
+			it("creates a readonly point that is set when it's dependencies (args) are modified via their \"set\" opertaions", function()
+			{
+				var num = dataPoint.buildPoint(13);
+				var str = dataPoint.buildPoint("Hello World");
+				var bool = dataPoint.buildPoint(true);
+
+				dataPoint.attachOnSet(num);
+				dataPoint.attachOnSet(str);
+				dataPoint.attachOnSet(bool);
+
+				var myExpr = function(num, str, bool)
+				{
+					return bool.get() ?
+						num.get() + str.get().length :
+						str.get() + ":" + num.get();
+				}
+
+				var exprPoint = dataPoint.buildExprPoint(myExpr, num, str, bool);
+				expect(exprPoint.get()).toEqual(24);
+
+				bool.set(false);
+				expect(exprPoint.get()).toEqual("Hello World:13");
+
+				str.set("Goodbye Moon");
+				expect(exprPoint.get()).toEqual("Goodbye Moon:13");
+
+				num.set(100);
+				expect(exprPoint.get()).toEqual("Goodbye Moon:100");
+			});
+		});
 	});
 });

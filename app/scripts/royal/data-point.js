@@ -79,7 +79,7 @@ define(["lodash"], function(_)
 
 	dataPoint.buildExprPoint = function()
 	{
-		var point = buildPoint();
+		var point = dataPoint.buildPoint();
 
 		var func = _(arguments).shift();
 		var args = arguments;
