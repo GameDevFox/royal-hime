@@ -47,7 +47,7 @@ define(function()
 		});
 	};
 
-	$area.buildAreaService = function( areaRelationshipSystem, areaData )
+	$area.buildAreaService = function( areaData )
 	{
 		var areaService = {};
 

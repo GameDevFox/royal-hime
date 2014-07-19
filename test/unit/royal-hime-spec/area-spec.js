@@ -1,4 +1,4 @@
-define(["royal-hime/area", "royal/relationship"], function($area, $relationship)
+define(["royal-hime/area"], function($area)
 {
 	describe( "royal-hime/area", function()
 	{
@@ -65,7 +65,7 @@ define(["royal-hime/area", "royal/relationship"], function($area, $relationship)
 
 			it("builds an area service backed by the \"areaRealtionshipSystem\" and populated by \"areaData\"", function()
 			{
-				var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+				var areaRelationshipSystem = null;
 				var areaService = $area.buildAreaService(areaRelationshipSystem, areaData);
 
 				var areas = areaService.areas;
@@ -89,7 +89,7 @@ define(["royal-hime/area", "royal/relationship"], function($area, $relationship)
 
 			it("throws an exception if the provided data is invalid", function()
 			{
-				var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+				var areaRelationshipSystem = null;
 				var buildAreaServiceFunc = function()
 				{
 					$area.buildAreaService(areaRelationshipSystem, invalidAreaData);
@@ -112,7 +112,7 @@ define(["royal-hime/area", "royal/relationship"], function($area, $relationship)
 		{
 			it("magages the creation and deletion of areas and their paths", function()
 			{
-				var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+				var areaRelationshipSystem = null;
 				var areaService = $area.buildAreaService(areaRelationshipSystem);
 
 				var areaA = areaService.createArea("Area A", "areaA");
@@ -138,7 +138,7 @@ define(["royal-hime/area", "royal/relationship"], function($area, $relationship)
 			{
 				it("returns an object that can be serialized to a JSON string", function()
 				{
-					var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+					var areaRelationshipSystem = null;
 					var areaService = $area.buildAreaService(areaRelationshipSystem, areaData);
 
 					var jsonObject = areaService.toJson();
