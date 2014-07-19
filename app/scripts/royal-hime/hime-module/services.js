@@ -1,11 +1,10 @@
 define([
 	"../update",
 	"../activity",
-	"royal/relationship",
 	"../actor",
 	"../area"
 ],
-function($update, $activity, $relationship, $actor, $area)
+function($update, $activity, $actor, $area)
 {
 	var serviceFactory = {};
 
@@ -13,12 +12,12 @@ function($update, $activity, $relationship, $actor, $area)
 	{
 		himeModule.factory("areaRelationshipSystem", function()
 		{
-			return $relationship.buildRelationshipSystem();
+			return null;
 		});
 
 		himeModule.factory("actorAreaRelationshipSystem", function()
 		{
-			return $relationship.buildRelationshipSystem();
+			return null;
 		});
 
 		himeModule.factory("actorService", function(activityService, actorAreaRelationshipSystem, actorData)

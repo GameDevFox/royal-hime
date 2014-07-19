@@ -1,4 +1,4 @@
-define(["royal/relationship", "../area"], function($relationship, $area)
+define(["../area"], function($area)
 {
 	var controllerFactory = {};
 
@@ -153,7 +153,7 @@ define(["royal/relationship", "../area"], function($relationship, $area)
 		// AREA EDIT CONTROLLER //
 		//////////////////////////
 
-		var areaRelationshipSystem = $relationship.buildRelationshipSystem();
+		var areaRelationshipSystem = null;
 		himeModule.controller( "AreaController", function( $scope, areaData )
 		{
 			var areaService = $area.buildAreaService( areaRelationshipSystem, areaData );
