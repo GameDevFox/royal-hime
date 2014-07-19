@@ -4,7 +4,8 @@ require.config(
 	{
 		angular: "lib/angular",
 		jquery: "lib/jquery",
-		lodash: "lib/lodash"
+		lodash: "lib/lodash",
+		taffydb: "lib/taffy"
 	},
 
 	shim:
@@ -12,6 +13,10 @@ require.config(
 		angular:
 		{
 			exports: "angular"
+		},
+		taffydb:
+		{
+			exports: "TAFFY"
 		}
 	}
 });
