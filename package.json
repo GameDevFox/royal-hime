@@ -29,7 +29,7 @@
     "pretest-watch": "npm install",
     "test-watch": "karma start test/karma.conf.js --no-single-run",
     "pretest-mocha": "npm install",
-    "test-mocha": "mocha --recursive test/royal-spec"
+    "test-mocha": "export NODE_PATH=app/scripts/lib; mocha --recursive test/royal-spec"
   },
   "repository": {
     "type": "git",
