@@ -1,109 +1,108 @@
-define(["lodash"], function(_)
+var _ = require("lodash");
+
+var setOpName = "set";
+
+var dataPoint = {};
+
+dataPoint.buildPoint = function(initialValue)
 {
-	var setOpName = "set";
+        var model = initialValue;
 
-	var dataPoint = {};
+        var point = {};
 
-	dataPoint.buildPoint = function(initialValue)
-	{
-		var model = initialValue;
+        point.get = function()
+        {
+                return model;
+        };
 
-		var point = {};
+        point.set = function(value)
+        {
+                model = value;
+                return model;
+        };
 
-		point.get = function()
-		{
-			return model;
-		};
+        return point;
+};
 
-		point.set = function(value)
-		{
-			model = value;
-			return model;
-		};
+dataPoint.bindBeforeSet = function(point, func)
+{
+        var oldFunc = point[setOpName];
 
-		return point;
-	};
+        var newFunc = function(arg)
+        {
+                var result = func.call(point, arg);
+                result = oldFunc.call(point, result);
+                return result;
+        };
 
-	dataPoint.bindBeforeSet = function(point, func)
-	{
-		var oldFunc = point[setOpName];
+        point[setOpName] = newFunc;
+};
 
-		var newFunc = function(arg)
-		{
-			var result = func.call(point, arg);
-			result = oldFunc.call(point, result);
-			return result;
-		};
+dataPoint.bindAfterSet = function(point, func)
+{
+        var oldFunc = point[setOpName];
 
-		point[setOpName] = newFunc;
-	};
+        var newFunc = function(arg)
+        {
+                var result = oldFunc.call(point, arg);
+                result = func.call(point, result);
+                return result;
+        };
 
-	dataPoint.bindAfterSet = function(point, func)
-	{
-		var oldFunc = point[setOpName];
+        point[setOpName] = newFunc;
+};
 
-		var newFunc = function(arg)
-		{
-			var result = oldFunc.call(point, arg);
-			result = func.call(point, result);
-			return result;
-		};
+dataPoint.attachOnSet = function(point)
+{
+        var onSetFuncs = [];
 
-		point[setOpName] = newFunc;
-	};
+        dataPoint.bindAfterSet(point, function(arg)
+        {
+                _(onSetFuncs).each(function(setFunc)
+                {
+                        setFunc(arg);
+                });
+        });
 
-	dataPoint.attachOnSet = function(point)
-	{
-		var onSetFuncs = [];
+        point.onSet = function(func)
+        {
+                onSetFuncs.push(func);
+                return point;
+        };
 
-		dataPoint.bindAfterSet(point, function(arg)
-		{
-			_(onSetFuncs).each(function(setFunc)
-			{
-				setFunc(arg);
-			});
-		});
+        point.offSet = function(func)
+        {
+                _(onSetFuncs).remove(_.partial(_.isEqual, func));
+                return point;
+        };
+};
 
-		point.onSet = function(func)
-		{
-			onSetFuncs.push(func);
-			return point;
-		};
+dataPoint.buildExprPoint = function()
+{
+        var point = dataPoint.buildPoint();
 
-		point.offSet = function(func)
-		{
-			_(onSetFuncs).remove(_.partial(_.isEqual, func));
-			return point;
-		};
-	};
+        var func = _(arguments).shift();
+        var args = arguments;
 
-	dataPoint.buildExprPoint = function()
-	{
-		var point = dataPoint.buildPoint();
+        point.eval = function()
+        {
+                var value = func.apply(this, args);
+                point.set(value);
+        };
 
-		var func = _(arguments).shift();
-		var args = arguments;
+        _(args).each(function(depPoint)
+        {
+                // TODO: Include check to attach "onSet" if it doesn't exist
+                depPoint.onSet(point.eval);
+        });
 
-		point.eval = function()
-		{
-			var value = func.apply(this, args);
-			point.set(value);
-		};
+        point.eval();
 
-		_(args).each(function(depPoint)
-		{
-			// TODO: Include check to attach "onSet" if it doesn't exist
-			depPoint.onSet(point.eval);
-		});
+        dataPoint.attachOnSet(point);
+        var pointCopy = _.clone(point);
+        delete pointCopy.set;
 
-		point.eval();
+        return pointCopy;
+};
 
-		dataPoint.attachOnSet(point);
-		var pointCopy = _.clone(point);
-		delete pointCopy.set;
-
-		return pointCopy;
-	};
-
-	return dataPoint;
-});
+module.exports = dataPoint;

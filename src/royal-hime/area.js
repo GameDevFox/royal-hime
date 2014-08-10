@@ -1,115 +1,112 @@
-define(function()
+var $area = {};
+
+$area.buildArea = function( name, key ) {
+
+        var area = {
+                name: name,
+                key: key
+        };
+
+        return area;
+};
+
+$area.loadAreaData = function( areaService, areaData )
 {
-	var $area = {};
+        // Load areas
+        areaService.areas = areaData.areas;
 
-	$area.buildArea = function( name, key ) {
+        //Load areaRelationshipSystem
+        var areaRelationshipSystem = areaService.areaRelationshipSystem;
 
-		var area = {
-			name: name,
-			key: key
-		};
+        var paths = areaData.paths;
+        _.each(paths, function(path)
+        {
+                var areaKeys = path.areas;
+                var distance = path.distance;
 
-		return area;
-	};
+                var fromAreaKey = areaKeys[0];
+                var toAreaKey = areaKeys[1];
 
-	$area.loadAreaData = function( areaService, areaData )
-	{
-		// Load areas
-		areaService.areas = areaData.areas;
+                var fromArea = areaService.areas[fromAreaKey];
+                var toArea = areaService.areas[toAreaKey];
 
-		//Load areaRelationshipSystem
-		var areaRelationshipSystem = areaService.areaRelationshipSystem;
+                if(fromArea == null)
+                {
+                        throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + fromAreaKey + "\"";
+                }
+                else if(toArea == null)
+                {
+                        throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + toAreaKey + "\"";
+                }
 
-		var paths = areaData.paths;
-		_.each(paths, function(path)
-		{
-			var areaKeys = path.areas;
-			var distance = path.distance;
+                // Join the Areas together
+                var data = areaRelationshipSystem.createRelationship( fromArea, toArea );
+                data.distance = distance;
+        });
+};
 
-			var fromAreaKey = areaKeys[0];
-			var toAreaKey = areaKeys[1];
+$area.buildAreaService = function( areaRelationshipSystem, areaData )
+{
+        var areaService = {};
 
-			var fromArea = areaService.areas[fromAreaKey];
-			var toArea = areaService.areas[toAreaKey];
+        areaService.areas = {};
+        areaService.areaRelationshipSystem = areaRelationshipSystem;
 
-			if(fromArea == null)
-			{
-				throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + fromAreaKey + "\"";
-			}
-			else if(toArea == null)
-			{
-				throw "Error when creating relationship from \"" + fromAreaKey + "\" to \"" + toAreaKey + "\": Could not find area \"" + toAreaKey + "\"";
-			}
+        // Load areas and areaRelationshipSystem
+        if(areaData != null)
+        {
+                $area.loadAreaData(areaService, areaData);
+        }
 
-			// Join the Areas together
-			var data = areaRelationshipSystem.createRelationship( fromArea, toArea );
-			data.distance = distance;
-		});
-	};
+        areaService.createArea = function(areaName, areaKey)
+        {
+                var area = $area.buildArea(areaName, areaKey);
+                areaService.areas[area.key] = area;
 
-	$area.buildAreaService = function( areaRelationshipSystem, areaData )
-	{
-		var areaService = {};
+                return area;
+        };
 
-		areaService.areas = {};
-		areaService.areaRelationshipSystem = areaRelationshipSystem;
+        areaService.removeArea = function(area)
+        {
+                // Remove Area Paths
+                var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
+                _.each(relatedAreas, function(relatedArea)
+                {
+                        areaRelationshipSystem.removeRelationship(area, relatedArea);
+                });
 
-		// Load areas and areaRelationshipSystem
-		if(areaData != null)
-		{
-			$area.loadAreaData(areaService, areaData);
-		}
+                // Remove Area
+                delete areaService.areas[area.key];
+        };
 
-		areaService.createArea = function(areaName, areaKey)
-		{
-			var area = $area.buildArea(areaName, areaKey);
-			areaService.areas[area.key] = area;
+        areaService.createPath = function(areaAKey, areaBKey, pathDistance)
+        {
+                var areaA = areaService.areas[areaAKey];
+                var areaB = areaService.areas[areaBKey];
 
-			return area;
-		};
+                var data = areaRelationshipSystem.createRelationship(areaA, areaB);
+                data.distance = pathDistance;
+        };
 
-		areaService.removeArea = function(area)
-		{
-			// Remove Area Paths
-			var relatedAreas = areaRelationshipSystem.getRelatedNodes(area);
-			_.each(relatedAreas, function(relatedArea)
-			{
-				areaRelationshipSystem.removeRelationship(area, relatedArea);
-			});
+        areaService.toJson = function()
+        {
+                var jsonObject = {};
+                jsonObject.areas = areaService.areas;
 
-			// Remove Area
-			delete areaService.areas[area.key];
-		};
+                // Serialize data in areaRelationshipSystem
+                var allRelationships = areaService.areaRelationshipSystem.getAllRelationships();
+                var paths = _.map( allRelationships, function( relationship )
+                {
+                        var areaKeyArray = _.pluck(relationship.nodes, "key");
+                        var result = { areas: areaKeyArray, distance: relationship.data.distance };
+                        return result;
+                });
+                jsonObject.paths = paths;
 
-		areaService.createPath = function(areaAKey, areaBKey, pathDistance)
-		{
-			var areaA = areaService.areas[areaAKey];
-			var areaB = areaService.areas[areaBKey];
+                return jsonObject;
+        };
 
-			var data = areaRelationshipSystem.createRelationship(areaA, areaB);
-			data.distance = pathDistance;
-		};
+        return areaService;
+};
 
-		areaService.toJson = function()
-		{
-			var jsonObject = {};
-			jsonObject.areas = areaService.areas;
-
-			// Serialize data in areaRelationshipSystem
-			var allRelationships = areaService.areaRelationshipSystem.getAllRelationships();
-			var paths = _.map( allRelationships, function( relationship )
-			{
-				var areaKeyArray = _.pluck(relationship.nodes, "key");
-				var result = { areas: areaKeyArray, distance: relationship.data.distance };
-				return result;
-			});
-			jsonObject.paths = paths;
-
-			return jsonObject;
-		};
-
-		return areaService;
-	};
-
-	return $area;
-});
+module.exports = $area;

@@ -1,72 +1,68 @@
-define([
-	"../update",
-	"../activity",
-	"royal/relationship",
-	"../actor",
-	"../area"
-],
-function($update, $activity, $relationship, $actor, $area)
+var $update = require("../update");
+var $activity = require("../activity");
+var $relationship = require("../../royal/relationship");
+var $actor = require("../actor");
+var $area = require("../area");
+
+var serviceFactory = {};
+
+serviceFactory.build = function(himeModule)
 {
-	var serviceFactory = {};
+        himeModule.factory("areaRelationshipSystem", function()
+        {
+                return $relationship.buildRelationshipSystem();
+        });
 
-	serviceFactory.build = function(himeModule)
-	{
-		himeModule.factory("areaRelationshipSystem", function()
-		{
-			return $relationship.buildRelationshipSystem();
-		});
+        himeModule.factory("actorAreaRelationshipSystem", function()
+        {
+                return $relationship.buildRelationshipSystem();
+        });
 
-		himeModule.factory("actorAreaRelationshipSystem", function()
-		{
-			return $relationship.buildRelationshipSystem();
-		});
+        himeModule.factory("actorService", function(activityService, actorAreaRelationshipSystem, actorData)
+        {
+                return $actor.buildActorService(activityService, actorAreaRelationshipSystem, actorData);
+        });
 
-		himeModule.factory("actorService", function(activityService, actorAreaRelationshipSystem, actorData)
-		{
-			return $actor.buildActorService(activityService, actorAreaRelationshipSystem, actorData);
-		});
+        himeModule.factory("activityService", function(gameClock, updateService)
+        {
+                var activityService = $activity.buildActivityService(gameClock);
+                updateService.add(activityService.update);
 
-		himeModule.factory("activityService", function(gameClock, updateService)
-		{
-			var activityService = $activity.buildActivityService(gameClock);
-			updateService.add(activityService.update);
+                return activityService;
+        });
 
-			return activityService;
-		});
+        himeModule.factory("areaService", function(areaRelationshipSystem, areaData)
+        {
+                return $area.buildAreaService(areaRelationshipSystem, areaData);
+        });
 
-		himeModule.factory("areaService", function(areaRelationshipSystem, areaData)
-		{
-			return $area.buildAreaService(areaRelationshipSystem, areaData);
-		});
+        himeModule.factory("updateService", function($interval, gameClock)
+        {
+                var updateService = $update.buildUpdateService($interval, gameClock);
+                updateService.start();
 
-		himeModule.factory("updateService", function($interval, gameClock)
-		{
-			var updateService = $update.buildUpdateService($interval, gameClock);
-			updateService.start();
+                return updateService;
+        });
 
-			return updateService;
-		});
+        himeModule.provider("updateFunctions", function()
+        {
+                var updateFunctions = {};
 
-		himeModule.provider("updateFunctions", function()
-		{
-			var updateFunctions = {};
+                var provider =
+                {
+                        register: function(name, func)
+                        {
+                                updateFunctions[name] = func;
+                        },
 
-			var provider =
-			{
-				register: function(name, func)
-				{
-					updateFunctions[name] = func;
-				},
+                        $get: function()
+                        {
+                                return updateFunctions;
+                        }
+                };
 
-				$get: function()
-				{
-					return updateFunctions;
-				}
-			};
+                return provider;
+        });
+};
 
-			return provider;
-		});
-	};
-
-	return serviceFactory;
-});
+module.exports = serviceFactory;

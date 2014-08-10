@@ -1,43 +1,40 @@
-define(function()
+var $funcBuilder = {};
+
+$funcBuilder.buildValidatedFunc = function(types, func)
 {
-	var $funcBuilder = {};
+        var validatedFunc = function()
+        {
+                var args = arguments;
+                var exceptions = [];
 
-	$funcBuilder.buildValidatedFunc = function(types, func)
-	{
-		var validatedFunc = function()
-		{
-			var args = arguments;
-			var exceptions = [];
+                // Validate Arguments
+                _.each(types, function(isType, index)
+                {
+                        var arg = args[index];
 
-			// Validate Arguments
-			_.each(types, function(isType, index)
-			{
-				var arg = args[index];
+                        if(!isType(arg))
+                        {
+                                var exception =
+                                {
+                                        message: "Argument is invalid",
+                                        type: isType,
+                                        argIndex: index,
+                                        argValue: arg
+                                };
+                                exceptions.push(exception);
+                        }
+                });
 
-				if(!isType(arg))
-				{
-					var exception =
-					{
-						message: "Argument is invalid",
-						type: isType,
-						argIndex: index,
-						argValue: arg
-					};
-					exceptions.push(exception);
-				}
-			});
+                if(exceptions.length > 0)
+                {
+                        throw exceptions;
+                }
 
-			if(exceptions.length > 0)
-			{
-				throw exceptions;
-			}
+                // If all arguments are valid, call function
+                func.apply(this, arguments);
+        };
 
-			// If all arguments are valid, call function
-			func.apply(this, arguments);
-		};
+        return validatedFunc;
+};
 
-		return validatedFunc;
-	};
-
-	return $funcBuilder;
-});
+module.exports = $funcBuilder;

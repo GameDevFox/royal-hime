@@ -1,82 +1,79 @@
-define(function()
+var $actor = {};
+
+$actor.buildActor = function(name, maxEnergy)
 {
-	var $actor = {};
+        var actor = {};
 
-	$actor.buildActor = function(name, maxEnergy)
-	{
-		var actor = {};
+        actor.name = name;
 
-		actor.name = name;
+        if(maxEnergy == null)
+        {
+                maxEnergy = 100;
+        }
+        actor.maxEnergy = maxEnergy;
+        actor.energy = maxEnergy;
 
-		if(maxEnergy == null)
-		{
-			maxEnergy = 100;
-		}
-		actor.maxEnergy = maxEnergy;
-		actor.energy = maxEnergy;
+        // This should be a direct reference to activity
+        actor.activityId = null;
 
-		// This should be a direct reference to activity
-		actor.activityId = null;
+        return actor;
+};
 
-		return actor;
-	};
+var loadActors = function( actors, actorDefs )
+{
+        _.each( actorDefs, function( actorDef )
+        {
+                var actor = $actor.buildActor( actorDef.name, actorDef.energy );
+                actors.push( actor );
+        });
+};
 
-	var loadActors = function( actors, actorDefs )
-	{
-		_.each( actorDefs, function( actorDef )
-		{
-			var actor = $actor.buildActor( actorDef.name, actorDef.energy );
-			actors.push( actor );
-		});
-	};
+$actor.buildActorService = function(activityService, actorAreaRelationshipSystem, actorData)
+{
+        var actorService = {};
 
-	$actor.buildActorService = function(activityService, actorAreaRelationshipSystem, actorData)
-	{
-		var actorService = {};
+        // Members
+        actorService.actors = [];
+        loadActors(actorService.actors, actorData.actors);
 
-		// Members
-		actorService.actors = [];
-		loadActors(actorService.actors, actorData.actors);
+        actorService.selectedActor = null;
 
-		actorService.selectedActor = null;
+        // Functions
+        actorService.select = function(actor)
+        {
+                actorService.selectedActor = actor;
+        };
 
-		// Functions
-		actorService.select = function(actor)
-		{
-			actorService.selectedActor = actor;
-		};
+        actorService.getSelectedActor = function()
+        {
+                return actorService.selectedActor;
+        };
 
-		actorService.getSelectedActor = function()
-		{
-			return actorService.selectedActor;
-		};
+        actorService.getActivityProgress = function(actor)
+        {
+                var activityId = actor.activityId;
+                var progress = activityService.getProgress(activityId);
 
-		actorService.getActivityProgress = function(actor)
-		{
-			var activityId = actor.activityId;
-			var progress = activityService.getProgress(activityId);
+                return progress;
+        };
 
-			return progress;
-		};
+        actorService.getRemainingActivityTime = function(actor)
+        {
+                var activityId = actor.activityId;
+                var remainingTime = activityService.getRemainingTime(activityId);
 
-		actorService.getRemainingActivityTime = function(actor)
-		{
-			var activityId = actor.activityId;
-			var remainingTime = activityService.getRemainingTime(activityId);
+                return remainingTime;
+        };
 
-			return remainingTime;
-		};
+        actorService.getCurrentAreaName = function(actor)
+        {
+                var area = actorAreaRelationshipSystem.getRelatedNode(actor);
+                var areaName = (area == null ? "None" : area.name);
 
-		actorService.getCurrentAreaName = function(actor)
-		{
-			var area = actorAreaRelationshipSystem.getRelatedNode(actor);
-			var areaName = (area == null ? "None" : area.name);
+                return areaName;
+        };
 
-			return areaName;
-		};
+        return actorService;
+};
 
-		return actorService;
-	};
-
-	return $actor;
-});
+module.exports = $actor;

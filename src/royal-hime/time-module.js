@@ -1,99 +1,99 @@
-define(["angular", "royal/time"], function(angular, $time)
+var angular = require("angular");
+var $time = require("../../royal/time");
+
+var timeModule = angular.module("Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider)
 {
-	var timeModule = angular.module("Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider)
-	{
-		// TODO: [prince] This is a hack way to update activity service
-		$compileProvider.directive( "eeRefresh", function($frameProvider, gameClock, activityService)
-		{
-			var directiveDefinition =
-			{
-				link: function( scope, element, attrs )
-				{
-					// TODO: [prince] Implements config
-					var framesPerSecond =  attrs["eeRefresh"];
-					var millisPerFrame = 1000 / framesPerSecond;
+        // TODO: [prince] This is a hack way to update activity service
+        $compileProvider.directive( "eeRefresh", function($frameProvider, gameClock, activityService)
+        {
+                var directiveDefinition =
+                {
+                        link: function( scope, element, attrs )
+                        {
+                                // TODO: [prince] Implements config
+                                var framesPerSecond =  attrs["eeRefresh"];
+                                var millisPerFrame = 1000 / framesPerSecond;
 
-					// TODO: [prince] Don't DI frameProvidor, just build a new one
-					$frameProvider.frame( function( startTime, endTime )
-					{
-						// TODO: [prince] Still need to fix stuff here, not very neat
-						//scope.time = gameClock.getTime();
-						gameClock.DeltaClock.lap();
-						var time = gameClock.getTime();
+                                // TODO: [prince] Don't DI frameProvidor, just build a new one
+                                $frameProvider.frame( function( startTime, endTime )
+                                {
+                                        // TODO: [prince] Still need to fix stuff here, not very neat
+                                        //scope.time = gameClock.getTime();
+                                        gameClock.DeltaClock.lap();
+                                        var time = gameClock.getTime();
 
-						// TODO: [prince] restore activity service, have some way to register with clock?
-						activityService.setTime( time );
-						scope.$apply();
-					});
-				}
-			};
+                                        // TODO: [prince] restore activity service, have some way to register with clock?
+                                        activityService.setTime( time );
+                                        scope.$apply();
+                                });
+                        }
+                };
 
-			return directiveDefinition;
-		});
+                return directiveDefinition;
+        });
 
-		$filterProvider.register( "time", function()
-		{
-			return $time.formatTime;
-		});
+        $filterProvider.register( "time", function()
+        {
+                return $time.formatTime;
+        });
 
-		$provide.factory( "$frameProvider" , function()
-		{
-			// TODO: [prince] Factor out this clock
-			var clock = new time.buildSystemClock();
+        $provide.factory( "$frameProvider" , function()
+        {
+                // TODO: [prince] Factor out this clock
+                var clock = new time.buildSystemClock();
 
-			var frameProvider =
-			{
-				intervalHandle: null,
-				frameHandlers: [],
+                var frameProvider =
+                {
+                        intervalHandle: null,
+                        frameHandlers: [],
 
-				lastTime: 0,
-				thisTime: 0,
+                        lastTime: 0,
+                        thisTime: 0,
 
-				frame: function( func )
-				{
-					this.frameHandlers.push( func );
-				},
+                        frame: function( func )
+                        {
+                                this.frameHandlers.push( func );
+                        },
 
-				start: function()
-				{
-					var frameProvider = this;
+                        start: function()
+                        {
+                                var frameProvider = this;
 
-					// TODO: [prince] Wait for $interval to be supported in stable version
-					this.intervalHandle = setInterval( function()
-					{
-						frameProvider.lastTime = frameProvider.thisTime;
-						frameProvider.thisTime = clock.getTime();
+                                // TODO: [prince] Wait for $interval to be supported in stable version
+                                this.intervalHandle = setInterval( function()
+                                {
+                                        frameProvider.lastTime = frameProvider.thisTime;
+                                        frameProvider.thisTime = clock.getTime();
 
-						frameProvider.dispatchFrame( frameProvider.lastTime, frameProvider.thisTime );
+                                        frameProvider.dispatchFrame( frameProvider.lastTime, frameProvider.thisTime );
 
-					}, 16); // Increment triggers 60 times per second ( 1000 / 16ms )
+                                }, 16); // Increment triggers 60 times per second ( 1000 / 16ms )
 
-					// TODO: [prince] Make "framesPerSecond" configurable
-				},
+                                // TODO: [prince] Make "framesPerSecond" configurable
+                        },
 
-				stop: function()
-				{
-					if( this.intervalHandle != null )
-					{
-						clearInterval( this.intervalHandle );
-					}
-				},
+                        stop: function()
+                        {
+                                if( this.intervalHandle != null )
+                                {
+                                        clearInterval( this.intervalHandle );
+                                }
+                        },
 
-				dispatchFrame: function( startTime, endTime )
-				{
-					for( var i in this.frameHandlers )
-					{
-						var frameHandler = this.frameHandlers[i];
-						frameHandler.call( this, startTime, endTime );
-					}
-				},
-			};
+                        dispatchFrame: function( startTime, endTime )
+                        {
+                                for( var i in this.frameHandlers )
+                                {
+                                        var frameHandler = this.frameHandlers[i];
+                                        frameHandler.call( this, startTime, endTime );
+                                }
+                        },
+                };
 
-			frameProvider.start();
+                frameProvider.start();
 
-			return frameProvider;
-		});
-	});
-
-	return timeModule;
+                return frameProvider;
+        });
 });
+
+module.exports = timeModule;
