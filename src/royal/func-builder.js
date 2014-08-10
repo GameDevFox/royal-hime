@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var $funcBuilder = {};
 
 $funcBuilder.buildValidatedFunc = function(types, func)

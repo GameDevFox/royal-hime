@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var relationship = {};
 
 var hasNode = function( nodes, node )

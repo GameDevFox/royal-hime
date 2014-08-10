@@ -13,7 +13,10 @@
     "karma-chrome-launcher": "^0.1.4",
     "karma-firefox-launcher": "^0.1.3",
     "karma-failed-reporter": "0.0.2",
-    "karma-coverage": "0.2.4"
+    "karma-coverage": "0.2.4",
+
+    "mocha": "1.21.4",
+    "chai": "1.9.1"
   },
   "scripts": {
     "postinstall": "bower install --config.interactive=false",
@@ -22,9 +25,11 @@
     "start": "http-server -p 8000 app",
 
     "pretest": "npm install",
-    "test": "karma start test/unit/karma.conf.js",
+    "test": "karma start test/karma.conf.js",
     "pretest-watch": "npm install",
-    "test-watch": "karma start test/unit/karma.conf.js --no-single-run"
+    "test-watch": "karma start test/karma.conf.js --no-single-run",
+    "pretest-mocha": "npm install",
+    "test-mocha": "mocha --recursive test/royal-spec"
   },
   "repository": {
     "type": "git",

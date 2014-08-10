@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var $func = require("./func");
 
 var $type = {};

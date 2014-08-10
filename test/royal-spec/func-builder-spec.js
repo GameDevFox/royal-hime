@@ -1,54 +1,40 @@
-define(["royal/func-builder", "royal/type", "lodash"], function($funcBuilder, $type, _)
+var expect = require("chai").expect;
+
+var $funcBuilder = require("../../src/royal/func-builder");
+var $type = require("../../src/royal/type");
+
+describe("royal/func-builder", function()
 {
-	describe("royal/func-builder", function()
-	{
-		describe("buildValidatedFunc(types, func)", function()
-		{
-			var getException = function(func)
-			{
-				var exception = null;
+        describe("buildValidatedFunc(types, func)", function()
+        {
+                it("returns a function that throws an exception if the argument types don't match on invocation", function()
+                {
+                        var isPositiveInteger = $type.and($type.isPositive, $type.isInteger);
+                        var isNotNull = $type.not($type.isNull);
 
-				try
-				{
-					func();
-				}
-				catch(e)
-				{
-					exception = e;
-				}
+                        var validatedFunc = $funcBuilder.buildValidatedFunc(
+                                        [isPositiveInteger, isNotNull, $type.isFunction],
+                                        function(positiveInteger, notNull, func)
+                                        {
+                                                return func(positiveInteger, notNull);
+                                        }
+                        );
 
-				return exception;
-			}
+                        var funcA = function() { validatedFunc(-20, "Hello World", function() {}) };
+                        var expectedExceptionA = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: -20 }];
+                        expect(funcA).to.throw(expectedExceptionA);
 
-			it("returns a function that throws an exception if the argument types don't match on invocation", function()
-			{
-				var isPositiveInteger = $type.and($type.isPositive, $type.isInteger);
-				var isNotNull = $type.not($type.isNull);
+                        var funcB = function() { validatedFunc(20, null, function() {}) };
+                        var expectedExceptionB = [{ message: "Argument is invalid", type: isNotNull, argIndex: 1, argValue: null }];
+                        expect(funcB).to.throw(expectedExceptionB);
 
-				var validatedFunc = $funcBuilder.buildValidatedFunc(
-						[isPositiveInteger, isNotNull, $type.isFunction],
-						function(positiveInteger, notNull, func)
-						{
-							return func(positiveInteger, notNull);
-						}
-				);
+                        var funcC = function() { validatedFunc(null, "Hello World", true) };
+                        var expectedExceptionC = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: null },
+                                { message: "Argument is invalid", type: $type.isFunction, argIndex: 2, argValue: true }];
+                        expect(funcC).to.throw(expectedExceptionC);
 
-				var funcA = function() { validatedFunc(-20, "Hello World", function() {}) };
-				var expectedExceptionA = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: -20 }];
-				expect(_.isEqual(getException(funcA), expectedExceptionA)).toEqual(true);
-
-				var funcB = function() { validatedFunc(20, null, function() {}) };
-				var expectedExceptionB = [{ message: "Argument is invalid", type: isNotNull, argIndex: 1, argValue: null }];
-				expect(_.isEqual(getException(funcB), expectedExceptionB)).toEqual(true);
-
-				var funcC = function() { validatedFunc(null, "Hello World", true) };
-				var expectedExceptionC = [{ message: "Argument is invalid", type: isPositiveInteger, argIndex: 0, argValue: null },
-					{ message: "Argument is invalid", type: $type.isFunction, argIndex: 2, argValue: true }];
-				expect(_.isEqual(getException(funcC), expectedExceptionC)).toEqual(true);
-
-				var funcD = function() { validatedFunc(20, "Hello World", function() {}) };
-				expect(getException(funcD)).toEqual(null);
-			});
-		});
-	});
+                        var funcD = function() { validatedFunc(20, "Hello World", function() {}) };
+                        expect(funcD).to.not.throw();
+                });
+        });
 });
