@@ -9,7 +9,6 @@
   "dependencies": {
     "angular": "1.2.1",
     "jquery": "2.0.3",
-    "lodash": "2.4.1",
-    "requirejs": "2.1.11"
+    "lodash": "2.4.1"
   }
 }
