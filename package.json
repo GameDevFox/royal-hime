@@ -16,7 +16,9 @@
     "karma-coverage": "0.2.4",
 
     "mocha": "1.21.4",
-    "chai": "1.9.1"
+    "chai": "1.9.1",
+
+    "istanbul": "0.3.0"
   },
   "scripts": {
     "postinstall": "bower install --config.interactive=false",
@@ -29,7 +31,10 @@
     "pretest-watch": "npm install",
     "test-watch": "karma start test/karma.conf.js --no-single-run",
     "pretest-mocha": "npm install",
-    "test-mocha": "export NODE_PATH=app/scripts/lib/:src/; mocha"
+    "test-mocha": "export NODE_PATH=app/scripts/lib/:src/; mocha",
+
+    "precoverage": "npm install",
+    "coverage": "export NODE_PATH=app/scripts/lib/:src/; node_modules/.bin/istanbul cover -x \"**/lodash.js\" node_modules/.bin/_mocha"
   },
   "repository": {
     "type": "git",
