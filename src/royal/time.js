@@ -1,4 +1,4 @@
-var $math = require("./math");
+var $math = require("royal/math");
 
 // CLOCKS:
 // Clocks should be built in the following order in order for all their features to work

@@ -1,8 +1,8 @@
-var $update = require("../update");
-var $activity = require("../activity");
-var $relationship = require("../../royal/relationship");
-var $actor = require("../actor");
-var $area = require("../area");
+var $update = require("royal-hime/update");
+var $activity = require("royal-hime/activity");
+var $relationship = require("royal/relationship");
+var $actor = require("royal-hime/actor");
+var $area = require("royal-hime/area");
 
 var serviceFactory = {};
 

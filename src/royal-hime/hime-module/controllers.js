@@ -1,5 +1,5 @@
-var $relationship = require("../../royal/relationship");
-var $area = require("../area");
+var $relationship = require("royal/relationship");
+var $area = require("royal-hime/area");
 
 var controllerFactory = {};
 

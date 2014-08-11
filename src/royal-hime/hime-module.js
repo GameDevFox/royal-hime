@@ -1,9 +1,9 @@
 var angular = require("angular");
-var serviceFactory = require("./services");
-var controllerFactory = require("./controllers");
-var updateFunction require("updateFunctions");
-var $time = require("../../royal/time");
-var $math = require("../../royal/math");
+var serviceFactory = require("royal-hime/services");
+var controllerFactory = require("royal-hime/controllers");
+var updateFunction = require("updateFunctions");
+var $time = require("royal/time");
+var $math = require("royal/math");
 
 // Create Module
 var himeModule = angular.module( "Hime", [] );
