@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var $area = {};
 
 $area.buildArea = function( name, key ) {
