@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $math = require("../../src/royal/math");
+var $math = require("royal/math");
 
 describe( "royal/math", function()
 {

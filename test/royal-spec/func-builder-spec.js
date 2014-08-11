@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 
-var $funcBuilder = require("../../src/royal/func-builder");
-var $type = require("../../src/royal/type");
+var $funcBuilder = require("royal/func-builder");
+var $type = require("royal/type");
 
 describe("royal/func-builder", function()
 {

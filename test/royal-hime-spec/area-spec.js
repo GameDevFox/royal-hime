@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 
-var $area = require("../../src/royal-hime/area");
-var $relationship = require("../../src/royal/relationship");
+var $area = require("royal-hime/area");
+var $relationship = require("royal/relationship");
 
 describe( "royal-hime/area", function()
 {

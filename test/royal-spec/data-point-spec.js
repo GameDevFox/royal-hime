@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var dataPoint = require("../../src/royal/data-point");
+var dataPoint = require("royal/data-point");
 
 describe("royal/data-point", function()
 {

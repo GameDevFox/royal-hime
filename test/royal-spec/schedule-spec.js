@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $schedule = require("../../src/royal/schedule");
+var $schedule = require("royal/schedule");
 
 describe("royal/schedule", function()
 {

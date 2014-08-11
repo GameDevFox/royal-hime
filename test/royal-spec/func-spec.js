@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $func = require("../../src/royal/func");
+var $func = require("royal/func");
 
 describe("royal/func", function()
 {

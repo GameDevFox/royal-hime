@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $relationship = require("../../src/royal/relationship");
+var $relationship = require("royal/relationship");
 
 describe( "royal/relationship", function()
 {

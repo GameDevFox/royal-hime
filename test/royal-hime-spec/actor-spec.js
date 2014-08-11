@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $actor = require("../../src/royal-hime/actor");
+var $actor = require("royal-hime/actor");
 
 describe( "royal-hime/actor", function()
 {

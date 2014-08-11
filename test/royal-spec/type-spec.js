@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $type = require("../../src/royal/type");
+var $type = require("royal/type");
 
 describe( "royal/type", function()
 {

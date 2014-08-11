@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $activity = require("../../src/royal-hime/activity");
+var $activity = require("royal-hime/activity");
 
 describe( "royal-hime/activity", function()
 {

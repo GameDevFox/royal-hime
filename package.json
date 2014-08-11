@@ -29,7 +29,7 @@
     "pretest-watch": "npm install",
     "test-watch": "karma start test/karma.conf.js --no-single-run",
     "pretest-mocha": "npm install",
-    "test-mocha": "export NODE_PATH=app/scripts/lib; mocha"
+    "test-mocha": "export NODE_PATH=app/scripts/lib/:src/; mocha"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $update = require("../../src/royal-hime/update");
+var $update = require("royal-hime/update");
 
 describe("royal-hime/update", function()
 {

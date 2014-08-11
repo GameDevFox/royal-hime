@@ -1,7 +1,7 @@
 var expect = require("chai").expect;
 
-var $time = require("../../src/royal/time");
-var $math = require("../../src/royal/math");
+var $time = require("royal/time");
+var $math = require("royal/math");
 
 describe("royal/time", function()
 {
