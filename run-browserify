@@ -1,0 +1,1 @@
+export NODE_PATH=app/scripts/lib:src; browserify src/main.js -o app/scripts/hime.js
