@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var $actor = {};
 
 $actor.buildActor = function(name, maxEnergy)

@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var $relationship = require("royal/relationship");
 var $area = require("royal-hime/area");
 

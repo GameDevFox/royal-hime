@@ -1,7 +1,7 @@
-var angular = require("angular");
+var _ = require("lodash");
 var serviceFactory = require("royal-hime/hime-module/services");
 var controllerFactory = require("royal-hime/hime-module/controllers");
-var updateFunction = require("royal-hime/update");
+var updateFunctionFactory = require("royal-hime/hime-module/updateFunctions");
 var $time = require("royal/time");
 var $math = require("royal/math");
 

@@ -47,8 +47,6 @@ var configModule = function(loadedResources)
 
 	//Bootstrap angularjs
 	window.injector = angular.bootstrap($("body"), [himeModule.name, timeModule.name]);
-
-	window.rootScope = getScope("body");
 };
 
 $(document).ready(onReady);

@@ -1,4 +1,3 @@
-var angular = require("angular");
 var $time = require("royal/time");
 
 var timeModule = angular.module("Time", [], function( $provide, $controllerProvider, $compileProvider, $filterProvider)

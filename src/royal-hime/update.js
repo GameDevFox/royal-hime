@@ -1,3 +1,5 @@
+var _ = require("lodash");
+
 var update = {};
 
 // TODO: Validate that clock has the "lap()" method
