@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "An Experimental HTML5 Game",
   "devDependencies": {
+    "lodash": "2.4.1",
+
     "http-server": "0.6.1",
     "bower": "^1.3.8",
 
@@ -19,12 +21,12 @@
     "start": "http-server -p 8000 app",
 
     "pretest": "npm install",
-    "test": "export NODE_PATH=bower_components/lodash/dist:src; mocha",
-    "test-watch": "export NODE_PATH=bower_components/lodash/dist:src; mocha --watch",
+    "test": "export NODE_PATH=src; mocha",
+    "test-watch": "export NODE_PATH=src; mocha --watch",
 
-    "coverage": "export NODE_PATH=bower_components/lodash/dist:src; istanbul cover -x \"**/lodash.js\" node_modules/.bin/_mocha",
+    "coverage": "export NODE_PATH=src; istanbul cover -x \"**/lodash.js\" node_modules/.bin/_mocha",
 
-    "build": "export NODE_PATH=bower_components/lodash/dist:src; browserify src/main.js -o app/scripts/hime.js"
+    "build": "export NODE_PATH=src; browserify src/main.js -o app/scripts/hime.js"
   },
   "repository": {
     "type": "git",
