@@ -2,7 +2,7 @@ var _ = require("lodash");
 var serviceFactory = require("royal-hime/hime-module/services");
 var controllerFactory = require("royal-hime/hime-module/controllers");
 var updateFunctionFactory = require("royal-hime/hime-module/updateFunctions");
-var $time = require("royal/time");
+var $time = require("royal/clock");
 var $math = require("royal/math");
 
 // Create Module

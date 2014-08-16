@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 
-var $time = require("royal/time");
+var $time = require("royal/clock");
 var $math = require("royal/math");
 
 describe("royal/time", function()
