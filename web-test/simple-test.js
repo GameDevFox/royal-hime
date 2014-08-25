@@ -3,44 +3,46 @@ var expect = require("chai").expect;
 var webDriver = require("selenium-webdriver");
 
 var driver = new webDriver.Builder().
-	withCapabilities(webDriver.Capabilities.chrome()).
+	usingServer("http://localhost:4444/wd/hub").
+	withCapabilities(webDriver.Capabilities.firefox()).
 	build();
 var by = webDriver.By;
 
-describe("this test", function()
+describe("Royal Hime Client", function()
 {
-	after(function()
+	before(function()
 	{
-		driver.quit();
+		driver.get("localhost:8000");
 	});
 
-	it("should work", function(done)
+	it("should have the title \"Royal Hime\"", function(done)
 	{
-		var title;
 		var clockMsgElem;
 
 		this.timeout(10000);
 
-		driver.get("localhost:8000");
+		driver.getTitle().
+		then(function(title)
+		{
+			expect(title).to.equal("Royal Hime");
+			done();
+		});
+	});
 
-		driver.getTitle().then(function(t) { title = t; });
-
+	it("shoule have a \"stop\" button that stops game clock", function(done)
+	{
 		var stopButton = driver.findElement(by.className("stop"));
 		stopButton.click();
 
-		var clockMsg = driver.findElement(by.css(".clockController .message"));
-		clockMsg.then(function(elem)
+		driver.findElement(by.css(".clockController .message")).
+		then(function(clockMsgElem)
 		{
-			clockMsgElem = elem;
 			return clockMsgElem.getText();
-		})
-		.then(function(text)
+		}).
+		then(function(text)
 		{
 			expect(text).to.not.be.null;
-			expect(title).to.equal("Royal Hime");
-
 			done();
 		});
 	});
 });
-
