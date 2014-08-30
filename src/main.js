@@ -1,4 +1,7 @@
+var Promise = require("bluebird");
+
 var _ = require("lodash");
+
 var himeModule = require("royal-hime/hime-module");
 var timeModule = require("royal-hime/time-module");
 
@@ -7,33 +10,23 @@ var resources =
 	areaData: "data/areas.json",
 	actorData: "data/actors.json"
 };
-var loadedResources = {};
 
-var loadResource = function( value, key )
+var loadResources = function(resources)
 {
-	$.get( value, function( data )
+	var loadedResources = {};
+
+	var promises = _.map(resources, function(path, name)
 	{
-		loadedResources[key] = data;
-		checkResources( loadedResources );
+		return Promise.resolve($.get(path)).then(function(data)
+		{
+			loadedResources[name] = data;
+		});
 	});
-};
 
-var onReady = function()
-{
-	_.each( resources, loadResource );
-};
-
-var checkResources = function( loadedResources )
-{
-	var isKeyLoaded = function( value, key )
+	Promise.all(promises).then(function()
 	{
-		return key in loadedResources;
-	};
-
-	if( _.all( resources, isKeyLoaded ) )
-	{
-		configModule( loadedResources );
-	}
+		configModule(loadedResources);
+	});
 };
 
 var configModule = function(loadedResources)
@@ -49,4 +42,7 @@ var configModule = function(loadedResources)
 	window.injector = angular.bootstrap($("body"), [himeModule.name, timeModule.name]);
 };
 
-$(document).ready(onReady);
+$(document).ready(function()
+{
+	loadResources(resources)
+});
