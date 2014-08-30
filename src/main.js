@@ -1,5 +1,6 @@
-var Promise = require("bluebird");
+var urlOptions = require("royal-hime/url-options");
 
+var Promise = require("bluebird");
 var _ = require("lodash");
 
 var himeModule = require("royal-hime/hime-module");
@@ -37,6 +38,12 @@ var configModule = function(loadedResources)
 		himeModule.constant(key, value);
 	};
 	_.each(loadedResources, injectModuleData);
+
+	var options = urlOptions(document.URL);
+	if(options.debug)
+	{
+		console.log("Debug Mode");
+	}
 
 	//Bootstrap angularjs
 	window.injector = angular.bootstrap($("body"), [himeModule.name, timeModule.name]);
