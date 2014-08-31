@@ -30,13 +30,13 @@ describe("url-options(url)", function()
 		expect(function()
 		{
 			urlOptions("http://localhost?debug=false");
-		}).
-		not.to.throw();
+		})
+		.not.to.throw();
 
 		expect(function()
 		{
 			urlOptions("http://localhost?debug=yes");
-		}).
-		to.throw(Error, /Expecting either "true" or "false"/);
+		})
+		.to.throw(Error, /Expecting either "true" or "false"/);
 	});
 });
