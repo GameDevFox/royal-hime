@@ -22,7 +22,9 @@
     "test": "export NODE_PATH=src; mocha",
     "test-watch": "export NODE_PATH=src; mocha --watch",
     "start": "gulp && http-server -p 8000 app",
-    "coverage": "export NODE_PATH=src; istanbul cover -x \"**/lodash.js\" node_modules/.bin/_mocha"
+    "coverage": "export NODE_PATH=src; istanbul cover -x \"**/lodash.js\" node_modules/.bin/_mocha",
+    "build": "export NODE_PATH=src; browserify src/main.js -o app/scripts/hime.js",
+    "build-watch": "export NODE_PATH=src; watchify src/main.js -o app/scripts/hime.js"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,3 @@
-var exec = require('child_process').exec;
-
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var transform = require('vinyl-transform');
