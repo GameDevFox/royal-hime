@@ -51,5 +51,5 @@ var configModule = function(loadedResources)
 
 $(document).ready(function()
 {
-	loadResources(resources)
+	loadResources(resources);
 });

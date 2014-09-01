@@ -17,6 +17,7 @@ module.exports = function(urlStr)
 		{
 			case "true":
 				options.debug = true;
+				// What's up? World 2
 				break;
 			case "false":
 				break;
