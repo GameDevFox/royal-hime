@@ -3,13 +3,20 @@ var urlOptions = require("royal-hime/url-options");
 var Promise = require("bluebird");
 var _ = require("lodash");
 
-var himeModule = require("royal-hime/hime-module");
+var buildHimeModule = require("royal-hime/hime-module");
 var timeModule = require("royal-hime/time-module");
 
+var options = urlOptions(document.URL);
+
+var dataPath = options.dataPath;
+
+var himeModule = buildHimeModule(angular)
+
+// TODO: Factor out resource loading
 var resources =
 {
-	areaData: "data/areas.json",
-	actorData: "data/actors.json"
+	areaData: "areas.json",
+	actorData: "actors.json"
 };
 
 var loadResources = function(resources)
@@ -18,7 +25,8 @@ var loadResources = function(resources)
 
 	var promises = _.map(resources, function(path, name)
 	{
-		return Promise.resolve($.get(path)).then(function(data)
+		var fullPath = dataPath + path;
+		return Promise.resolve($.get(fullPath)).then(function(data)
 		{
 			loadedResources[name] = data;
 		});
@@ -39,10 +47,10 @@ var configModule = function(loadedResources)
 	};
 	_.each(loadedResources, injectModuleData);
 
-	var options = urlOptions(document.URL);
 	if(options.debug)
 	{
 		console.log("Debug Mode");
+		// Write Manual Clock control to body
 	}
 
 	//Bootstrap angularjs
