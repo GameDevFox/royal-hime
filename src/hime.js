@@ -19,11 +19,19 @@ var resources =
 	actorData: "actors.json"
 };
 
+var templates =
+{
+	manualClock: "manual-clock.html"
+}
+
+var loadedResources = {};
+var loadedTemplates = {};
+
 var loadResources = function(resources)
 {
-	var loadedResources = {};
+	loadedResources = {};
 
-	var promises = _.map(resources, function(path, name)
+	return _.map(resources, function(path, name)
 	{
 		var fullPath = dataPath + path;
 		return Promise.resolve($.get(fullPath)).then(function(data)
@@ -31,12 +39,21 @@ var loadResources = function(resources)
 			loadedResources[name] = data;
 		});
 	});
-
-	Promise.all(promises).then(function()
-	{
-		configModule(loadedResources);
-	});
 };
+
+var loadTemplates = function(templates)
+{
+	loadedTemplates = {};
+
+	return _.map(templates, function(path, name)
+	{
+		var fullPath = "/templates/" + path;
+		return Promise.resolve($.get(fullPath).then(function(data)
+		{
+			loadedTemplates[name] = data;
+		}));
+	});
+}
 
 var configModule = function(loadedResources)
 {
@@ -49,8 +66,9 @@ var configModule = function(loadedResources)
 
 	if(options.debug)
 	{
-		console.log("Debug Mode");
 		// Write Manual Clock control to body
+		console.log("Debug Mode");
+		$("body").prepend(loadedTemplates.manualClock);
 	}
 
 	//Bootstrap angularjs
@@ -59,5 +77,11 @@ var configModule = function(loadedResources)
 
 $(document).ready(function()
 {
-	loadResources(resources);
+	var resourcePromises = loadResources(resources);
+	var templatePromises = loadTemplates(templates);
+
+	Promise.all(_.union(resourcePromises, templatePromises)).then(function()
+	{
+		configModule(loadedResources);
+	});
 });
