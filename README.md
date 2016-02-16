@@ -2,3 +2,11 @@ royal-hime [![Build Status](https://travis-ci.org/GameDevFox/royal-hime.svg?bran
 ==========
 
 An Experimental HTML5 Game
+
+To run enter the following commands:
+
+```bash
+npm install
+bower install
+gulp serve
+```
