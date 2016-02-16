@@ -3,7 +3,17 @@ var browserify = require('gulp-browserify');
 var transform = require('vinyl-transform');
 var exorcist = require('exorcist');
 
+var browserSync = require('browser-sync');
+
 gulp.task('default', ['build']);
+
+gulp.task('serve', ['build'], function() {
+	browserSync.init({
+		server: {
+			baseDir: "./app/"
+		}
+	});
+});
 
 gulp.task('build', ['copy-modules'], function()
 {
