@@ -7,7 +7,7 @@ gulp.task('default', ['build']);
 
 gulp.task('build', ['copy-modules'], function()
 {
-	gulp.src('src/hime.js')
+	return gulp.src('src/hime.js')
 		.pipe(browserify({
 			debug: true
 		}))
@@ -17,7 +17,7 @@ gulp.task('build', ['copy-modules'], function()
 
 gulp.task('copy-modules', function()
 {
-	gulp.src('src/royal*/**/*.js')
+	return gulp.src('src/royal*/**/*.js')
 		.pipe(gulp.dest('node_modules'));
 });
 

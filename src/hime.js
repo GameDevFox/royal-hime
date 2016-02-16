@@ -3,32 +3,57 @@ var urlOptions = require("royal-hime/url-options");
 var Promise = require("bluebird");
 var _ = require("lodash");
 
-var himeModule = require("royal-hime/hime-module");
+var buildHimeModule = require("royal-hime/hime-module");
 var timeModule = require("royal-hime/time-module");
 
+var options = urlOptions(document.URL);
+
+var dataPath = options.dataPath;
+
+var himeModule = buildHimeModule(angular)
+
+// TODO: Factor out resource loading
 var resources =
 {
-	areaData: "data/areas.json",
-	actorData: "data/actors.json"
+	areaData: "areas.json",
+	actorData: "actors.json"
 };
+
+var templates =
+{
+	manualClock: "manual-clock.html"
+}
+
+var loadedResources = {};
+var loadedTemplates = {};
 
 var loadResources = function(resources)
 {
-	var loadedResources = {};
+	loadedResources = {};
 
-	var promises = _.map(resources, function(path, name)
+	return _.map(resources, function(path, name)
 	{
-		return Promise.resolve($.get(path)).then(function(data)
+		var fullPath = dataPath + path;
+		return Promise.resolve($.get(fullPath)).then(function(data)
 		{
 			loadedResources[name] = data;
 		});
 	});
-
-	Promise.all(promises).then(function()
-	{
-		configModule(loadedResources);
-	});
 };
+
+var loadTemplates = function(templates)
+{
+	loadedTemplates = {};
+
+	return _.map(templates, function(path, name)
+	{
+		var fullPath = "/templates/" + path;
+		return Promise.resolve($.get(fullPath).then(function(data)
+		{
+			loadedTemplates[name] = data;
+		}));
+	});
+}
 
 var configModule = function(loadedResources)
 {
@@ -39,10 +64,11 @@ var configModule = function(loadedResources)
 	};
 	_.each(loadedResources, injectModuleData);
 
-	var options = urlOptions(document.URL);
 	if(options.debug)
 	{
+		// Write Manual Clock control to body
 		console.log("Debug Mode");
+		$("body").prepend(loadedTemplates.manualClock);
 	}
 
 	//Bootstrap angularjs
@@ -51,5 +77,11 @@ var configModule = function(loadedResources)
 
 $(document).ready(function()
 {
-	loadResources(resources);
+	var resourcePromises = loadResources(resources);
+	var templatePromises = loadTemplates(templates);
+
+	Promise.all(_.union(resourcePromises, templatePromises)).then(function()
+	{
+		configModule(loadedResources);
+	});
 });
